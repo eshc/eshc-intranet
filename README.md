@@ -1,5 +1,5 @@
 # ESHC Intranet
-Check out our site:[text link](http://edinburghcoop.wordpress.com/)
+[ESHC Homepage](http://edinburghcoop.wordpress.com/)
 
 ## Goal
 Make usable intranet.
