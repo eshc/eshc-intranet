@@ -1,7 +1,7 @@
 <!-- Parent template -->
 <p>
 {% if user.is_authenticated %}
-	Hello, {{ user.username }}. 
+	Hello, <a href="{% url 'users:profile' %}">{{ user.username }}</a>. 
 	<a href="{% url 'users:logout' %}">logout</a> -
 {% else %}
 	<a href="{% url 'users:login' %}">Login</a> -

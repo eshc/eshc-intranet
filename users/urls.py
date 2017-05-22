@@ -11,5 +11,7 @@ urlpatterns = [
 	# Logout page
 	url(r'^logout/$', views.logout_view, name='logout'),
 	# New user registration
-	url(r'^register/$', views.register, name='register')
+	url(r'^register/$', views.register, name='register'),
+	# User profile info
+	url(r'^profile/$', views.profile, name='profile')
 ]

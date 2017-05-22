@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 def logout_view(request):
@@ -29,3 +30,7 @@ def register(request):
 
 	context = {'form': form}
 	return render(request, 'users/register.html', context)
+
+@login_required
+def profile(request):
+	return render(request, 'users/profile.html')
