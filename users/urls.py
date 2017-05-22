@@ -8,5 +8,8 @@ from . import views
 urlpatterns = [
 	# Login page
 	url(r'^login/$', login, {'template_name': 'users/login.html'}, name='login'),
-	# url('^', include('django.contrib.auth.urls')),
+	# Logout page
+	url(r'^logout/$', views.logout_view, name='logout'),
+	# New user registration
+	url(r'^register/$', views.register, name='register')
 ]

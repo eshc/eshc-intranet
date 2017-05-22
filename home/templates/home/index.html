@@ -1,7 +1,9 @@
 {% extends "home/base.html" %}
 
 {% block content %}
-	<p>ESHC Intranet Home Page</p>
+	<h1>ESHC Intranet</h1>
 	<p>Here (will) be all things nice.</p>
-	<a href="{% url 'users:login' %}">Users Login</a>
+	<a href="{% url 'users:register' %}">Register</a>
+	<a href="{% url 'users:login' %}">Login</a>
+
 {% endblock content %}

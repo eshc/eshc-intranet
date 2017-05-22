@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<h1>Login Page</h1>
+
 {% if form.errors %}
 <p>Credential mismatch</p>
 {% endif %}
@@ -13,7 +15,7 @@
 
 <button name="submit">Log in</button>
 
-<input type="hidden" name="next" value="www.google.com" />
+<input type="hidden" name="next" value="{% url 'home:index' %}" />
 
 {% endblock content %}
 

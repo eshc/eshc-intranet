@@ -1,6 +1,14 @@
 <!-- Parent template -->
 <p>
-	<a href="{% url 'home:index' %}">Home</a>
+{% if user.is_authenticated %}
+	Hello, {{ user.username }}. 
+	<a href="{% url 'users:logout' %}">logout</a> -
+{% else %}
+	<a href="{% url 'users:login' %}">Login</a> -
+	<a href="{% url 'users:register' %}">Register</a> -
+{% endif %}
+	<a href="{% url 'home:index' %}">Home</a> - Wiki
 </p>
+
 
 {% block content %}{% endblock content %}
