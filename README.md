@@ -4,6 +4,10 @@
 ## Goal
 Make usable intranet.
 
+## Features implemented
+* Basic user login
+* Basic new user registration
+
 ## Basic features wanted
 * User management
 * User information displayed
