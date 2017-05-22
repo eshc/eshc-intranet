@@ -10,7 +10,9 @@ Make usable intranet.
 
 ## Stretch features wanted
 * Lease management
+* Proposal voting
 * Browse Wiki
+* Flat map
 * Browse bylaws
 * Polling
 * £££ Overview
