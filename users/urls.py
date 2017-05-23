@@ -13,5 +13,7 @@ urlpatterns = [
 	# New user registration
 	url(r'^register/$', views.register, name='register'),
 	# User profile info
-	url(r'^profile/$', views.profile, name='profile')
+	url(r'^profile/$', views.profile, name='profile'),
+	# User profile editing
+	url(r'^edit_profile/$', views.edit_profile, name='edit_profile')
 ]

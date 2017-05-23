@@ -8,10 +8,10 @@ Make usable intranet.
 * Basic user login
 * Basic new user registration
 * User information displayed on profile page
+* Allow user to edit name and email address
 
 ## Basic features wanted
 * User management (available through 'admin')
-* Allow user to edit name and email address
 
 ## Stretch features wanted
 * Email verification/authentication?
