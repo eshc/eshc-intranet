@@ -14,7 +14,7 @@ Make usable intranet.
 ## Basic features wanted
 * User management (available through 'admin')
 * Store ESHC member specific information (eg. ref no.)
-..* Will need ot extend th estandard User model to include more fields
+  * Will need ot extend th estandard User model to include more fields
 
 ## Stretch features wanted
 * Email verification/authentication?
@@ -27,4 +27,4 @@ Make usable intranet.
 
 ## Notes
 * Uses the [waliki](https://github.com/mgaitan/waliki) app for wiki functionality. 
-..* Had to modify the page creation views to use page.raw = " " instead of page.raw = "".
+  * Had to modify the page creation views to use page.raw = " " instead of page.raw = "".
