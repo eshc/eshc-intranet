@@ -4,6 +4,17 @@
 ## Goal
 Make usable intranet.
 
+## Testing Instructions
+**Virtualenv recommended!**
+Install Python3
+1. Make venv for this project
+2. Install Django in venv
+3. Install waliki in venv
+4. Clone repo into venv directory
+5. Activate venv
+6. run eshcIntranet/manage.py runserver
+7. Go to 127.0.0.1:8000
+
 ## Features implemented
 * Basic user login
 * Basic new user registration
@@ -27,7 +38,6 @@ Make usable intranet.
 * Flat map
 * Browse bylaws
 * £££ Overview
-
 * Style everything nicely
 
 ## Notes
