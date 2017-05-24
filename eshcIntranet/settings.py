@@ -37,8 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Custom apps
+
+    # Waliki apps
+    'waliki',
+    'waliki.git',           # optional but recommended
+    'waliki.attachments',   # optional but recommended
+    # 'waliki.pdf',           # optional
+    # 'waliki.search',        # optional, additional configuration required
+    # 'waliki.slides',        # optional
+    # 'waliki.togetherjs',    # optional
+
+        # Custom apps
     'home.apps.HomeConfig',
     'users.apps.UsersConfig'
 ]
@@ -125,3 +134,9 @@ STATIC_URL = '/static/'
 
 # Custom settings
 LOGIN_URL = '/users/login/'
+
+# Waliki settings
+WALIKI_ANONYMOUS_USER_PERMISSIONS = {'view_page',}
+WALIKI_LOGGED_USER_PERMISSIONS = {'view_page', 'add_page', 'change_page'}
+WALIKI_AVAILABLE_MARKUPS = ['Markdown']
+
