@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserEditForm
+from .forms import UserEditForm, ProfileEditForm
 
 
 def logout_view(request):
@@ -42,23 +42,27 @@ def profile(request):
 def edit_profile(request):
 	"""Edit user info"""
 	user = request.user
-
-	a = User.objects.get(username=request.user.username)
+	profile = user.profile
+	# a = User.objects.get(username=request.user.username)
+	# a = user
 
 	if request.method != 'POST':
 		# Display form filled with available info
-		form = UserEditForm(initial={'first_name': user.first_name, 
+		user_form = UserEditForm(initial={'first_name': user.first_name, 
 			'last_name': user.last_name, 
 			'email': user.email})
+		profile_form = ProfileEditForm(initial={'phone_number': profile.phone_number, 
+			'perm_address': profile.perm_address})
 	else:
-		form = UserEditForm(data=request.POST, instance=a)
+		user_form = UserEditForm(data=request.POST, instance=user)
+		profile_form = ProfileEditForm(data=request.POST, instance=profile)
 
-		if form.is_valid():
-			user = form.save()
+		if user_form.is_valid() and profile_form.is_valid():
+			user = user_form.save()
 			# user.first_name = form.cleaned_data['first_name']
 			# user.last_name = form.cleaned_data['last_name']
 			# user.email = form.cleaned_data['email']
 			return HttpResponseRedirect(reverse('users:profile'))
 
-	context = {'form': form}
+	context = {'user_form': user_form, 'profile_form': profile_form}
 	return render(request, 'users/edit_profile.html', context)

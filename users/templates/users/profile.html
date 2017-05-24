@@ -6,10 +6,12 @@
 <p>Username: {{ user.username }}</p>
 <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
 <p>Email: {{ user.email }}</p>
+<p>Reference number: {{user.profile.ref_number}}</p>
+<p>Phone number: {{user.profile.phone_number}}</p>
+<p>Permanent address: {{user.profile.perm_address}}</p>
+
 <p>Last login: {{ user.last_login }}</p>
 <p>Date joined: {{ user.date_joined }}</p>
-
-<p>Reference number: {{user.profile.ref_number}}</p>
 
 <a href="{% url 'users:edit_profile' %}">Edit info</a>
 

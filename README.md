@@ -15,8 +15,8 @@ Make usable intranet.
 * User management (available through 'admin')
 * Store ESHC member specific information
   * ~~Reference number~~
-  * phone number
-  * perm address
+  * ~~phone number~~
+  * ~~perm address~~
 
 ## Stretch features wanted
 * Email verification/authentication?

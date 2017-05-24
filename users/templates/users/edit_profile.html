@@ -5,7 +5,8 @@
 
 <form method="POST" action="{% url 'users:edit_profile' %}">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
     <button name="submit">Save</button>
     <input type="hidden" name="next" value="{% url 'home:index' %}" />
 </form>

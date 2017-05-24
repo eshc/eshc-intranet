@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-
+from .models import Profile
 
 class UserEditForm(forms.ModelForm):
 	"""
@@ -22,3 +22,12 @@ class UserEditForm(forms.ModelForm):
 		if commit:
 			user.save()
 		return user
+
+class ProfileEditForm(forms.ModelForm):
+	"""
+	A form to edit Profile data
+	"""
+
+	class Meta:
+		model = Profile
+		fields = ['phone_number', 'perm_address']
