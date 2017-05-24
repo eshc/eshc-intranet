@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     # 'waliki.slides',        # optional
     # 'waliki.togetherjs',    # optional
 
-        # Custom apps
+    # Custom apps
     'home.apps.HomeConfig',
     'users.apps.UsersConfig'
 ]

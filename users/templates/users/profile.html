@@ -9,6 +9,8 @@
 <p>Last login: {{ user.last_login }}</p>
 <p>Date joined: {{ user.date_joined }}</p>
 
+<p>Reference number: {{user.profile.ref_number}}</p>
+
 <a href="{% url 'users:edit_profile' %}">Edit info</a>
 
 {% endblock content %}

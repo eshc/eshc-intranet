@@ -9,15 +9,18 @@ Make usable intranet.
 * Basic new user registration
 * User information displayed on profile page
 * Allow user to edit name and email address
-* Basic Wiki
+* Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki)
 
-## Basic features wanted
+## Features wanted
 * User management (available through 'admin')
-* Store ESHC member specific information (eg. ref no.)
-  * Will need ot extend th estandard User model to include more fields
+* Store ESHC member specific information
+  * ~~Reference number~~
+  * phone number
+  * perm address
 
 ## Stretch features wanted
 * Email verification/authentication?
+* Extend wiki functionality
 * Lease management
 * Proposal voting
 * Flat map
