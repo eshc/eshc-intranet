@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .forms import UserEditForm, ProfileEditForm
+from leases.models import Lease
 
 
 def logout_view(request):
@@ -36,7 +37,9 @@ def register(request):
 
 @login_required
 def profile(request):
-	return render(request, 'users/profile.html')
+	leases = Lease.objects.filter(user_id=request.user.id)
+	context = {'leases': leases}
+	return render(request, 'users/profile.html', context)
 
 @login_required
 def edit_profile(request):

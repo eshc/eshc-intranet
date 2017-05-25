@@ -3,16 +3,28 @@
 {% block content %}
 
 <h1>Your profile</h1>
+<h2>Information</h2>
 <p>Username: {{ user.username }}</p>
 <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
 <p>Email: {{ user.email }}</p>
 <p>Reference number: {{ user.profile.ref_number }}</p>
 <p>Phone number: {{ user.profile.phone_number }}</p>
 <p>Permanent address: {{ user.profile.perm_address }}</p>
+<a href="{% url 'users:edit_profile' %}">Edit info</a>
 
+<h2>Leases</h2>
+{% if leases %}
+	{% for lease in leases %}
+		<li>Start date: {{ lease.start_date }} End date: {{ lease.end_date }}</li>
+	{% endfor %}
+	<p>Number of leases: {{ leases|length }}</p>
+{% else %}
+	<p>No leases registered</p>
+{% endif %}
+
+<h2>Login info</h2>
 <p>Last login: {{ user.last_login }}</p>
 <p>Date joined: {{ user.date_joined }}</p>
 
-<a href="{% url 'users:edit_profile' %}">Edit info</a>
 
 {% endblock content %}
