@@ -20,14 +20,18 @@ Install Python3
 * Basic new user registration
 * User information displayed on profile page
 * Store ESHC member specific information
-* Allow user to edit profile information
+* Allow user to edit relevant profile information
 * Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki)
+* User management available through admin app
 
 ## Features wanted
-* User management (available through 'admin')
+* Lease management
+  * App called 'leases'
+  * Display all leases to admins - add, edit, etc.
+  * Display all leases connected to a user to the user
+    * Start date, end date, room
 
 ## Stretch features wanted
-* Lease management
 * Extend wiki functionality
   * Side bars, no-link page list,
 * Email verification/authentication?
@@ -39,6 +43,8 @@ Install Python3
 * Browse bylaws
 * £££ Overview
 * Style everything nicely
+* 'Share received' indicator in profile
+* Option to change password
 
 ## Notes
 * Uses the [waliki](https://github.com/mgaitan/waliki) app for wiki functionality. 
