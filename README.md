@@ -27,9 +27,10 @@ Install Python3
 ## Features wanted
 * Lease management
   * App called 'leases'
-  * Display all leases to admins - add, edit, etc.
+  * Display all leases to admins - allow add, edit, etc.
   * Display all leases connected to a user to the user
     * Start date, end date, room
+* Mark Users as deactivated when they have moved out
 
 ## Stretch features wanted
 * Extend wiki functionality
