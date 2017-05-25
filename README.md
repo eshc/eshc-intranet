@@ -8,10 +8,10 @@ Make usable intranet.
 **Virtualenv recommended!**
 Install Python3
 1. Make venv for this project
-2. Install Django in venv
-3. Install waliki in venv
-4. Clone repo into venv directory
-5. Activate venv
+2. Activate venv
+3. Install Django in venv
+4. Install waliki in venv
+5. Clone repo into venv directory
 6. run eshcIntranet/manage.py runserver
 7. Go to 127.0.0.1:8000
 
@@ -23,9 +23,9 @@ Install Python3
 * Allow user to edit relevant profile information
 * Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki)
 * User management available through admin app
+* Lease management - admin and user sides
 
 ## Features wanted
-* Lease management
   * ~~App called 'leases'~~
   * ~~Display all leases to admins - allow add, edit, etc.~~
   * ~~Display all leases connected to a user to the user~~

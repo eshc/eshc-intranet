@@ -6,3 +6,6 @@ class Lease(models.Model):
 	lease_type = models.CharField(max_length=10)
 	start_date = models.DateField('start date')
 	end_date = models.DateField('end date')
+	building = models.PositiveIntegerField('building number')
+	flat = models.PositiveIntegerField('flat number')
+	room = models.CharField(max_length=1)
