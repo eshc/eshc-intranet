@@ -24,7 +24,9 @@
 {% if leases %}
 	{% for lease in leases %}
 		<li>{{ forloop.counter }} From: {{ lease.start_date }} To: {{ lease.end_date }} 
-		Room: {{ lease.building }}/{{ lease.flat }} {{ lease.room }}</li>
+		- Room: {{ lease.building }}/{{ lease.flat }} {{ lease.room }}. - Signed on {{ lease.date_signed }} - 
+		<a href="{% url 'leases:inventory' lease.id %}">Inventory</a>
+		</li>
 	{% endfor %}
 	<p>Number of leases: {{ leases|length }}</p>
 {% else %}

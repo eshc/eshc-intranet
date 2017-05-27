@@ -20,6 +20,7 @@ urlpatterns = [
 	url(r'', include('home.urls', namespace='home')),
     url(r'^admin/', admin.site.urls),
     url(r'^users/', include('users.urls', namespace='users')),
+    url(r'^leases/', include('leases.urls', namespace='leases')),
 
     # Waliki
     url(r'^wiki/', include('waliki.urls')),

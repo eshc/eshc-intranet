@@ -10,3 +10,8 @@ class Lease(models.Model):
 	flat = models.PositiveIntegerField('flat number')
 	room = models.CharField(max_length=1)
 	date_signed = models.DateField('date signed')
+
+class Inventory(models.Model):
+	lease = models.OneToOneField(Lease, unique=True)
+	sub_date = models.DateField('submission date')
+	inventory_notes = models.TextField(max_length=500)
