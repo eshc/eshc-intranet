@@ -25,7 +25,7 @@ Install Python3
 * User management available through admin app
 * Lease management - admin and user sides
 * Mark Users as deactivated when they have moved out 
-* 'Share received' checkbox for admins, display on user profile - modify model
+* 'Share received' checkbox for admins, display on user profile
 
 ## Features wanted
 

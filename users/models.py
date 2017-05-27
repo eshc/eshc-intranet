@@ -9,18 +9,7 @@ class Profile(models.Model):
 	phone_number = models.CharField(max_length=15, blank=True)
 	perm_address = models.TextField(max_length=500, blank=True)
 	share_received = models.BooleanField(default=False)
-	share_received.admin_order_field = 'share_received'
-	share_received.boolean = True
-	share_received.short_description = 'Share Received?'
 
-	# full_name = 'string'
-	# full_name = models.
-	# full_name = User.objects.get(username=user)
-	# full_name = User.objects.get(user)
-
-	# def full_name(self):
-	# 	name = 	User.objects.get(id=user.id)
-	# 	return name
 		
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

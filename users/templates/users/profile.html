@@ -12,12 +12,12 @@
 <p>Permanent address: {{ user.profile.perm_address }}</p>
 <a href="{% url 'users:edit_profile' %}">Edit info</a>
 
-<p>Share received: {{ share_received }}</p>
+<p>Share received: {% if share_received %} Yes {% else %} No {% endif %}</p>
 
 <h2>Leases</h2>
 {% if leases %}
 	{% for lease in leases %}
-		<li>{{forloop.counter }} From: {{ lease.start_date }} To: {{ lease.end_date }} 
+		<li>{{ forloop.counter }} From: {{ lease.start_date }} To: {{ lease.end_date }} 
 		Room: {{ lease.building }}/{{ lease.flat }} {{ lease.room }}</li>
 	{% endfor %}
 	<p>Number of leases: {{ leases|length }}</p>
