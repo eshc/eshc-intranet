@@ -38,7 +38,7 @@ def register(request):
 @login_required
 def profile(request):
 	leases = Lease.objects.filter(user_id=request.user.id)
-	context = {'leases': leases}
+	context = {'leases': leases, 'share_received': request.user.profile.share_received}
 	return render(request, 'users/profile.html', context)
 
 @login_required
@@ -46,8 +46,6 @@ def edit_profile(request):
 	"""Edit user info"""
 	user = request.user
 	profile = user.profile
-	# a = User.objects.get(username=request.user.username)
-	# a = user
 
 	if request.method != 'POST':
 		# Display form filled with available info
@@ -62,9 +60,6 @@ def edit_profile(request):
 
 		if user_form.is_valid() and profile_form.is_valid():
 			user = user_form.save()
-			# user.first_name = form.cleaned_data['first_name']
-			# user.last_name = form.cleaned_data['last_name']
-			# user.email = form.cleaned_data['email']
 			return HttpResponseRedirect(reverse('users:profile'))
 
 	context = {'user_form': user_form, 'profile_form': profile_form}

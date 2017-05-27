@@ -12,6 +12,8 @@
 <p>Permanent address: {{ user.profile.perm_address }}</p>
 <a href="{% url 'users:edit_profile' %}">Edit info</a>
 
+<p>Share received: {{ share_received }}</p>
+
 <h2>Leases</h2>
 {% if leases %}
 	{% for lease in leases %}

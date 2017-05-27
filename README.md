@@ -24,10 +24,10 @@ Install Python3
 * Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki)
 * User management available through admin app
 * Lease management - admin and user sides
+* Mark Users as deactivated when they have moved out 
+* 'Share received' checkbox for admins, display on user profile - modify model
 
 ## Features wanted
-* Mark Users as deactivated when they have moved out - admin option
-* 'Share received' checkbox for admins, display on user profile - modify model
 
 ### Leases app
 * Prompt if no valid lease registered
@@ -40,6 +40,7 @@ Install Python3
 ## Stretch features wanted
 * Extend wiki functionality
   * Side bars, no-link page list,
+  * Per page comments section?
 * Email verification/authentication?
 * Email sending
 * Automatically assign reference numbers to new users?

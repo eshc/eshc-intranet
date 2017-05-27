@@ -8,6 +8,10 @@ class Profile(models.Model):
 	ref_number = models.CharField('Bank Reference Number', max_length=8, blank=True)
 	phone_number = models.CharField(max_length=15, blank=True)
 	perm_address = models.TextField(max_length=500, blank=True)
+	share_received = models.BooleanField(default=False)
+	share_received.admin_order_field = 'share_received'
+	share_received.boolean = True
+	share_received.short_description = 'Share Received?'
 
 	# full_name = 'string'
 	# full_name = models.

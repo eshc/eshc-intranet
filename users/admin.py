@@ -25,6 +25,12 @@ class UserAdmin(BaseUserAdmin):
 		except Profile.DoesNotExist:
 			return ''
 
-	list_display = BaseUserAdmin.list_display + ('ref_number', )
+	def share_received(self, obj):
+		try:
+			return obj.profile.share_received
+		except Profile.DoesNotExist:
+			return ''
+	
+	list_display = BaseUserAdmin.list_display + ('ref_number', 'share_received')
 
 admin.site.register(User, UserAdmin)
