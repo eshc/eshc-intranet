@@ -5,6 +5,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 from .forms import UserEditForm, ProfileEditForm
 from leases.models import Lease
@@ -38,7 +39,16 @@ def register(request):
 @login_required
 def profile(request):
 	leases = Lease.objects.filter(user_id=request.user.id)
-	context = {'leases': leases, 'share_received': request.user.profile.share_received}
+	valid_lease = False
+	now = timezone.localdate()
+	for lease in leases:
+		if lease.start_date <= now <= lease.end_date:
+			valid_lease = True
+			break
+
+	context = {'leases': leases, 
+		'share_received': request.user.profile.share_received, 
+		'valid_lease': valid_lease}
 	return render(request, 'users/profile.html', context)
 
 @login_required

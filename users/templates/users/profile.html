@@ -15,6 +15,12 @@
 <p>Share received: {% if share_received %} Yes {% else %} No {% endif %}</p>
 
 <h2>Leases</h2>
+{% if valid_lease %}
+	You have a valid lease registered. Good job!
+{% else %}
+	You do not have a current lease. Go sign one!
+{% endif %}
+
 {% if leases %}
 	{% for lease in leases %}
 		<li>{{ forloop.counter }} From: {{ lease.start_date }} To: {{ lease.end_date }} 

@@ -26,11 +26,11 @@ Install Python3
 * Lease management - admin and user sides
 * Mark Users as deactivated when they have moved out 
 * 'Share received' checkbox for admins, display on user profile
+* Prompt if no valid lease registered 
 
 ## Features wanted
 
 ### Leases app
-* Prompt if no valid lease registered
 * Notify that lease will run out some months before end (via email?)
 * Add 'date_signed' field
 * Fill out inventory information - time limited editing, +7 days from date_signed

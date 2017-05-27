@@ -9,3 +9,4 @@ class Lease(models.Model):
 	building = models.PositiveIntegerField('building number')
 	flat = models.PositiveIntegerField('flat number')
 	room = models.CharField(max_length=1)
+	date_signed = models.DateField('date signed')
