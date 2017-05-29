@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
 from .forms import UserEditForm, ProfileEditForm
-from leases.models import Lease
+from leases.models import Lease, Inventory
 
 
 def logout_view(request):

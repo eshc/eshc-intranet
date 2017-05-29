@@ -33,7 +33,7 @@ Install Python3
 * ~~Prompt if no valid lease registered~~
 * Notify that lease will run out some months before end (via email?)
 * ~~Add 'date_signed' field~~
-* Fill out inventory information - time limited editing, +7 days from date_signed
+* ~~Fill out inventory information - only allowed once~~
 * Generate customised PDF ready for signing - user can print on their own
 * TESTS
 

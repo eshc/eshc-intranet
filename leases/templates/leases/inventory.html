@@ -3,15 +3,24 @@
 {% block content %}
 
 <h1>Inventory</h1>
+{% if saved_inventory %}
+	<p>Your saved inventory for this lease:</p>
+	<pre>{{ saved_inventory }}</pre>
+{% else %}
+	{% if lease %}
 
-{% if lease %}
-
-<form method="POST" action="{% url 'leases:inventory' lease.id %}">
-    {% csrf_token %}
-    {{ inventory_form.as_p }}
-    <button name="submit">Save</button>
-    <input type="hidden" name="next" value="{% url 'users:profile' %}" />
-</form>
+	<h2>Instructions</h2>
+	<p>Note any current damages to the item. Look for holes, tears, stains, etc.</p>
+	<p>Type 'OK' if you accept the status of the item as is.</p>
+	<p>If you think an item is not up to par please make a note beside the corresponding item and submit.</p>
+	<p>YOU WILL NOT BE ABLE TO EDIT THIS AFTER SUBMITTING</p>
+	<form method="POST" action="{% url 'leases:inventory' lease.id %}">
+	    {% csrf_token %}
+	    {{ inventory_form.as_p }}
+	    <button name="submit">Submit</button>
+	    <input type="hidden" name="next" value="{% url 'users:profile' %}" />
+	</form>
+	{% endif %}
 
 {% endif %}
 
