@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.utils import timezone
 
 from .models import Lease, Inventory
 from .forms import InventoryForm
@@ -18,11 +17,12 @@ def inventory(request, pk):
 		if request.method != 'POST':
 			# Display empty form
 			inventory_form = InventoryForm()
+			# inventory_form.lease_id = lease.id
 		else:
 			inventory_form = InventoryForm(data=request.POST)#, instance=inventory)
-			# inventory_form.sub_date = timezone.localdate()
+			# inventory_form.lease_id = lease.id
 			if inventory_form.is_valid():
-				inventory_form = inventory_form.save()
+				inventory_form = inventory_form.save(lease_id=lease.id)
 				return HttpResponseRedirect(reverse('users:profile'))
 
 
