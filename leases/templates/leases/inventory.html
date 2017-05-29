@@ -4,6 +4,15 @@
 
 <h1>Inventory</h1>
 
-{{ lease }}
+{% if lease %}
+
+<form method="POST" action="{% url 'leases:inventory' lease.id %}">
+    {% csrf_token %}
+    {{ inventory_form.as_p }}
+    <button name="submit">Save</button>
+    <input type="hidden" name="next" value="{% url 'users:profile' %}" />
+</form>
+
+{% endif %}
 
 {% endblock content %}
