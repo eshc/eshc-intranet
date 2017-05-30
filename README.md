@@ -26,9 +26,9 @@ Install Python3
 * Lease management - admin and user sides
 * Mark Users as deactivated when they have moved out 
 * 'Share received' checkbox for admins, display on user profile
+* Navbar
 
 ## Features wanted
-* Navbar
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
