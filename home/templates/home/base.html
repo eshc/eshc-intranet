@@ -1,15 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
 <!-- Parent template -->
-<p>
-{% if user.is_authenticated %}
-	Hello, <a href="{% url 'users:profile' %}">{{ user.username }}</a>. 
-	<a href="{% url 'users:logout' %}">logout</a> -
-{% else %}
-	<a href="{% url 'users:login' %}">Login</a> -
-	<a href="{% url 'users:register' %}">Register</a> -
-{% endif %}
-	<a href="{% url 'home:index' %}">Home</a> -  
-	<a href="/wiki/">Wiki</a>
-</p>
+{% load static %}
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	 <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+	<link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}" />
 
-{% block content %}{% endblock content %}
+	<title>ESHC Intranet</title>
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="{% url 'home:index' %}">ESHC</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li><a href="{% url 'home:index' %}">Home</a></li>
+			<li><a href="/wiki/">Wiki</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			{% if user.is_authenticated %}
+				<li><a href="{% url 'users:profile' %}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+				<li><a href="{% url 'users:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+			{% else %}
+				<li><a href="{% url 'users:register' %}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+				<li><a href="{% url 'users:login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			{% endif %}
+		</ul>
+	</div>
+</nav>
+
+<div class="container">
+	{% block content %}{% endblock content %}
+</div>
+</body>

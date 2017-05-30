@@ -28,6 +28,7 @@ Install Python3
 * 'Share received' checkbox for admins, display on user profile
 
 ## Features wanted
+* Navbar
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
@@ -38,6 +39,8 @@ Install Python3
 * TESTS
 
 ## Stretch features wanted
+* GM help?  
+  * Agenda forming?
 * Extend wiki functionality
   * Side bars, no-link page list,
   * Per page comments section?

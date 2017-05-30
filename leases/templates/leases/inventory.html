@@ -6,6 +6,7 @@
 {% if saved_inventory %}
 	<p>Your saved inventory for this lease:</p>
 	<pre>{{ saved_inventory }}</pre>
+	<!-- {{ saved_inventory|linebreaksbr }} -->
 {% else %}
 	{% if lease %}
 
@@ -13,6 +14,7 @@
 	<p>Note any current damages to the item. Look for holes, tears, stains, etc.</p>
 	<p>Type 'OK' if you accept the status of the item as is.</p>
 	<p>If you think an item is not up to par please make a note beside the corresponding item and submit.</p>
+	<p>You will be able to view this information later, but</p>
 	<p>YOU WILL NOT BE ABLE TO EDIT THIS AFTER SUBMITTING</p>
 	<form method="POST" action="{% url 'leases:inventory' lease.id %}">
 	    {% csrf_token %}
