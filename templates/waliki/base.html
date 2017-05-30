@@ -4,7 +4,7 @@
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
@@ -18,7 +18,7 @@
         <title>{% block head_title_base %}{% if page and page.title %} {{ page.title }} | {% endif %}{{ SITE_NAME|default:'ESHC Wiki' }}{% endblock %}</title>
 
          {% block style_base %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+        <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"> -->
         <link rel="stylesheet" type="text/css" href="{% static 'css/pygments.css'%}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/noembed.css'%}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/waliki.css'%}">
