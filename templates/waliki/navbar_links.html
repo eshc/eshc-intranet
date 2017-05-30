@@ -10,7 +10,7 @@
     <li></li>
 </ul>
 <ul class="nav navbar-nav navbar-right">
-	{% if user.is_authenticated %}
+	{% if request.user.is_authenticated %}
 		<li><a href="{% url 'users:profile' %}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
 		<li><a href="{% url 'users:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 	{% else %}

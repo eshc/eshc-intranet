@@ -1,41 +1,42 @@
 {% extends "home/base.html" %}
 
 {% block content %}
+<div class="col-lg-offset-1 col-sm-10 col-md-10">
+    <h1>Your profile</h1>
+	<h2>Information</h2>
+	<p>Username: {{ user.username }}</p>
+	<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+	<p>Email: {{ user.email }}</p>
+	<p>Reference number: {{ user.profile.ref_number }}</p>
+	<p>Phone number: {{ user.profile.phone_number }}</p>
+	<p>Permanent address: {{ user.profile.perm_address }}</p>
+	<a href="{% url 'users:edit_profile' %}">Edit info</a>
 
-<h1>Your profile</h1>
-<h2>Information</h2>
-<p>Username: {{ user.username }}</p>
-<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
-<p>Email: {{ user.email }}</p>
-<p>Reference number: {{ user.profile.ref_number }}</p>
-<p>Phone number: {{ user.profile.phone_number }}</p>
-<p>Permanent address: {{ user.profile.perm_address }}</p>
-<a href="{% url 'users:edit_profile' %}">Edit info</a>
+	<p>Share received: {% if share_received %} Yes {% else %} No {% endif %}</p>
 
-<p>Share received: {% if share_received %} Yes {% else %} No {% endif %}</p>
+	<h2>Leases</h2>
+	{% if valid_lease %}
+		You have a valid lease registered. Good job!
+	{% else %}
+		You do not have a current lease. Go sign one!
+	{% endif %}
 
-<h2>Leases</h2>
-{% if valid_lease %}
-	You have a valid lease registered. Good job!
-{% else %}
-	You do not have a current lease. Go sign one!
-{% endif %}
+	{% if leases %}
+		{% for lease in leases %}
+			<li>{{ forloop.counter }} From: {{ lease.start_date }} To: {{ lease.end_date }} 
+			- Room: {{ lease.building }}/{{ lease.flat }} {{ lease.room }}. - Signed on {{ lease.date_signed }} - 
+			<a href="{% url 'leases:inventory' lease.id %}">Inventory</a>
+			</li>
+		{% endfor %}
+		<p>Number of leases: {{ leases|length }}</p>
+	{% else %}
+		<p>No leases registered</p>
+	{% endif %}
 
-{% if leases %}
-	{% for lease in leases %}
-		<li>{{ forloop.counter }} From: {{ lease.start_date }} To: {{ lease.end_date }} 
-		- Room: {{ lease.building }}/{{ lease.flat }} {{ lease.room }}. - Signed on {{ lease.date_signed }} - 
-		<a href="{% url 'leases:inventory' lease.id %}">Inventory</a>
-		</li>
-	{% endfor %}
-	<p>Number of leases: {{ leases|length }}</p>
-{% else %}
-	<p>No leases registered</p>
-{% endif %}
-
-<h2>Login info</h2>
-<p>Last login: {{ user.last_login }}</p>
-<p>Date joined: {{ user.date_joined }}</p>
+	<h2>Login info</h2>
+	<p>Last login: {{ user.last_login }}</p>
+	<p>Date joined: {{ user.date_joined }}</p>
+</div>
 
 
 {% endblock content %}
