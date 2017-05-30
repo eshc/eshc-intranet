@@ -26,6 +26,7 @@ Install Python3
 * Lease management - admin and user sides
 * Mark Users as deactivated when they have moved out 
 * 'Share received' checkbox for admins, display on user profile
+* Style everything nicely (Bootstrap 3.3.0)
 * Navbar
 
 ## Features wanted
@@ -54,7 +55,6 @@ Install Python3
 * Flat map
 * Browse bylaws - subset of wiki
 * £££ Overview
-* Style everything nicely
 * Option to change password
 * mySQL? Deploy and see
 * Deploy to web?
@@ -62,3 +62,4 @@ Install Python3
 ## Notes
 * Uses the [waliki](https://github.com/mgaitan/waliki) app for wiki functionality. 
   * Had to modify the page creation views to use page.raw = " " instead of page.raw = "".
+* Uses bootstrap v3.3.0

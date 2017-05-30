@@ -2,7 +2,7 @@
 {% load waliki_tags %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
-    <head>
+<head>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 	<!-- jQuery library -->
@@ -13,8 +13,8 @@
 
         <meta charset="utf-8">
         {% block viewport %}
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
         <title>{% block head_title_base %}{% if page and page.title %} {{ page.title }} | {% endif %}{{ SITE_NAME|default:'ESHC Wiki' }}{% endblock %}</title>
 
          {% block style_base %}
@@ -36,7 +36,7 @@
             {% block extra_head %}{% endblock %}
         {% endblock %}
 
-    </head>
+</head>
 
     <body>
         {% block navbar %}
@@ -60,7 +60,6 @@
 
           {% block body %}
             <div class="row">
-
                 <div class="col-lg-offset-1 col-sm-10 col-md-10">
                     {% if page  %}
                     <div class="page-header">
@@ -110,4 +109,5 @@
             {% block extra_body %}{% endblock %}
         {% endblock %}
 
-</body></html>
+</body>
+</html>

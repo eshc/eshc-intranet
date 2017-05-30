@@ -2,20 +2,26 @@
 
 {% block content %}
 
-<h1>Login Page</h1>
+<!-- <div style="text-align: center;"> -->
+<div class="col-sm-4"></div>
+<div class="col-sm-4" style="text-align: center">
 
-{% if form.errors %}
-<p>Credential mismatch</p>
-{% endif %}
+	<h1>Login Page</h1>
 
-<form method='POST' action="{% url 'users:login' %}">
+	{% if form.errors %}
+	<p>Credential mismatch</p>
+	{% endif %}
 
-{% csrf_token %}
-{{ form.as_p }}
+	<form method='POST' action="{% url 'users:login' %}">
 
-<button name="submit">Log in</button>
+	{% csrf_token %}
+	{{ form.as_p }}
 
-<input type="hidden" name="next" value="{% url 'home:index' %}" />
+	<button name="submit" class="btn">Log in</button>
 
+	<input type="hidden" name="next" value="{% url 'home:index' %}" />
+
+</div>
+<div class="col-sm-4"></div>
 {% endblock content %}
 

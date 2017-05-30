@@ -29,7 +29,7 @@
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			{% if user.is_authenticated %}
-				<li><a href="{% url 'users:profile' %}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+				<li><a href="{% url 'users:profile' %}"><span class="glyphicon glyphicon-user"></span>  Profile</a></li>
 				<li><a href="{% url 'users:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 			{% else %}
 				<li><a href="{% url 'users:register' %}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
@@ -40,6 +40,6 @@
 </nav>
 
 <div class="container">
-	{% block content %}{% endblock content %}
+		{% block content %}{% endblock content %}
 </div>
 </body>
