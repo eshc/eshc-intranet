@@ -30,7 +30,7 @@ Install Python3
 * Navbar
 
 ## Features wanted
-* Copy waliki and maintain as a standalone app because the original repo still uses bootstrap v2 (2012!) and it will be a pain to deploy on heroku
+* Copy waliki and maintain as a standalone app because the original repo still uses bootstrap v2 (2012!) and it will be a pain to deploy on heroku - dev on branch 'waliki-int'
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
