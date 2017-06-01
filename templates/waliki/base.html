@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load static %}
 {% load waliki_tags %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -8,7 +9,7 @@
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> 
 
 
     <meta charset="utf-8">
@@ -19,9 +20,9 @@
 
      {% block style_base %}
         <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"> -->
-        <link rel="stylesheet" type="text/css" href="{% static 'css/pygments.css'%}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/noembed.css'%}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/waliki.css'%}">
+        <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/pygments.css'%}"> -->
+        <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/noembed.css'%}"> -->
+        <link rel="stylesheet" type="text/css" href="{% static 'waliki/css/waliki.css'%}">
         {% block extra_style %}{% endblock %}
     {% endblock %}
 
@@ -103,7 +104,7 @@
         </footer>
 
         {% block script_base %}
-        <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "waliki/js/jquery.min.js" %}"></script>
         <script type="text/javascript">
             function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
@@ -118,8 +119,8 @@
             });
 
         </script>
-        <script src="{% static 'js/bootstrap.min.js'%}"></script>
-        <script src="{% static 'js/waliki_base.js'%}"></script>
+        <script src="{% static 'waliki/js/bootstrap.min.js'%}"></script>
+        <script src="{% static 'waliki/js/waliki_base.js'%}"></script>
 
         {% block extra_script %}{% endblock %}
         {% endblock %}
