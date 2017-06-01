@@ -15,6 +15,19 @@ Install Python3
 6. run eshcIntranet/manage.py runserver
 7. Go to 127.0.0.1:8000
 
+### New Testing Instructions
+create folder
+
+clone repo to folder
+
+virtualenv venv
+
+pip install -r eshcIntranet/requirements.txt in venv
+
+uses postgresql on heroku so to mimic the heroku setup completely install postgress locally
+
+can also develop using SQLite (will need a different setting.py file setup to use SQLite locally and keep postgreql on heroku)
+
 ## Features implemented
 * Basic user login
 * Basic new user registration
