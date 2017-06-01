@@ -1,6 +1,8 @@
 appdirs==1.4.3
 argh==0.26.2
 cssselect==1.0.1
+dj-database-url==0.4.1
+dj-static==0.0.6
 Django==1.11.1
 django-haystack==2.6.1
 django-sendfile==0.3.11
@@ -24,10 +26,10 @@ pytz==2017.2
 PyYAML==3.12
 reportlab==3.4.0
 rst2html5==1.9.3
-#rst2pdf==0.93.dev0
 sh==1.12.13
 six==1.10.0
 svg.path==2.2
 #https://github.com/mgaitan/waliki/tarball/master
 watchdog==0.8.3
 Whoosh==2.7.4
+whitenoise==2.0.6
