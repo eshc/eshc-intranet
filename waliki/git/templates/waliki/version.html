@@ -1,0 +1,32 @@
+{% extends "waliki/history.html" %}
+{% load i18n %}
+
+{% block title %}
+    <h3 id="top"><a href="{{ page.get_absolute_url }}">/{{ page.slug }}</a> @{{ version }}</h3>
+{% endblock title %}
+
+    {% block main_action %}
+        <a id="btn-waliki_back" href="{{ page.get_absolute_url }}" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span> {% trans "Current version" %}</a>
+    {% endblock main_action %}
+
+
+
+{% block content %}
+
+<form method="post" action="{% url 'waliki_edit' slug=page.slug %}">
+{% csrf_token %}
+{{ form }}
+
+
+<div class="form-group">
+    <button type="submit" class="btn btn-success btn-sm">{% trans "Restore this version" %}</button>
+    <a href="{% url 'waliki_version_raw' page.slug version %}" class="btn btn-default btn-sm">{% trans "Raw" %}</a>
+    <a href="{% url 'waliki_diff' page.slug version|add:'^' version %}" class="btn btn-default btn-sm">{% trans "Diff" %}</a>
+
+
+</div>
+</form>
+
+    {{ content|safe }}
+
+{% endblock content %}

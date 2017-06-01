@@ -28,6 +28,6 @@ rst2html5==1.9.3
 sh==1.12.13
 six==1.10.0
 svg.path==2.2
-https://github.com/mgaitan/waliki/tarball/master
+#https://github.com/mgaitan/waliki/tarball/master
 watchdog==0.8.3
 Whoosh==2.7.4
