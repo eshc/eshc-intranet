@@ -1,6 +1,8 @@
 # ESHC Intranet
 [ESHC Homepage](http://edinburghcoop.wordpress.com/)
 
+[Heroku deployment][https://eshc.herokuapp.com/]
+
 ## Goal
 Make usable intranet.
 
@@ -26,7 +28,11 @@ pip install -r eshcIntranet/requirements.txt in venv
 
 uses postgresql on heroku so to mimic the heroku setup completely install postgress locally
 
+[postgres database creation tutorial][https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04]
+
 can also develop using SQLite (will need a different setting.py file setup to use SQLite locally and keep postgreql on heroku)
+
+with either setup before running server migrate databse and collectstatic 
 
 ## Features implemented
 * Basic user login
@@ -41,9 +47,10 @@ can also develop using SQLite (will need a different setting.py file setup to us
 * 'Share received' checkbox for admins, display on user profile
 * Style everything nicely (Bootstrap 3.3.0)
 * Navbar
+* Walik app copied to main directory 
 
 ## Features wanted
-* Copy waliki and maintain as a standalone app because the original repo still uses bootstrap v2 (2012!) and it will be a pain to deploy on heroku - dev on branch 'waliki-int'
+fix chenge history by moving the navbar links template as well
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
