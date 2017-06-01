@@ -1,0 +1,61 @@
+{% extends "waliki/detail.html" %}
+{% load i18n %}
+
+{% block title %}
+    <h3 id="top">{% trans "History" %}: <a href="{{ page.get_absolute_url }}">/{{ page.slug }}</a></h3>
+{% endblock title %}
+
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+<div class="form-group">
+    <button type="submit" class="btn disabled btn-default btn-sm" disabled="disabled">{% trans "Compare revisions" %}</button>
+</div>
+
+<table class="table table-striped">
+        <tbody>
+            {% for version in history %}
+                <tr>
+                  <td class="col-sm-1"><input name="commit" type="checkbox" value="{{ version.commit }}" ></td>
+                  <td class="col-sm-1"><a href="{% url 'waliki_version' page.slug version.commit %}">{{ version.commit }}</a></td>
+                  <td class="col-sm-1">{{ version.author }}</td>
+                  <td class="col-sm-2" title="{{ version.date }}">{{ version.date_relative }}</td>
+                  <td class="col-sm-3">{{ version.message }}</td>
+                  <td class="col-sm-2">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: {{version.insertion_relative}}%;"></div>
+                        <div class="progress-bar progress-bar-danger" style="width: {{version.deletion_relative}}%;"></div>
+                    </div>
+                   </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+       <nav>
+         <ul class="pager">
+           <li class="previous {% if not prev %}disabled{% endif %}"><a href="{% if prev %}{% url 'waliki_history' page.slug prev %}{% else %}#{% endif %}">{% trans "Previous" %}</a></li>
+           <li class="next {% if not next %}disabled{% endif %}"><a href="{% if next %}{% url 'waliki_history' page.slug next %}{% else %}#{% endif %}">{% trans "Next" %}</a></li>
+         </ul>
+       </nav>
+
+{% endblock content %}
+
+{% block extra_script %}
+<script type="text/javascript">
+var $commits = $("input:checkbox[name=commit]");
+$commits.on("change", function() {
+    if($commits.filter(":checked").length >= 2) {
+        $('button[type="submit"]').removeAttr("disabled").removeClass('disabled');
+        $commits.not(":checked").attr("disabled","disabled").addClass("disabled");
+    }
+    else {
+        $('button[type="submit"]').attr("disabled","disabled").addClass("disabled");
+        $commits.removeAttr("disabled").removeClass('disabled');
+
+    }
+});
+</script>
+{% endblock %}
