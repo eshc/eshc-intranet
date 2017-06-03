@@ -1,7 +1,7 @@
 # ESHC Intranet
 [ESHC Homepage](http://edinburghcoop.wordpress.com/)
 
-[Heroku deployment][https://eshc.herokuapp.com/]
+[Heroku deployment](https://eshc.herokuapp.com/)
 
 ## Goal
 Make usable intranet.
@@ -28,7 +28,7 @@ pip install -r eshcIntranet/requirements.txt in venv
 
 uses postgresql on heroku so to mimic the heroku setup completely install postgress locally
 
-[postgres database creation tutorial][https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04]
+[postgres database creation tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04)
 
 can also develop using SQLite (will need a different setting.py file setup to use SQLite locally and keep postgreql on heroku)
 
@@ -40,7 +40,7 @@ with either setup before running server migrate databse and collectstatic
 * User information displayed on profile page
 * Store ESHC member specific information
 * Allow user to edit relevant profile information
-* Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki)
+* Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki) - modified
 * User management available through admin app
 * Lease management - admin and user sides
 * Mark Users as deactivated when they have moved out 
@@ -48,9 +48,9 @@ with either setup before running server migrate databse and collectstatic
 * Style everything nicely (Bootstrap 3.3.0)
 * Navbar
 * Walik app copied to main directory 
+* Wiki change history button appears in navbar
 
 ## Features wanted
-fix chenge history by moving the navbar links template as well
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
@@ -84,3 +84,4 @@ fix chenge history by moving the navbar links template as well
 * Uses the [waliki](https://github.com/mgaitan/waliki) app for wiki functionality. 
   * Had to modify the page creation views to use page.raw = " " instead of page.raw = "".
 * Uses bootstrap v3.3.0
+* If we decide to continue with Heroku, then to actually host the wiki (and any other files) we'll need S3 AWS
