@@ -1,0 +1,14 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-offset-1 col-sm-8 col-md-8">
+	<h1>Mail Test Page</h1>
+		<form method="POST" action="{% url 'home:mail_test' %}">
+		    {% csrf_token %}
+			<button name="submit" class="btn btn-primary">Send Mail! <span class="glyphicon glyphicon-envelope"></span></button>
+			<input type="hidden" name="next" value="{% url 'home:index' %}" />
+		</form>
+	</div>
+</div>
+{% endblock content %}

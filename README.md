@@ -47,10 +47,12 @@ with either setup before running server migrate databse and collectstatic
 * 'Share received' checkbox for admins, display on user profile
 * Style everything nicely (Bootstrap 3.3.0)
 * Navbar
-* Walik app copied to main directory 
-* Wiki change history button appears in navbar
+* Waliki app copied to main directory 
+* Wiki change history button appears in navbar again
+* Email sending
 
 ## Features wanted
+* Email verification/authentication?
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
@@ -66,8 +68,6 @@ with either setup before running server migrate databse and collectstatic
 * Extend wiki functionality
   * Side bars, no-link page list,
   * Per page comments section?
-* Email verification/authentication?
-* Email sending
 * Automatically assign reference numbers to new users?
   * QBO integration? Maybe better to keep manual
 * Proposal voting
@@ -77,8 +77,11 @@ with either setup before running server migrate databse and collectstatic
 * Browse bylaws - subset of wiki
 * £££ Overview
 * Option to change password
-* mySQL? Deploy and see
-* Deploy to web?
+
+## Implementation Questions
+* mySQL? Heroku uses PostgreSQL, so maybe stick with that?
+* Deploy to web? Heroku dynos? How many would we need? It'd be nice if they don't sleep
+* Static files for wiki etc. S3 AWS recommended, requires credit card. Should cost micropennies
 
 ## Notes
 * Uses the [waliki](https://github.com/mgaitan/waliki) app for wiki functionality. 
