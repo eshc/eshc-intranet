@@ -20,3 +20,7 @@ def mail_test(request):
 		return HttpResponseRedirect(reverse('home:index'))
 
 	return render(request, 'home/mail_test.html')
+
+def profile(request):
+	return render(request, 'account/account/profile.html')
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Parent template -->
+{% load static %}
+{% load staticfiles %}
+{% load account %}
+
+<head>
+	<meta charset="utf-8">
+	{% block viewport %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% endblock viewport %}
+
+	{% block style_base %}
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  -->
+	{% endblock style_base %}
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}" /> -->
+
+	<!-- <title>ESHC Intranet</title> -->
+	<title>{% block head_title_base %}{% if page and page.title %} {{ page.title }} | {% endif %}{{ SITE_NAME|default:'ESHC Intranet' }}{% endblock %}</title>
+
+	{% block extra_head %}{% endblock extra_head %}
+</head>
+
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="{% url 'home:index' %}">ESHC</a>
+			</div>
+			<ul class="nav navbar-nav">
+				{% block navbar %}
+					{% include "navbar_links.html" %}
+				{% endblock navbar %}
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{% if request.user.is_authenticated %}
+					<li><a href="{% url 'profile' %}"><span class="glyphicon glyphicon-user"></span>  Profile</a></li>
+					<li><a href="{% url 'account_logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				{% else %}
+					<li><a href="{% url 'account_signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+					<li><a href="{% url 'account_login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+
+    
+	<div class="row">
+		<div class="col-lg-offset-2 col-sm-8 col-md-8">
+			{% block messages %}
+			  {% if messages %}
+				  {% for message in messages %}
+				    <div class="alert fade in {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissable">
+				    <button type="button" class="close" data-dismiss="alert">×</button>
+				      {{ message }}
+				    </div>
+				  {% endfor %}
+			  {% endif %}
+			{% endblock messages %}
+		</div>
+	</div>
+
+
+	<div class="container">
+		{% block body %}{% endblock body %}
+	</div>
+
+	<footer>
+		{% block footer %}
+		<div class="navbar navbar-fixed-bottom">
+			<div class="container">
+				<ul class="nav navbar-nav">
+					<li><a href="https://www.facebook.com/EdinburghCoops/">Facebook</a></li>
+					<li><a href="https://edinburghcoop.wordpress.com/">Wordpress</a></li>
+					<li><a href="https://twitter.com/EdinburghCoop">Twitter</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					{% if user.is_authenticated %}
+						<li>Last login: {{ user.last_login }}</li>
+					{% endif %}
+				</ul>
+			</div>
+			{% endblock footer %}
+		</div>
+	</footer>
+
+	{% block script_base %}
+		{% block extra_script %}{% endblock %}
+	{% endblock %}
+
+	{% block extra_body_base %}
+			{% block extra_body %}{% endblock %}
+	{% endblock %}
+
+
+</body></html>

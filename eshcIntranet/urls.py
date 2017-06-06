@@ -15,13 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from allauth.account import urls
+import home
 
 urlpatterns = [
 	url(r'', include('home.urls', namespace='home')),
     url(r'^admin/', admin.site.urls),
-    url(r'^users/', include('users.urls', namespace='users')),
+    # url(r'^users/', include('users.urls', namespace='users')),
     url(r'^leases/', include('leases.urls', namespace='leases')),
 
     # Waliki
     url(r'^wiki/', include('waliki.urls')),
+
+    # allauth
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/profile/', home.views.profile, name='profile'),
 ]

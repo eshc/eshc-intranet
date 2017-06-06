@@ -35,10 +35,8 @@ can also develop using SQLite (will need a different setting.py file setup to us
 with either setup before running server migrate databse and collectstatic 
 
 ## Features implemented
-* Basic user login
-* Basic new user registration
+* Allauth based user management 
 * User information displayed on profile page
-* Store ESHC member specific information
 * Allow user to edit relevant profile information
 * Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki) - modified
 * User management available through admin app
@@ -49,10 +47,11 @@ with either setup before running server migrate databse and collectstatic
 * Navbar
 * Waliki app copied to main directory 
 * Wiki change history button appears in navbar again
-* Email sending
+* Email sending - uses finance acc
+* Email verification/authentication - allauth
 
 ## Features wanted
-* Email verification/authentication?
+* Store ESHC member specific information - check if properly compatible with allauth
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
@@ -76,7 +75,6 @@ with either setup before running server migrate databse and collectstatic
 * Flat map
 * Browse bylaws - subset of wiki
 * £££ Overview
-* Option to change password
 
 ## Implementation Questions
 * mySQL? Heroku uses PostgreSQL, so maybe stick with that?

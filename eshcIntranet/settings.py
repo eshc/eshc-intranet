@@ -30,7 +30,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,11 +56,22 @@ INSTALLED_APPS = [
     # 'waliki.slides',        # optional
     # 'waliki.togetherjs',    # optional
 
+    # allauth required
+    # 'django.contrib.auth',  # Already included above
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # specific providers
+    # 'allauth.socialaccount.providers.facebook',
+
     # Custom apps
     'home.apps.HomeConfig',
-    'users.apps.UsersConfig',
+    # 'users.apps.UsersConfig',
     'leases.apps.LeasesConfig',
 ]
+
+SITE_ID = 1 # This is for facebook login integration
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,7 +90,7 @@ ROOT_URLCONF = 'eshcIntranet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/account')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -159,7 +176,7 @@ STATICFILES_DIRS = (
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Custom settings
-LOGIN_URL = '/users/login/'
+LOGIN_URL = '/accounts/login/'
 
 # Waliki settings
 WALIKI_ANONYMOUS_USER_PERMISSIONS = {}
@@ -174,3 +191,6 @@ EMAIL_HOST_USER = 'eshc.finance@gmail.com'
 EMAIL_HOST_PASSWORD = gmail_pass.PASSWORD
 DEFAULT_FROM_EMAIL = 'eshc.finance@gmail.com'
 DEFAULT_TO_EMAIL = 'eshc.finance@gmail.com'
+
+# allauth settings
+ACCOUNT_EMAIL_REQUIRED = True
