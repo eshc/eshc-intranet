@@ -67,7 +67,7 @@ INSTALLED_APPS = [
 
     # Custom apps
     'home.apps.HomeConfig',
-    # 'users.apps.UsersConfig',
+    'users.apps.UsersConfig',
     'leases.apps.LeasesConfig',
 ]
 

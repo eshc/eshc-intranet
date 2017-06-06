@@ -10,7 +10,7 @@
 <div class="col-sm-6 col-md-4" style="text-align: center;">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h1>{% trans "Sign In" %}</h1>
+      <h1>{% trans "Log In" %}</h1>
     </div>
 
     {% get_providers as socialaccount_providers %}
@@ -50,7 +50,7 @@
         {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+        <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
         <div style="vertical-align: baseline;">Remember me? {{ form.remember }}</div>
         <p></p>
         <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
