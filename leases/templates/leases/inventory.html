@@ -1,29 +1,33 @@
-{% extends "home/base.html" %}
+{% extends "base.html" %}
 
-{% block content %}
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-sm-8 col-md-8">
 
-<h1>Inventory</h1>
-{% if saved_inventory %}
-	<p>Your saved inventory for this lease:</p>
-	<pre>{{ saved_inventory }}</pre>
-	<!-- {{ saved_inventory|linebreaksbr }} -->
-{% else %}
-	{% if lease %}
+		<h1>Inventory</h1>
+		{% if saved_inventory %}
+			<p>Your saved inventory for this lease:</p>
+			<pre>{{ saved_inventory }}</pre>
+			<!-- {{ saved_inventory|linebreaksbr }} -->
+		{% else %}
+			{% if lease %}
 
-	<h2>Instructions</h2>
-	<p>Note any current damages to the item. Look for holes, tears, stains, etc.</p>
-	<p>Type 'OK' if you accept the status of the item as is.</p>
-	<p>If you think an item is not up to par please make a note beside the corresponding item and submit.</p>
-	<p>You will be able to view this information later, but</p>
-	<p>YOU WILL NOT BE ABLE TO EDIT THIS AFTER SUBMITTING</p>
-	<form method="POST" action="{% url 'leases:inventory' lease.id %}">
-	    {% csrf_token %}
-	    {{ inventory_form.as_p }}
-	    <button name="submit">Submit</button>
-	    <input type="hidden" name="next" value="{% url 'users:profile' %}" />
-	</form>
-	{% endif %}
+			<h2>Instructions</h2>
+			<p>Note any current damages to the item. Look for holes, tears, stains, etc.</p>
+			<p>Type 'OK' if you accept the status of the item as is.</p>
+			<p>If you think an item is not up to par please make a note beside the corresponding item and submit.</p>
+			<p>You will be able to view this information later, but</p>
+			<p>YOU WILL NOT BE ABLE TO EDIT THIS AFTER SUBMITTING</p>
+			<form method="POST" action="{% url 'leases:inventory' lease.id %}">
+			    {% csrf_token %}
+			    {{ inventory_form.as_p }}
+			    <button name="submit">Submit</button>
+			    <input type="hidden" name="next" value="{% url 'profile' %}" />
+			</form>
+			{% endif %}
 
-{% endif %}
+		{% endif %}
 
-{% endblock content %}
+	</div>
+</div>
+{% endblock body %}
