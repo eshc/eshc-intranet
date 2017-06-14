@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<script type="text/javascript" src="{% static 'polls/canvasjs.min.js' %}"></script>
+{% endblock extra_head %}
 
 {% block body %}
 <div class="row">
@@ -12,7 +17,52 @@
 		    {{ question.question_text|safe }}
 		  </div>
 		</div>
+		{% if question_open %}
+			<div class="row" style="text-align: center">
+			<form action="#" method="GET">
+			{% for choice in choices %}
+				<!-- <button class="btn btn-default" name="{{ choice.choice_text }}">{{ choice.choice_text }}</button> -->
+				<input type="submit" class="btn" name="{{ choice.choice_text }}" value="{{ choice.choice_text }}">
+			{% endfor %}
+			</form>
+			</div>
+		{% endif %}
 
+		{% if question_open %}
+			<h1>Results</h1>
+			<p>These can be hidden until after the proposal closes.</p>
+			<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+		{% endif %}
 	</div>
 </div>
 {% endblock body %}
+
+{% block script_base %}
+<script type="text/javascript">
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer",
+	{
+		title:{
+			text: ""
+		},
+		legend: {
+			// maxWidth: 350,
+			// itemWidth: 120
+		},
+		data: [
+		{
+			type: "pie",
+			// showInLegend: true,
+			legendText: "{indexLabel}",
+			dataPoints: [
+				{% for key, value in votes.items %}
+				{ y: {{ value }}, indexLabel: "{{ key }}" },
+				{% endfor %}
+			]
+		}
+		]
+	});
+	chart.render();
+}
+</script>
+{% endblock script_base %}

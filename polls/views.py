@@ -1,11 +1,12 @@
 from django.shortcuts import render, reverse, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from datetime import date
 import markdown
 
-from .models import Question, Choice
+from .models import Question, Choice, Vote
 from .forms import QuestionSubmitForm
 
 @login_required
@@ -31,6 +32,9 @@ def submit(request):
 			question.submitted_by = request.user
 			question.pub_date = date.today()
 			question.save()
+			Choice.objects.create(question=question, choice_text="No")
+			Choice.objects.create(question=question, choice_text="Abstain")
+			Choice.objects.create(question=question, choice_text="Yes")
 			return HttpResponseRedirect(reverse('polls:index'))
 
 	context = {'form': form}
@@ -39,9 +43,56 @@ def submit(request):
 @login_required
 def detail(request, pk):
 	question = get_object_or_404(Question, pk=pk)
+	# Render markdown
 	question.question_text = markdown.markdown(question.question_text)
-	context = {'question': question}
 
+	# Checking if proposal is still open
+	if question.close_date >= date.today():
+		question_open = True
+	else:
+		question_open = False
+
+
+	# Checking if user already cast a vote
+	if not (Vote.objects.filter(user=request.user, question=question).__nonzero__()):
+		messages.add_message(request, messages.INFO, 'You have not voted on this proposal.')
+		# voted = 'You have not voted on this proposal yet.'
+
+	else:
+		v = Vote.objects.get(user=request.user, question=question)
+		messages.add_message(request, messages.INFO, 'You have already voted {}'.format(v.choice.choice_text))
+		# voted = 'You have already voted ' + v.choice.choice_text
+
+
+	# Handle voting button clicking
+	choices = question.choice_set.all()
+	if (request.GET):
+		choice_clicked = choices.filter(choice_text=list(request.GET.keys())[0])
+
+		if (Vote.objects.filter(user=request.user, question=question).__nonzero__()):
+			v = Vote.objects.get(user=request.user, question=question)
+			messages.add_message(request, messages.WARNING, 'You have already cast a vote. You voted {}'.format(v.choice.choice_text))
+
+		else:
+			v, created = Vote.objects.get_or_create(choice=choice_clicked[0],
+												user=request.user, 
+												question=question)
+			if created:
+				messages.add_message(request, messages.SUCCESS, 'Thank you for voting!')
+				# voted = 'Voted just now'
+
+
+	# Count votes
+	votes = {}
+	for choice in choices:
+		votes[choice.choice_text] = Vote.objects.filter(question=question, choice=choice).count()
+
+	
+	context = {'question': question, 
+				'question_open': question_open, 
+				'choices': choices,
+				'votes': votes,
+				}
 	return render(request, 'polls/detail.html', context)
 
 

@@ -73,7 +73,8 @@ with either setup before running server migrate databse and collectstatic
 * ~~add option to remove proposal~~
 * ~~List proposals currently open for voting~~
 * ~~Add result to model~~
-* Vote counting and single vote per user
+* ~~Vote counting and single vote per user~~
+  * ~~Display number of votes~~
 
 ## Stretch features wanted
 * GM help?  
