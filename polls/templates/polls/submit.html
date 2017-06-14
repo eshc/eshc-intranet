@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<!-- MD to HTML https://github.com/showdownjs/showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.1/showdown.min.js"></script>
+{% endblock extra_head %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+	    <h1>Proposal Submission</h1>
+	    <p>Feel free to use Markdown formatting syntax in the proposal description to make the proposal easier to understand.</p>
+		<form method="POST" action="{% url 'polls:submit' %}">
+	        {% csrf_token %}
+		    {{ form.as_p }}
+		    <button class="btn btn-primary" name="submit">Save</button>
+		    <input type="hidden" name="next" value="{% url 'polls:index' %}" />
+		</form>
+		<p></p>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Preview</h3>
+			</div>
+			<div class="panel-body" id="preview">
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body %}
+
+{% block script_base %}
+<script>
+$(document).ready(function(){
+	$("#id_question_text").change(function(){
+		var converter 		= new showdown.Converter(),
+			question_text 	= $("#id_question_text").val(),
+			html 			= converter.makeHtml(question_text);
+
+		$("#preview").html( html )
+	})
+});
+</script>
+{% endblock script_base %}

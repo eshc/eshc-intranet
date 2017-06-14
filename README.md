@@ -37,7 +37,6 @@ with either setup before running server migrate databse and collectstatic
 ## Features implemented
 * Allauth based user management 
 * User information displayed on profile page
-* Allow user to edit relevant profile information
 * Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki) - modified
 * User management available through admin app
 * Lease management - admin and user sides
@@ -49,9 +48,13 @@ with either setup before running server migrate databse and collectstatic
 * Wiki change history button appears in navbar again
 * Email sending - uses finance acc
 * Email verification/authentication - allauth
+* Store ESHC member specific information - check if properly compatible with allauth
 
 ## Features wanted
-* Store ESHC member specific information - check if properly compatible with allauth
+* Allow user to edit relevant profile information
+* List created wiki pages
+* Polling - can probably be later adapted to proposal voting
+* Admin approval of users
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
@@ -60,6 +63,17 @@ with either setup before running server migrate databse and collectstatic
 * ~~Fill out inventory information - only allowed once~~
 * Generate customised PDF ready for signing - user can print on their own
 * TESTS
+
+### Proposals app
+* ~~add who added it~~
+* ~~add some proposal text~~
+  * ~~Formatting? Upload markdown? Paste markdown and render on detail page?~~
+  * ~~Preview of markdown before submission~~
+* ~~add form for adding proposal~~
+* ~~add option to remove proposal~~
+* ~~List proposals currently open for voting~~
+* ~~Add result to model~~
+* Vote counting and single vote per user
 
 ## Stretch features wanted
 * GM help?  
@@ -71,7 +85,6 @@ with either setup before running server migrate databse and collectstatic
   * QBO integration? Maybe better to keep manual
 * Proposal voting
 * Calendar?
-* Polling
 * Flat map
 * Browse bylaws - subset of wiki
 * £££ Overview

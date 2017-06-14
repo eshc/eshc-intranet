@@ -7,15 +7,19 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 import datetime
 
-
 from leases.models import Lease, Inventory
 
+@login_required
 def index(request):
 	# Check if info is updated
 	user = request.user
 	if user.is_authenticated():
 		if user.first_name == '' or user.last_name == '' or user.profile.phone_number == '' or user.profile.perm_address == '':
-			messages.add_message(request, messages.WARNING, 'Your Profile is missing information. Go fill in extra info!')
+			messages.add_message(request, messages.WARNING, 'Your <a href="/accounts/profile/" class="alert-link">Profile</a> is missing information. Go fill in extra info!', extra_tags='safe')
+		if request.user.profile.share_received == False:
+			messages.add_message(request, messages.WARNING, 
+				'We have not yet received your share. Have you bought one? ')
+
 	return render(request, 'home/index.html')
 
 def mail_test(request):
@@ -48,6 +52,9 @@ def profile(request):
 
 	if not leases:
 		messages.add_message(request, messages.INFO, 'You do not have any leases registered. They will appear here when you do.')
+
+	if request.user.profile.share_received == False:
+		messages.add_message(request, messages.WARNING, 'We have not yet received your share. Have you bought one?')
 
 	context = {'leases': leases, 
 		'share_received': request.user.profile.share_received, 

@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^users/', include('users.urls', namespace='users')),
     url(r'^leases/', include('leases.urls', namespace='leases')),
+    url(r'^polls/', include('polls.urls', namespace='polls')),
 
     # Waliki
     url(r'^wiki/', include('waliki.urls')),

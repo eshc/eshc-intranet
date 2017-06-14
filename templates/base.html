@@ -57,9 +57,14 @@
 			{% block messages %}
 			  {% if messages %}
 				  {% for message in messages %}
-				    <div class="alert fade in {% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissable">
+				    <div class="alert fade in {% if message.tags %} alert-{% if 'safe' in message.tags %}{{ message.tags|slice:"5:" }}{% else %}{{ message.tags }}{% endif %}{% endif %} alert-dismissable">
+				    <!-- slice removes safe tag if present -->
 				    <button type="button" class="close" data-dismiss="alert">×</button>
-				      {{ message }}
+						{% if 'safe' in message.tags %}
+							{{ message|safe }}
+						{% else %}
+							{{ message }}
+						{% endif %}
 				    </div>
 				  {% endfor %}
 			  {% endif %}
@@ -75,7 +80,7 @@
 
 	<footer>
 		{% block footer %}
-		<div class="navbar navbar-fixed-bottom">
+		<nav class="navbar navbar-fixed-bottom" style="background-color: white">
 			<div class="container">
 				<ul class="nav navbar-nav">
 					<li><a href="https://www.facebook.com/EdinburghCoops/">Facebook</a></li>
@@ -84,12 +89,12 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					{% if user.is_authenticated %}
-						<li>Last login: {{ user.last_login }}</li>
+						<li><a href="/accounts/profile/" style="color: gray">Last login: {{ user.last_login }}</a></li>
 					{% endif %}
 				</ul>
 			</div>
 			{% endblock footer %}
-		</div>
+		</nav>
 	</footer>
 
 	{% block script_base %}

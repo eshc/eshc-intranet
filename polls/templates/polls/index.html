@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+	    <h1>Open Proposals</h1>
+	    {% if open_questions %}
+				<table class="table">
+					<thead>
+						<th>Proposal</th>
+						<th>Submitted on</th>
+						<th>Closing date</th>
+						<th>Result</th>
+						<th>Submitted by</th>
+					</thead>
+		    	<tbody>
+	    	{% for question in open_questions %}
+		    		<tr>
+		    			<td><a href="{% url 'polls:detail' question.id %}">{{ question.question_title }}</a></td>
+		    			<td>{{ question.pub_date }}</td>
+		    			<td>{{ question.close_date }}</td>
+		    			<td>Open</td>
+		    			<td>
+		    				{% if request.user == question.submitted_by %}
+								You
+								<div class="btn-group">
+									<!-- <a href="/polls/edit/" class="btn btn-info btn-xs" role="button">Edit</a> -->
+									<a href="{% url 'polls:delete' question.id %}" class="btn btn-xs btn-danger" role="button">Delete</a>
+								</div>
+							{% else %}
+								{{ question.submitted_by.first_name }} {{ question.submitted_by.last_name }} ({{ question.submitted_by.username }})
+							{% endif %}
+		    			</td>
+		    		</tr>
+	    	{% endfor %}
+		    	</tbody>
+	    	</table>
+	    {% else %}
+				<h3>No proposals currently open for voting.</h3>
+			{% endif %}
+
+	    <a href="/polls/submit/" class="btn btn-info" role="button">Submit a New Proposal</a>
+
+		<h1>Past Proposals</h1>
+		{% if past_questions %}
+			<table class="table">
+				<thead>
+					<th>Proposal</th>
+					<th>Submitted on</th>
+					<th>Closing date</th>
+					<th>Result</th>
+					<th>Submitted by</th>
+				</thead>
+				<tbody>
+			{% for question in past_questions %}
+				<tr>
+					<td><a href=" {% url 'polls:detail' question.id %}">{{ question.question_title }}</a></td>
+					<td>{{ question.pub_date }}</td>
+					<td>{{ question.close_date }}</td>
+					<td>
+						{% if question.result %}Passed{% else %}Rejected{% endif %}</td>
+					<td>
+						{% if request.user == question.submitted_by %}
+							You
+							<div class="btn-group">
+								<!-- <a href="/polls/edit/" class="btn btn-info btn-xs" role="button">Edit</a> -->
+								<!-- <a href="{% url 'polls:delete' question.id %}" class="btn btn-xs btn-danger" role="button">Delete</a> -->
+							</div>
+						{% else %}
+							{{ question.submitted_by.first_name }} {{ question.submitted_by.last_name }} ({{ question.submitted_by.username }})
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		{% else %}
+			<h2>No proposals currently open for voting.</h2>
+		{% endif %}
+				</tbody>
+			</table>
+	</div>
+</div>
+{% endblock body %}
