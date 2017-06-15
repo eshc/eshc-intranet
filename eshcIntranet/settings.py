@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import dj_database_url
-import eshcIntranet.gmail_pass as gmail_pass
+# import eshcIntranet.gmail_pass as gmail_pass
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -189,8 +189,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'eshc.finance@gmail.com'
-# EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
-EMAIL_HOST_PASSWORD = gmail_pass.PASSWORD
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
+# EMAIL_HOST_PASSWORD = gmail_pass.PASSWORD
 DEFAULT_FROM_EMAIL = 'eshc.finance@gmail.com'
 DEFAULT_TO_EMAIL = 'eshc.finance@gmail.com'
 
