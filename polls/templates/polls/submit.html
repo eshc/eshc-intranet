@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
 	    <h1>Proposal Submission</h1>
-	    <p>Feel free to use Markdown formatting syntax in the proposal description to make the proposal easier to understand. Three voting options, Yes, Abstain, and No will be created.</p>
+	    <p>Feel free to use Markdown formatting syntax in the proposal description to make the proposal easier to understand. A quick Markdown examplle can be found <a href="http://www.unexpected-vortices.com/sw/rippledoc/quick-markdown-example.html">here</a>. Three voting options, Yes, Abstain, and No will be created.</p>
 		<form method="POST" action="{% url 'polls:submit' %}">
 	        {% csrf_token %}
 		    <!-- {{ form.as_p }} -->

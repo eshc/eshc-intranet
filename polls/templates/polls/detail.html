@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block extra_head %}
-	<script type="text/javascript" src="{% static 'polls/canvasjs.min.js' %}"></script>
+	<!-- <script type="text/javascript" src="{% static 'polls/canvasjs.min.js' %}"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
 {% endblock extra_head %}
 
 {% block body %}
@@ -31,38 +32,36 @@
 		{% if question_open %}
 			<h1>Results</h1>
 			<p>These can be hidden until after the proposal closes.</p>
-			<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+			<canvas id="myChart" width="200" height="60"></canvas>
+			<script>
+			var ctx = document.getElementById("myChart").getContext('2d');
+
+			var data_values = []
+			var data_labels = []
+
+			{% for key, value in votes.items %}
+			data_values.push({{ value }});
+			data_labels.push("{{ key }}");
+			{% endfor %}
+
+			data = {
+			    datasets: [{
+			        data: data_values,
+				    backgroundColor: ['rgba(10,23,123, 1)',
+						    'rgba(10,23,123, 0.5)',
+						    'rgba(10,23,123, 0.1)']
+			    }],
+
+			    // These labels appear in the legend and in the tooltips when hovering different arcs
+			    labels: data_labels,
+			};
+			var myDoughnutChart = new Chart(ctx, {
+			    type: 'doughnut',
+			    data: data,
+			    options: Chart.defaults.doughnut
+			});
+			</script>
 		{% endif %}
 	</div>
 </div>
 {% endblock body %}
-
-{% block script_base %}
-<script type="text/javascript">
-window.onload = function () {
-	var chart = new CanvasJS.Chart("chartContainer",
-	{
-		title:{
-			text: ""
-		},
-		legend: {
-			// maxWidth: 350,
-			// itemWidth: 120
-		},
-		data: [
-		{
-			type: "pie",
-			// showInLegend: true,
-			legendText: "{indexLabel}",
-			dataPoints: [
-				{% for key, value in votes.items %}
-				{ y: {{ value }}, indexLabel: "{{ key }}" },
-				{% endfor %}
-			]
-		}
-		]
-	});
-	chart.render();
-}
-</script>
-{% endblock script_base %}
