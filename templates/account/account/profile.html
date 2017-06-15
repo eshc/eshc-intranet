@@ -14,6 +14,8 @@
 	<p>Phone number: {{ user.profile.phone_number }}</p>
 	<p>Permanent address: {{ user.profile.perm_address }}</p>
 
+	<a href="{% url 'home:edit_profile' %}">Edit Profile</a>
+
 	<p>Share received: {% if share_received %} Yes {% else %} No {% endif %}</p>
 
 	{% if leases %}

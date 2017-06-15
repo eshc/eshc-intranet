@@ -49,12 +49,13 @@ with either setup before running server migrate databse and collectstatic
 * Email sending - uses finance acc
 * Email verification/authentication - allauth
 * Store ESHC member specific information - check if properly compatible with allauth
+* Polling - can probably be later adapted to proposal voting
+* Allow user to edit relevant profile information
 
 ## Features wanted
-* Allow user to edit relevant profile information
 * List created wiki pages
-* Polling - can probably be later adapted to proposal voting
 * Admin approval of users
+* Style profile info editing form
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~

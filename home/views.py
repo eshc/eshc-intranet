@@ -8,6 +8,7 @@ from django.utils import timezone
 import datetime
 
 from leases.models import Lease, Inventory
+from .forms import UserEditForm, ProfileEditForm
 
 @login_required
 def index(request):
@@ -62,4 +63,28 @@ def profile(request):
 		}
 
 	return render(request, 'account/account/profile.html', context)
+
+@login_required
+def edit_profile(request):
+	"""Edit user info"""
+	user = request.user
+	profile = user.profile
+
+	if request.method != 'POST':
+		# Display form filled with available info
+		user_form = UserEditForm(initial={'first_name': user.first_name, 
+			'last_name': user.last_name, 
+			'email': user.email})
+		profile_form = ProfileEditForm(initial={'phone_number': profile.phone_number, 
+			'perm_address': profile.perm_address})
+	else:
+		user_form = UserEditForm(data=request.POST, instance=user)
+		profile_form = ProfileEditForm(data=request.POST, instance=profile)
+
+		if user_form.is_valid() and profile_form.is_valid():
+			user = user_form.save()
+			return HttpResponseRedirect(reverse('profile'))
+
+	context = {'user_form': user_form, 'profile_form': profile_form}
+	return render(request, 'account/account/edit_profile.html', context)
 
