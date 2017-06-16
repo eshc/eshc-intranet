@@ -1,15 +1,39 @@
 {% extends "account/base.html" %}
 
 {% block content %}
+<div class="col-sm-offset-1 col-sm-10 col-md-10">
+
 <h1>Editing profile</h1>
 
 <form method="POST" action="{% url 'home:edit_profile' %}">
     {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
-    <button name="submit">Save</button>
+    <div class="form-group">
+	    {% for field in user_form %}
+	    {{ field.errors }}
+	    {{ field.label_tag }}
+	    {{ field }}
+	    {% endfor %}
+
+	    {% for field in profile_form %}
+	    {{ field.errors }}
+	    {{ field.label_tag }}
+	    {{ field }}
+	    {% endfor %}
+    </div>
+    <button class="btn btn-primary" name="submit">Save</button>
     <input type="hidden" name="next" value="{% url 'home:index' %}" />
 </form>
+</div>
 
 {% endblock content %}
+
+{% block script_base %}
+<script>
+$(document).ready(function(){
+	$("#id_perm_address").addClass( "form-control" );
+	$("input").addClass( "form-control" );
+});
+</script>
+{% endblock script_base %}
+
 
