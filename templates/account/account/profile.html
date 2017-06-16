@@ -2,21 +2,69 @@
 
 {% block content %}
 <div class="col-lg-offset-1 col-sm-10 col-md-10">
-    <h1>Your profile</h1>
-	<h2>Information</h2>
-	<p>Username: {{ user.username }}</p>
-	<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
-	<p>Email: {{ user.email }}</p>
+  <h1>Your Profile</h1>
+</div>
+<div class="col-lg-offset-1 col-lg-5 col-sm-6 col-md-6">
+  <div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Personal Information</h3>
+	  </div>
+	  <div class="panel-body">
+	  	<p>Username: {{ user.username }}</p>
+			<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+			<p>Email: {{ user.email }}</p>
+			<p>Phone number: {{ user.profile.phone_number }}</p>
+			<p>Permanent address: {{ user.profile.perm_address }}</p>
+	  </div>
+	  <div class="panel-footer">
+		  <a href="{% url 'home:edit_profile' %}">Edit Profile</a>
+		  -
+		  <a href="{% url 'account_email' %}">Edit E-mail</a>
+	  </div>
+	</div>
 
-	<a href="{% url 'account_email' %}">Change E-mail</a>
 
-	<p>Reference number: {{ user.profile.ref_number }}</p>
-	<p>Phone number: {{ user.profile.phone_number }}</p>
-	<p>Permanent address: {{ user.profile.perm_address }}</p>
 
-	<a href="{% url 'home:edit_profile' %}">Edit Profile</a>
 
-	<p>Share received: {% if share_received %} Yes {% else %} No {% endif %}</p>
+</div>
+<div class="col-lg-5 col-sm-6 col-md-6">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Bank Reference Number</h3>
+  </div>
+  <div class="panel-body">
+	  {% if user.profile.ref_number %}
+			<strong>{{ user.profile.ref_number }}</strong>
+	  {% else %}
+	  	Not yet assigned.
+	  {% endif %}
+  </div>
+</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Share</h3>
+	  </div>
+	  <div class="panel-body">
+		  {% if share_received %}
+				<strong>Yes, thank you!</strong>
+		  {% else %}
+		  	Not yet received.
+		  {% endif %}
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Login Info</h3>
+	  </div>
+	  <div class="panel-body">
+			<!-- <h2>Login info</h2> -->
+			<p>Last login: {{ user.last_login }}</p>
+			<p>Date joined: {{ user.date_joined }}</p>
+	  </div>
+	</div>
+</div>
+
+<div class="col-lg-offset-1 col-sm-10 col-md-10">
 
 	{% if leases %}
 		<h2>Leases</h2>
@@ -43,10 +91,6 @@
 				</tbody>
 			</table>
 	{% endif %}
-
-	<h2>Login info</h2>
-	<p>Last login: {{ user.last_login }}</p>
-	<p>Date joined: {{ user.date_joined }}</p>
 </div>
 
 
