@@ -5,34 +5,26 @@
 
 ## Goal
 Make usable intranet.
+`some code`
+## Setup Instructions
+1. Install Python 3. Developed using version 3.5.2.
+2. Instaill virtual env `pip install virtualenv`. You may have to use `pip3`.
+3. Make a new directory in which you will work.
+4. `cd` into the directory and `git clone <repo_url>`
+5. Make new virtual environment `virtualenv venv `
+6. Active virtualenv `source ./venv/bin/activate`
+7. Install python dependencies `pip install -r ./eshcIntranet/requirements.txt`
+
+Follow the instruction on setting up a [postgres database](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04) if you want to set up the database in the same way it is set up on Heroku. Set it up using the settings in `settings.py`.
+
+If not, you can probably just use SQLite locally, but you'll have to use the commented out database setup in `settings.py`.
 
 ## Testing Instructions
-**Virtualenv recommended!**
-Install Python3
-1. Make venv for this project
-2. Activate venv
-3. Install Django in venv
-4. Install waliki in venv
-5. Clone repo into venv directory
-6. run eshcIntranet/manage.py runserver
-7. Go to 127.0.0.1:8000
-
-### New Testing Instructions
-create folder
-
-clone repo to folder
-
-virtualenv venv
-
-pip install -r eshcIntranet/requirements.txt in venv
-
-uses postgresql on heroku so to mimic the heroku setup completely install postgress locally
-
-[postgres database creation tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04)
-
-can also develop using SQLite (will need a different setting.py file setup to use SQLite locally and keep postgreql on heroku)
-
-with either setup before running server migrate databse and collectstatic 
+1. `cd` into eshcIntranet
+2. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/static/` folder for serving.
+3. Run `python manage.py runserver`.
+4. Go to 127.0.0.1:8000 to access the site or 127.0.0.1:8000/admin/ to view the admin panel.
+5. To use the admin panel run `python manage.py createsuperuser` and follow the instructions to create an admin user.
 
 ## Features implemented
 * Allauth based user management 
@@ -48,22 +40,14 @@ with either setup before running server migrate databse and collectstatic
 * Wiki change history button appears in navbar again
 * Email sending - uses finance acc
 * Email verification/authentication - allauth
-* Store ESHC member specific information - check if properly compatible with allauth
+* Store ESHC member specific information 
 * Polling - can probably be later adapted to proposal voting
 * Allow user to edit relevant profile information
 
-## Features wanted
-* List created wiki pages
-* Admin approval of users
-* Style profile info editing form
-
 ### Leases app
 * ~~Prompt if no valid lease registered~~
-* Notify that lease will run out some months before end (via email?)
 * ~~Add 'date_signed' field~~
 * ~~Fill out inventory information - only allowed once~~
-* Generate customised PDF ready for signing - user can print on their own
-* TESTS
 
 ### Proposals app
 * ~~add who added it~~
@@ -76,20 +60,10 @@ with either setup before running server migrate databse and collectstatic
 * ~~Add result to model~~
 * ~~Vote counting and single vote per user~~
   * ~~Display number of votes~~
+* Option to edit a proposal
 
 ## Stretch features wanted
-* GM help?  
-  * Agenda forming?
-* Extend wiki functionality
-  * Side bars, no-link page list,
-  * Per page comments section?
-* Automatically assign reference numbers to new users?
-  * QBO integration? Maybe better to keep manual
-* Proposal voting
-* Calendar?
-* Flat map
-* Browse bylaws - subset of wiki
-* £££ Overview
+* Browse bylaws - subset of wiki / or its own, non-editable section
 
 ## Implementation Questions
 * mySQL? Heroku uses PostgreSQL, so maybe stick with that?
