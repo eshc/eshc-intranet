@@ -6,6 +6,7 @@
 
 {% block extra_head %}
  {{ form.media.css }}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.1/showdown.min.js"></script>
 
   {% entry_point 'edit_extra_head' %}
 {% endblock %}
@@ -70,7 +71,8 @@
 			</div>
 		</form>
 	</div>
-	<div class="tab-pane pad" id="preview"></div>
+	<div class="tab-pane pad" id="preview">
+	</div>
 </div>
 </div>
 </div>
@@ -107,42 +109,59 @@
   {{ block.super }}
 
 <script type="text/javascript">
-$('#previewlink').on('click', function() {
-	var $form = $('.form');
-  var $inputs = $form.find('input, textarea, button');
-  var $pre = $('#preview');
-  var bodycontent = editor.getValue();
-  var markup = $('input[name="markup"]').val();
-  $inputs.prop('disabled', true);
-  $pre.removeClass('alert').removeClass('alert-error').html('{% trans "Loading..." %}');
-  $.ajax({
-	url: "{% url 'waliki_preview' %}",
-	type: "POST",
-	data: { text: bodycontent, markup: markup },
-	success: function(msg) {
-	  $pre.html(msg.html);
-	  {% if WALIKI_USE_MATHJAX %}
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	  {% endif %}
-	},
-	error: function() {
-	  $pre.addClass('alert').addClass('alert-error');
-	  $pre.html('{% trans "There was a problem with the preview." %}');
-	},
-	complete: function() {
-	  $inputs.prop('disabled', false);
-	}
-  });
-});
-$('#previewbtn').on('click', function(event) {
-	event.preventDefault();
-	$('#previewlink').click();
-});
+// $('#previewlink').on('click', function() {
+// 	var $form = $('.form');
+//   var $inputs = $form.find('input, textarea, button');
+//   var $pre = $('#preview');
+//   var bodycontent = editor.getValue();
+//   var markup = $('input[name="markup"]').val();
+//   $inputs.prop('disabled', true);
+//   $pre.removeClass('alert').removeClass('alert-error').html('{% trans "Loading..." %}');
+//   $.ajax({
+// 	url: "{% url 'waliki_preview' %}",
+// 	type: "POST",
+// 	data: { text: bodycontent, markup: markup },
+// 	success: function(msg) {
+// 	  $pre.html(msg.html);
+// 	  {% if WALIKI_USE_MATHJAX %}
+// 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+// 	  {% endif %}
+// 	},
+// 	error: function() {
+// 	  $pre.addClass('alert').addClass('alert-error');
+// 	  $pre.html('{% trans "There was a problem with the preview." %}');
+// 	},
+// 	complete: function() {
+// 	  $inputs.prop('disabled', false);
+// 	}
+//   });
+// });
+
+
 
 var cm_settings = {{ cm_settings|safe }};
 </script>
 
 {{ form.media.js }}
+
+<script>
+$(document).ready(function(){
+
+	$("#previewlink").click( function() {
+	// $("#id_raw").change(function(){
+			var converter 		= new showdown.Converter(),
+			question_text 	= $("#id_raw").val(),
+			html 			= converter.makeHtml(question_text);
+
+		$("#preview").html( html )
+	})
+});
+
+$('#previewbtn').on('click', function(event) {
+	event.preventDefault();
+	$('#previewlink').click();
+});
+</script>
 
 {% entry_point 'edit_extra_script' %}
 {% endblock extra_script %}

@@ -64,6 +64,14 @@ If not, you can probably just use SQLite locally, but you'll have to use the com
 
 ## Stretch features wanted
 * Browse bylaws - subset of wiki / or its own, non-editable section
+* User directory:
+  * Shows convenors
+  * Allows users to sign up to / become members of specific grops
+  * Flat info / map
+* Cash overview
+  * Open budgets
+  * Open proposals with money status
+* Moving refunds and liaisons to the intranet? Make public list of refunds?
 
 ## Implementation Questions
 * mySQL? Heroku uses PostgreSQL, so maybe stick with that?

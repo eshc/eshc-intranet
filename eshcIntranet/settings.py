@@ -91,7 +91,8 @@ ROOT_URLCONF = 'eshcIntranet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/account')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/account'),
+                os.path.join(BASE_DIR, 'templates/waliki')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
