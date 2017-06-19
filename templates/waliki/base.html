@@ -46,7 +46,7 @@
 
 {% block body %}
 <div class="row">
-	<div class="col-lg-offset-1 col-sm-12 col-md-10">
+	<div class="col-lg-offset-1 col-sm-10 col-md-8">
 		{% if page %}
 		<div class="page-header">
 		{% block header %}
@@ -59,6 +59,16 @@
 	 {% endblock content %}
 
 	{% block extra_content %}{% endblock extra_content %}
+	</div>
+	<div class="col-sm-2">
+	<h2 style="text-align: right">Useful links</h2>
+		<ul style="list-style-type: none; margin: 0px; padding: 0px; text-align: right">
+			<li><a href="">Company Rules</a></li>
+			<li><a href="">Bylaws List</a></li>
+			<li><a href="">Paying Rent</a></li>
+			<li><a href="">Getting Involved</a></li>
+			<li><a href="">Coop History</a></li>
+		</ul>
 	</div>
 </div>
 {% endblock body%}
