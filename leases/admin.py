@@ -1,7 +1,10 @@
 from django.contrib import admin
 
-from .models import Lease
+from .models import Lease, Inventory
 
+class InventoryInline(admin.TabularInline):
+	model = Inventory
+	
 class LeaseAdmin(admin.ModelAdmin):
 	list_display = ['start_date', 'end_date', 'lease_type']
 
@@ -10,6 +13,7 @@ class LeaseAdmin(admin.ModelAdmin):
 			return obj.user.first_name + ' ' + obj.user.last_name
 		except Profile.DoesNotExist:
 			return ''
+	inlines = [InventoryInline]
 
 	list_display = list_display + ['member']
 
