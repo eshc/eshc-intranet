@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-sm-8 col-md-8">
+	<h1>Flat Directory</h1>
+	{% if leases %}
+		<table class="table">
+			<thead>
+				<th>Name</th>
+				<th>Room</th>
+			</thead>
+			<tbody>
+			{% for lease in leases %}
+			<tr>
+				<td>{{lease.user.first_name}} {{lease.user.last_name}}</td>
+				<td>{{ lease.building }}/{{ lease.flat }} {{ lease.room }} </td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+	</div>
+</div>
+{% endblock body %}

@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.utils import timezone
 import datetime
 
@@ -87,4 +88,11 @@ def edit_profile(request):
 
 	context = {'user_form': user_form, 'profile_form': profile_form}
 	return render(request, 'account/account/edit_profile.html', context)
+
+def map(request):
+	# current leases
+	leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
+
+	context = {'leases': leases}
+	return render(request, 'home/map.html', context)
 
