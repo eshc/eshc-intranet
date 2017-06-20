@@ -11,9 +11,6 @@ from .forms import QuestionSubmitForm
 
 @login_required
 def index(request):
-	# TODO: divide questions into open and past proposals
-
-	# questions = Question.objects.all()
 	past_questions = Question.objects.filter(close_date__lte=date.today())
 	open_questions = Question.objects.filter(close_date__gte=date.today())
 

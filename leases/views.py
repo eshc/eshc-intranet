@@ -26,14 +26,14 @@ def inventory(request, pk):
 			inventory_form = InventoryForm(data=request.POST)
 			if inventory_form.is_valid():
 				inventory_form = inventory_form.save(lease_id=lease.id)
-				return HttpResponseRedirect(reverse('users:profile'))
+				return HttpResponseRedirect(reverse('profile'))
 
 		context = {'lease': lease, 'inventory_form': inventory_form, 'saved_inventory': saved_inventory}
 		# return render(request, 'users/edit_profile.html', context)
 
 
 	else:
-		return HttpResponseRedirect(reverse('users:profile'))
+		return HttpResponseRedirect(reverse('profile'))
 	return render(request, 'leases/inventory.html', context)
 
 

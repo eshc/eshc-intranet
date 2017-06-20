@@ -86,6 +86,7 @@
 					<td>{{ lease.building }}/{{ lease.flat }} {{ lease.room }} </td>
 					<td>{{ lease.date_signed }}</td>
 					<td><a href="{% url 'leases:inventory' lease.id %}">Inventory</a></td>
+					<td></td>
 				</tr>
 				{% endfor %}
 				</tbody>

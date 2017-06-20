@@ -43,11 +43,17 @@ def mail_test(request):
 def profile(request):
 	leases = Lease.objects.filter(user_id=request.user.id)
 	valid_lease = False
+	inventories_made = False
 	now = timezone.localdate()
 	for lease in leases:
 		if lease.start_date <= now <= lease.end_date:
 			valid_lease = True
 			break
+
+	for lease in leases:
+		if not Inventory.objects.filter(lease=lease).exists():
+			messages.add_message(request, messages.WARNING, 'One of your leases is missing an inventory!')
+			break 
 
 	if valid_lease == False:
 		messages.add_message(request, messages.WARNING, 'You do not have a valid lease registered! Have you signed one?')
@@ -89,6 +95,7 @@ def edit_profile(request):
 	context = {'user_form': user_form, 'profile_form': profile_form}
 	return render(request, 'account/account/edit_profile.html', context)
 
+@login_required
 def map(request):
 	# current leases
 	leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
