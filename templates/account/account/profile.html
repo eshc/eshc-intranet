@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="col-lg-offset-1 col-sm-10 col-md-10">
-  <h1>Your Profile</h1>
+  <h1>Your ESHC Profile</h1>
 </div>
 <div class="col-lg-offset-1 col-lg-5 col-sm-6 col-md-6">
   <div class="panel panel-default">
@@ -22,6 +22,7 @@
 		  <a href="{% url 'account_email' %}">Edit E-mail</a>
 	  </div>
 	</div>
+  <a class="btn btn-block btn-default" href="{% url 'forum_member:profile' user.id %}">Go to your Forum Profile</a>
 
 
 
