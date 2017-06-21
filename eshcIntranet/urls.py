@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from allauth.account import urls
+from machina.app import board
 import home
 
 urlpatterns = [
@@ -31,4 +32,7 @@ urlpatterns = [
     # allauth
     url(r'^accounts/', include('allauth.urls')),
     url(r'^accounts/profile/', home.views.profile, name='profile'),
+
+    # Machina
+    url(r'^forum/', include(board.urls)),
 ]

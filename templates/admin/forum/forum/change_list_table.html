@@ -1,0 +1,55 @@
+{% load i18n %}
+
+<table cellspacing="0" id="forum-table-dnd">
+    <thead>
+        <tr>
+            <th scope="col" class="action-checkbox-column">
+                <div class="text"><span><input id="action-toggle" type="checkbox" style="display: inline-block;" /></span></div>
+            </th>
+            <th class="title-cell" scope="col"><div class="text"><span>{% trans "Name" %}</span></div></th>
+            <th class="quick-actions-cell" scope="col"><div class="text"><span>{% trans "Quick actions" %}</span></div></th>
+            <th class="type-cell" scope="col"><div class="text"><span>{% trans "Type" %}</span></div></th>
+            <th class="forum-details-cell" scope="col"><div class="text"><span>{% trans "Details" %}</span></div></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for forum in cl.result_list %}
+            <tr id="forum-row-{{ forum.id }}" class="child-of-{{ forum.parent_id }} draggable">
+                <td class="selection-cell action-checkbox-column"><input class="action-select" type="checkbox" name="_selected_action" value="{{ forum.id }}"/></td>
+                <th class="title-cell">
+                    <div class="title-cell-container" style="margin-{{ LANGUAGE_BIDI|yesno:"right,left" }}:{{ forum.margin_level }}em">
+                        <a href="{% url 'admin:forum_forum_change' forum.id %}" class="title">
+                            {{ forum.name }}
+                        </a>
+                    </div>
+                </th>
+                <td class="quick-actions-cell">
+                    {% if forum.get_previous_sibling %}
+                        <a href="{% url 'admin:forum_forum_move' forum.id 'up' %}" title="{% trans "Move up" %}"><i class="fa fa-arrow-circle-o-up fa-lg"></i></a>
+                    {% else %}
+                        <i class="fa fa-arrow-circle-o-up fa-lg disabled"></i>
+                    {% endif %}
+                    {% if forum.get_next_sibling %}
+                        <a href="{% url 'admin:forum_forum_move' forum.id 'down' %}" title="{% trans "Move down" %}"><i class="fa fa-arrow-circle-o-down fa-lg"></i></a>
+                    {% else %}
+                        <i class="fa fa-arrow-circle-o-down fa-lg disabled"></i>
+                    {% endif %}
+                    <a href="{% url 'admin:forum_forum_add' %}?parent={{ forum.id }}" class="success" title="{% trans "Add a sub-forum" %}"><i class="fa fa-plus-circle fa-lg"></i></a>
+                    <a href="{% url 'admin:forum_forum_delete' forum.id %}" class="danger" title="{% trans "Delete" %}"><i class="fa fa-times-circle fa-lg"></i></a>
+                </td>
+                <td class="type-cell">
+                    <div class="type-cell-container">
+                        {{ forum.get_type_display }}
+                    </div>
+                </td>
+                <td class="forum-details-cell">
+                    {% if forum.is_category or forum.is_forum %}
+                        {% trans "Topics:" %} <b>{{ forum.topics_count }}</b> / {% trans "Posts:" %} <b>{{ forum.posts_count }}</b>
+                    {% elif forum.is_link %}
+                        {% trans "Link:" %} <a href="{{ forum.link }}">{{ forum.link|truncatechars:60 }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

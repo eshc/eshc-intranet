@@ -14,6 +14,11 @@ import os
 import dj_database_url
 # import eshcIntranet.gmail_pass as gmail_pass
 
+# Machina
+from machina import get_apps as get_machina_apps
+from machina import MACHINA_MAIN_TEMPLATE_DIR
+from machina import MACHINA_MAIN_STATIC_DIR
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -70,7 +75,12 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'leases.apps.LeasesConfig',
     'polls.apps.PollsConfig',
-]
+
+    # Machina related apps:
+    'mptt',
+    'haystack',
+    'widget_tweaks'
+] + get_machina_apps()
 
 SITE_ID = 1 # This is for facebook login integration
 
@@ -83,6 +93,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Machina
+    'machina.apps.forum_permission.middleware.ForumPermissionMiddleware',
 ]
 
 
@@ -91,8 +104,11 @@ ROOT_URLCONF = 'eshcIntranet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/account'),
-                os.path.join(BASE_DIR, 'templates/waliki')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), 
+                os.path.join(BASE_DIR, 'templates/account'),
+                os.path.join(BASE_DIR, 'templates/waliki'),
+                os.path.join(BASE_DIR, 'templates/machina'), 
+                MACHINA_MAIN_TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,7 +116,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # Machina
+                'machina.core.context_processors.metadata',
             ],
+            # 'loaders': [
+                # 'django.template.loaders.filesystem.Loader',
+                # 'django.template.loaders.app_directories.Loader']
         },
     },
 ]
@@ -172,7 +194,24 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
     os.path.join(PROJECT_ROOT, 'waliki/static'),
+    MACHINA_MAIN_STATIC_DIR,
 )
+
+CACHES = {
+  'default': {
+    'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+  },
+  'machina_attachments': {
+    'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+    'LOCATION': '/tmp',
+  }
+}
+
+HAYSTACK_CONNECTIONS = {
+  'default': {
+    'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+  },
+}
 
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -200,3 +239,6 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+
+# Machina settings
+MACHINA_FORUM_NAME = 'ESHC Forum'
