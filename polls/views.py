@@ -14,7 +14,21 @@ def index(request):
 	past_questions = Question.objects.filter(close_date__lte=date.today())
 	open_questions = Question.objects.filter(close_date__gte=date.today())
 
-	context = {'past_questions': past_questions, 'open_questions': open_questions}
+	# tuples = [
+	# 		[question, [[yes, 1]
+	# 					[no, 4]]]
+	# 		]
+	closed_questions = []
+
+	for question in past_questions:
+		vote_count = []
+		for choice in Choice.objects.filter(question=question):
+			vote_count.append([choice.choice_text, Vote.objects.filter(question=question).filter(choice=choice).count()])
+		prepped_list = [question, vote_count]
+		closed_questions.append(prepped_list)
+
+
+	context = {'past_questions': past_questions, 'open_questions': open_questions, 'closed_questions': closed_questions}
 	return render(request, 'polls/index.html', context)
 
 @login_required
