@@ -11,6 +11,8 @@ import datetime
 from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, WgEditForm
 
+from users.decorators import has_share
+
 @login_required
 def index(request):
 	check_info_share(request)
@@ -110,6 +112,7 @@ def edit_profile(request):
 	return render(request, 'account/account/edit_profile.html', context)
 
 @login_required
+@has_share
 def map(request):
 	# current leases
 	leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())

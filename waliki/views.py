@@ -13,7 +13,9 @@ from ._markups import get_all_markups
 from .acl import permission_required
 from . import settings
 
+from users.decorators import has_share
 
+@has_share
 def home(request):
     return detail(request, slug=settings.WALIKI_INDEX_SLUG)
 
@@ -38,7 +40,7 @@ def compile_breadcrumbs(slug):
         breadcrumbs.append(('/'+url, title))
     return breadcrumbs
 
-
+@has_share
 @permission_required('view_page')
 def detail(request, slug, raw=False):
 
@@ -67,7 +69,7 @@ def detail(request, slug, raw=False):
         context['breadcrumbs'] = compile_breadcrumbs(slug)
     return render(request, 'waliki/detail.html', context)
 
-
+@has_share
 @permission_required('change_page')
 def move(request, slug):
     page = get_object_or_404(Page, slug=slug)
@@ -112,7 +114,7 @@ def move(request, slug):
         return HttpResponse(json.dumps({'data': data}), content_type="application/json")
     return render(request, 'waliki/generic_form.html', {'page': page, 'form': form})
 
-
+@has_share
 @permission_required('change_page')
 def edit(request, slug):
     slug = slug.strip('/')
@@ -201,6 +203,7 @@ def preview(request):
         return HttpResponse(json.dumps(data), content_type="application/json")
 
 
+@has_share
 @permission_required('delete_page')
 def delete(request, slug):
     page = get_object_or_404(Page, slug=slug)
@@ -227,6 +230,7 @@ def delete(request, slug):
     return render(request, 'waliki/delete.html', {'page': page, 'form': form})
 
 
+@has_share
 def new(request):
     data = request.POST if request.method == 'POST' else None
     form = NewPageForm(data, user=request.user)

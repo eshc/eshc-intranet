@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from users.decorators import has_share
+
 from datetime import date
 import markdown
 
@@ -10,6 +12,7 @@ from .models import Question, Choice, Vote
 from .forms import QuestionSubmitForm
 
 @login_required
+@has_share
 def index(request):
 	past_questions = Question.objects.filter(close_date__lte=date.today())
 	open_questions = Question.objects.filter(close_date__gte=date.today())
@@ -32,6 +35,7 @@ def index(request):
 	return render(request, 'polls/index.html', context)
 
 @login_required
+@has_share
 def submit(request):
 	if request.method != 'POST':
 		form = QuestionSubmitForm()
@@ -52,6 +56,7 @@ def submit(request):
 	return render(request, 'polls/submit.html', context)
 
 @login_required
+@has_share
 def detail(request, pk):
 	question = get_object_or_404(Question, pk=pk)
 	# Render markdown
@@ -108,6 +113,7 @@ def detail(request, pk):
 
 
 @login_required
+@has_share
 def delete(request, pk):
 	question = get_object_or_404(Question, pk=pk)
 	context = {'question': question}
