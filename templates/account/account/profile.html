@@ -62,10 +62,25 @@
 			<p>Last login: {{ user.last_login }}</p>
 			<p>Date joined: {{ user.date_joined }}</p>
 	  </div>
+	</div> 
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">WG Membership</h3>
+	  </div>
+	  <div class="panel-body">
+		<form method="POST" action="{% url 'profile' %}">
+	        {% csrf_token %}
+		    <div style="line-height: 0">{{ wg_form.as_p }}</div>
+		    <button class="btn btn-info btn-xs" role="button" name="submit">Update</button>
+		    <!-- <input type="hidden" name="next" value="{% url 'profile' %}" /> -->
+	    </form>
+	  </div>
 	</div>
+
 </div>
 
-<div class="col-lg-offset-1 col-sm-10 col-md-10">
+
+<div class="col-lg-offset-1 col-lg-10 col-sm-12">
 
 	{% if leases %}
 		<h2>Leases</h2>

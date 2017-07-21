@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from users.models import Profile
+from django.contrib.auth.models import Group
 
 class UserEditForm(forms.ModelForm):
 	"""
@@ -31,3 +32,10 @@ class ProfileEditForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		fields = ['phone_number', 'perm_address']
+
+class WgEditForm(forms.Form):
+	places = forms.BooleanField(required=False)
+	people = forms.BooleanField(required=False)
+	procedures = forms.BooleanField(required=False)
+	participation = forms.BooleanField(required=False)
+
