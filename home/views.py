@@ -12,6 +12,7 @@ from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, WgEditForm
 
 from users.decorators import has_share
+from home.models import GM
 
 @login_required
 def index(request):
@@ -119,6 +120,12 @@ def map(request):
 
 	context = {'leases': leases}
 	return render(request, 'home/map.html', context)
+
+def gms(request):
+	gms = GM.objects.all()
+	context = {'gms': gms}
+	return render(request, 'home/gms.html', context)
+
 
 def check_info_share(request):
 	# Check if info is updated and share received

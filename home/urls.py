@@ -12,4 +12,5 @@ urlpatterns = [
 	url(r'^accounts/edit_profile/$', views.edit_profile, name='edit_profile'),
 
 	url(r'^map/$', views.map, name='map'),
+	url(r'^gms/$', views.gms, name='gms'),
 ]
