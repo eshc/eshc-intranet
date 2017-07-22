@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-sm-12 col-md-12">
+	<h1>General Meeting {{ gm.number }}</h1>
+	<h4>Convened on {{ gm.date_conv }}</h4>
+	<hr>
+	<h2>Agenda</h2>
+
+	<ol type='I' style="padding-left:20px;">
+	{% if discussions %}
+		<li>Discussion Points</li>
+		<ol type="1">
+		{% for dis in discussions %}
+			<li>{{ dis.title }}</li>
+		{% endfor %}
+		</ol>
+	{% else %}
+		<li>No discussion points submitted</li>
+	{% endif %}
+	{% if proposals %}
+		<li>Proposals</li>
+		<ol type="1">
+		{% for prop in proposals %}
+			<li>{{ prop.title }}</li>
+		{% endfor %}
+		</ol>
+
+	{% else %}
+		<li>No proposals submitted</li>
+	{% endif %}
+		<li>All Other Business</li>
+	</ol>
+
+	<ol type="I" style="padding-left:0;">
+		{% if discussions %}
+		<h2><li>Discussion Points</li></h2>
+		<ol type="1" style="padding-left:10px;">
+		{% for dis in discussions %}
+			<h3><li>{{ dis.title }}</li></h3>
+			<h6>Submitted by 
+				{% if request.user == dis.submitted_by %}
+					You
+					on {{ dis.pub_date }}.
+					<div class="btn-group">
+						<!-- <a href="/polls/edit/" class="btn btn-info btn-xs" role="button">Edit</a> -->
+						<a href="{% url 'home:delete' dis.pk %}" class="btn btn-xs btn-danger" role="button">Delete</a>
+					</div>
+				{% else %}
+					{{ dis.submitted_by.first_name }} {{ dis.submitted_by.last_name }} ({{ dis.submitted_by.username }})
+				{% endif %}</h6>
+				<hr>
+				<p>{{ dis.description }}</p>
+			{% endfor %}
+		</ol>
+		{% else %}
+			<h2><li>No discussion points submitted</li></h2>
+		{% endif %}
+
+		{% if proposals %}
+		<h2><li>Proposals</li></h2>
+		<ol type="1" style="padding-left:10px;">
+		{% for prop in proposals %}
+			<h3><li>{{ prop.title }}</li></h3>
+			<h6>Submitted by 
+				{% if request.user == prop.submitted_by %}
+					You
+					on {{ prop.pub_date }}.
+					<div class="btn-group">
+						<!-- <a href="/polls/edit/" class="btn btn-info btn-xs" role="button">Edit</a> -->
+						<a href="{% url 'home:delete' prop.pk %}" class="btn btn-xs btn-danger" role="button">Delete</a>
+					</div>
+				{% else %}
+					{{ prop.submitted_by.first_name }} {{ prop.submitted_by.last_name }} ({{ prop.submitted_by.username }})
+				{% endif %}</h6>
+			<hr>
+			<p>{{ prop.description }}</p>
+		{% endfor %}
+		</ol>
+		{% else %}
+			<h2><li>No proposals submitted</li></h2>
+		{% endif %}
+		<h2><li>All Other Business</li></h2>
+	</ol>
+
+	<hr>
+	{% if today.date < gm.date_conv %}
+	<a href="{% url 'home:submit' gm.id %}" class="btn btn-primary" role="button">Submit a point to the agenda</a>
+	{% endif %}
+	</div>
+</div>
+{% endblock body %}
