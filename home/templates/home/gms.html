@@ -15,13 +15,14 @@
 				<th></th>
 			</thead>
 			<tbody>
+			<!-- {% regroup gms by gms.number as gm_list %} -->
 			{% for gm in gms %}
 			<tr>
 				<td>{{gm.number}}</td>
 				<td>{{gm.date_conv}}</td>
 				<td>{{gm.proposals}}</td>
 				<td>{{gm.discussions}}</td>
-				<td><a href="">View agenda</a></td>
+				<td><a href="{% url 'home:agenda' gm.id %}">View agenda</a></td>
 			</tr>
 			{% endfor %}
 			</tbody>

@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from users.models import Profile
 from django.contrib.auth.models import Group
 
+from home.models import Point
+
 class UserEditForm(forms.ModelForm):
 	"""
 	A form that edits a user.
@@ -38,4 +40,14 @@ class WgEditForm(forms.Form):
 	people = forms.BooleanField(required=False)
 	procedures = forms.BooleanField(required=False)
 	participation = forms.BooleanField(required=False)
+
+class PointAddForm(forms.ModelForm):
+
+	class Meta:
+		model = Point
+		fields = ['title','description','proposal']
+		labels = {
+			'title': 'Title', 
+			'description': 'Description', 
+		}
 

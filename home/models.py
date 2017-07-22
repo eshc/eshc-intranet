@@ -7,7 +7,6 @@ class GM(models.Model):
 
 	number = models.IntegerField()
 	date_conv = models.DateField('date convened')
-	proposals = 1
 
 	def discussions(self):
 		return len(self.point_set.filter(proposal=False))

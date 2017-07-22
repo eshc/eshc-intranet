@@ -6,13 +6,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 import datetime
 
 from leases.models import Lease, Inventory
-from .forms import UserEditForm, ProfileEditForm, WgEditForm
+from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm
 
 from users.decorators import has_share
-from home.models import GM
+from home.models import GM, Point
 
 @login_required
 def index(request):
@@ -121,10 +122,63 @@ def map(request):
 	context = {'leases': leases}
 	return render(request, 'home/map.html', context)
 
+@login_required
+@has_share
 def gms(request):
 	gms = GM.objects.all()
 	context = {'gms': gms}
 	return render(request, 'home/gms.html', context)
+
+@login_required
+@has_share
+def agenda(request, pk):
+	gm = get_object_or_404(GM, pk=pk)
+
+	proposals = gm.point_set.filter(proposal=True)
+	discussions = gm.point_set.filter(proposal=False)
+	context = {'gm': gm, 'proposals': proposals, 'discussions': discussions, 'today': datetime.datetime.now()}
+	return render(request, 'home/agenda.html', context)
+
+@login_required
+@has_share
+def submit(request, id):
+	gm = get_object_or_404(GM, pk=id)
+
+	if request.method != 'POST':
+		point_form = PointAddForm()
+	else:
+		point_form = PointAddForm(data=request.POST)
+
+		if point_form.is_valid():
+			messages.add_message(request, messages.SUCCESS, 'Agenda point added successfully!')
+			title = point_form.cleaned_data['title']
+			description = point_form.cleaned_data['description']
+			proposal = point_form.cleaned_data['proposal']
+			point = Point.objects.create(title=title, description=description, proposal=proposal, 
+						pub_date=datetime.date.today(), submitted_by=request.user, choice=gm)
+
+			return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
+
+	context = {'gm': gm, 'form': point_form}
+	return render(request, 'home/submit.html', context)
+
+@login_required
+@has_share
+def delete(request, pk):
+	point = get_object_or_404(Point, pk=pk)
+	gm = get_object_or_404(GM, pk=point.choice.pk)
+	context = {'point': point, 'gm': gm}
+
+	if point.submitted_by.id != request.user.id:
+		return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
+
+	if request.method != 'POST':
+		pass
+	else:
+		point.delete()
+		return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
+
+	return render(request, 'home/delete.html', context)
 
 
 def check_info_share(request):
