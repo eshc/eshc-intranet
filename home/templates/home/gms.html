@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-sm-10 col-md-10">
+	<h1>General Meetings</h1>
+	<h4>Historical and Upcoming</h4>
+	{% if gms %}
+		<table class="table">
+			<thead>
+				<th>#</th>
+				<th>Date</th>
+				<th>Proposals</th>
+				<th>Discussions</th>
+				<th></th>
+			</thead>
+			<tbody>
+			{% for gm in gms %}
+			<tr>
+				<td>{{gm.number}}</td>
+				<td>{{gm.date_conv}}</td>
+				<td>{{gm.proposals}}</td>
+				<td>{{gm.discussions}}</td>
+				<td><a href="">View agenda</a></td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+	</div>
+</div>
+{% endblock body %}
