@@ -8,13 +8,18 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-lg-offset-1 col-sm-12 col-md-12">
-	<h1>General Meeting {{ gm.number }}</h1>
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+		<h1 style="text-align: left">General Meeting {{ gm.number }}</h1>
 	{% if today.date <= gm.date_conv %}
 	<h4>To be convened on {{ gm.date_conv }}</h4>
 	{% else %}
 	<h4>Convened on {{ gm.date_conv }}</h4>
 	{% endif %}
+	{% if today.date <= gm.date_conv %}
+	<a href="{% url 'home:submit' gm.id %}" class="btn btn-primary" role="button">Submit a point to the agenda</a>
+	<a href="{% url 'home:submit_update' gm.id %}" class="btn btn-warning" role="button">Submit a WG update</a>
+	{% endif %}
+
 	<hr>
 	<!-- AGENDA -->
 	<h2>Agenda</h2>
@@ -140,11 +145,7 @@
 	</ol>
 
 	<hr>
-	{% if today.date <= gm.date_conv %}
-	<a href="{% url 'home:submit' gm.id %}" class="btn btn-primary" role="button">Submit a point to the agenda</a>
-	<a href="{% url 'home:submit_update' gm.id %}" class="btn btn-warning" role="button">Submit a WG update</a>
-	{% endif %}
-
+	<p>All done! <span class="glyphicon glyphicon-heart-empty"></span></p>
 	</div>
 </div>
 {% endblock body %}

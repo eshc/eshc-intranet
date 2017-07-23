@@ -9,7 +9,6 @@ class UserEditForm(forms.ModelForm):
 	"""
 	A form that edits a user.
 	"""
-
 	class Meta:
 		model = User
 		fields = ['first_name', 'last_name', 'email']
@@ -30,19 +29,23 @@ class ProfileEditForm(forms.ModelForm):
 	"""
 	A form to edit Profile data
 	"""
-
 	class Meta:
 		model = Profile
 		fields = ['phone_number', 'perm_address']
 
 class WgEditForm(forms.Form):
+	"""
+	Form used in the profile view, to select WG membership.
+	"""
 	places = forms.BooleanField(required=False)
 	people = forms.BooleanField(required=False)
 	procedures = forms.BooleanField(required=False)
 	participation = forms.BooleanField(required=False)
 
 class PointAddForm(forms.ModelForm):
-
+	"""
+	Used to add discussion points and proposals to upcoming GMS
+	"""
 	class Meta:
 		model = Point
 		fields = ['title','description','proposal']
@@ -52,7 +55,14 @@ class PointAddForm(forms.ModelForm):
 		}
 
 class UpdateForm(forms.ModelForm):
-	
+	"""
+	Used to add WG updates to upcoming GMs
+	"""
+	def __init__(self, **kwargs):
+		super(UpdateForm, self).__init__()
+		# Make sure only WGs can be connected to updates
+		self.fields['group'].queryset = Group.objects.filter(name__endswith='WG')
+
 	class Meta:
 		model = WgUpdate
 		fields = ['text', 'group']
