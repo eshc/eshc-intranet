@@ -2,6 +2,8 @@ appdirs==1.4.3
 argh==0.26.2
 beautifulsoup4==4.6.0
 bleach==2.0.0
+boto3==1.4.4
+botocore==1.5.86
 certifi==2017.4.17
 chardet==3.0.3
 cssselect==1.0.1
@@ -17,6 +19,7 @@ django-htmlmin==0.10.0
 django-machina==0.5.6
 django-mptt==0.8.7
 django-sendfile==0.3.11
+django-storages==1.6.3
 django-widget-tweaks==1.4.1
 djangorestframework==3.6.3
 docutils==0.13.1
@@ -26,6 +29,7 @@ gunicorn==19.7.1
 hovercraft==2.3
 html5lib==0.999999999
 idna==2.5
+jmespath==0.9.3
 lxml==3.7.3
 Markdown==2.6.8
 markdown2==2.3.4
@@ -42,6 +46,7 @@ psycopg2==2.7.1
 Pygments==2.2.0
 pyparsing==2.2.0
 pyquery==1.2.17
+python-dateutil==2.6.1
 python3-openid==3.1.0
 pytz==2017.2
 PyYAML==3.12
@@ -49,6 +54,7 @@ reportlab==3.4.0
 requests==2.17.3
 requests-oauthlib==0.8.0
 rst2html5==1.9.3
+s3transfer==0.1.10
 sh==1.12.13
 six==1.10.0
 sqlparse==0.2.3

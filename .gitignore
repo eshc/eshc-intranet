@@ -103,4 +103,5 @@ ENV/
 *.sqlite3
 
 eshcIntranet/gmail_pass.py
+eshcIntranet/aws.py
 eshcIntranet/staticfiles/*
