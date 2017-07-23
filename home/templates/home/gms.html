@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-lg-offset-1 col-sm-10 col-md-10">
+    <div class="col-lg-offset-1 col-sm-12 col-md-12">
 	<h1>General Meetings</h1>
 	<h4>Historical and Upcoming</h4>
 	{% if gms %}
@@ -18,10 +18,10 @@
 			<!-- {% regroup gms by gms.number as gm_list %} -->
 			{% for gm in gms %}
 			<tr>
-				<td>{{gm.number}}</td>
-				<td>{{gm.date_conv}}</td>
-				<td>{{gm.proposals}}</td>
-				<td>{{gm.discussions}}</td>
+				<td>{{ gm.number }}</td>
+				<td>{{ gm.date_conv }}</td>
+				<td>{{ gm.proposals }}</td>
+				<td>{{ gm.discussions }}</td>
 				<td><a href="{% url 'home:agenda' gm.id %}">View agenda</a></td>
 			</tr>
 			{% endfor %}

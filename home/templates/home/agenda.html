@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+<!-- MD to HTML https://github.com/showdownjs/showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.1/showdown.min.js"></script>
+
+{% endblock extra_head %}
+
 {% block body %}
 <div class="row">
     <div class="col-lg-offset-1 col-sm-12 col-md-12">
 	<h1>General Meeting {{ gm.number }}</h1>
+	{% if today.date <= gm.date_conv %}
+	<h4>To be convened on {{ gm.date_conv }}</h4>
+	{% else %}
 	<h4>Convened on {{ gm.date_conv }}</h4>
+	{% endif %}
 	<hr>
+	<!-- AGENDA -->
 	<h2>Agenda</h2>
 
 	<ol type='I' style="padding-left:20px;">
+	<li>WG Updates</li>
 	{% if discussions %}
 		<li>Discussion Points</li>
 		<ol type="1">
@@ -32,8 +44,49 @@
 	{% endif %}
 		<li>All Other Business</li>
 	</ol>
+<!-- WG UPDATES -->
 
+<!-- POINTS -->
 	<ol type="I" style="padding-left:0;">
+	<h2><li>WG Updates</li></h2>
+		<ul type="none" style="padding-left:10px;">
+		{% if places_updates %}
+		<h4><li>Places</li></h4>
+			{% for up in places_updates %}
+			<ul type="disc">
+				<li>{{up}}</li>
+			</ul>
+			{% endfor %}
+		{% endif %}
+
+		{% if people_updates %}
+		<h4><li>People</li></h4>
+			{% for up in people_updates %}
+			<ul type="disc">
+				<li>{{up}}</li>
+			</ul>
+			{% endfor %}
+		{% endif %}
+
+		{% if procedures_updates %}
+		<h4><li>Procedures</li></h4>
+			{% for up in procedures_updates %}
+			<ul type="disc">
+				<li>{{up}}</li>
+			</ul>
+			{% endfor %}
+		{% endif %}
+
+		{% if participation_updates %}
+		<h4><li>Participation</li></h4>
+			{% for up in participation_updates %}
+			<ul type="disc">
+				<li>{{up}}</li>
+			</ul>
+			{% endfor %}
+		{% endif %}
+
+		</ul>
 		{% if discussions %}
 		<h2><li>Discussion Points</li></h2>
 		<ol type="1" style="padding-left:10px;">
@@ -43,15 +96,17 @@
 				{% if request.user == dis.submitted_by %}
 					You
 					on {{ dis.pub_date }}.
+					{% if today.date <= gm.date_conv %}
 					<div class="btn-group">
 						<!-- <a href="/polls/edit/" class="btn btn-info btn-xs" role="button">Edit</a> -->
 						<a href="{% url 'home:delete' dis.pk %}" class="btn btn-xs btn-danger" role="button">Delete</a>
 					</div>
+					{% endif %}
 				{% else %}
 					{{ dis.submitted_by.first_name }} {{ dis.submitted_by.last_name }} ({{ dis.submitted_by.username }})
 				{% endif %}</h6>
 				<hr>
-				<p>{{ dis.description }}</p>
+				<p style="border-right: solid 1px; padding-right: 5px">{{ dis.description }}</p>
 			{% endfor %}
 		</ol>
 		{% else %}
@@ -75,7 +130,7 @@
 					{{ prop.submitted_by.first_name }} {{ prop.submitted_by.last_name }} ({{ prop.submitted_by.username }})
 				{% endif %}</h6>
 			<hr>
-			<p>{{ prop.description }}</p>
+			<p style="border-right: solid 1px; padding-right: 5px">{{ prop.description }}</p>
 		{% endfor %}
 		</ol>
 		{% else %}
@@ -85,9 +140,27 @@
 	</ol>
 
 	<hr>
-	{% if today.date < gm.date_conv %}
+	{% if today.date <= gm.date_conv %}
 	<a href="{% url 'home:submit' gm.id %}" class="btn btn-primary" role="button">Submit a point to the agenda</a>
+	<a href="{% url 'home:submit_update' gm.id %}" class="btn btn-warning" role="button">Submit a WG update</a>
 	{% endif %}
+
 	</div>
 </div>
 {% endblock body %}
+
+{% block script_base %}
+<script>
+$(document).ready(function(){
+	var elements= document.querySelectorAll('p');
+	var converter 		= new showdown.Converter();
+
+	[].forEach.call(elements, function( el ) {
+		var description 	= el.innerHTML;
+		var html 			= converter.makeHtml(description);
+
+	  el.innerHTML = html;
+	});
+});
+</script>
+{% endblock script_base %}

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 class GM(models.Model):
 	def __str__(self):
@@ -24,3 +24,12 @@ class Point(models.Model):
 	pub_date = models.DateField('date published')
 	submitted_by = models.ForeignKey(User, on_delete=models.PROTECT)
 	choice = models.ForeignKey(GM, on_delete=models.PROTECT)
+
+class WgUpdate(models.Model):
+	def __str__(self):
+		return self.text
+
+	text = models.CharField(max_length=500)
+	group = models.ForeignKey(Group, on_delete=models.PROTECT)
+	choice = models.ForeignKey(GM, on_delete=models.PROTECT)
+	

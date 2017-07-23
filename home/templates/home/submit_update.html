@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<!-- MD to HTML https://github.com/showdownjs/showdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.1/showdown.min.js"></script>
+
+<style>
+#id_description {
+
+}
+</style>
+{% endblock extra_head %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+	    <h1>WG Update Submission</h1>
+	    <p>Feel free to use Markdown formatting syntax in the description. A quick Markdown examplle can be found <a href="http://www.unexpected-vortices.com/sw/rippledoc/quick-markdown-example.html">here</a>.
+		<form method="POST" action="{% url 'home:submit_update' gm.id %}">
+	        {% csrf_token %}
+		    <div class="form-group">
+		    <strong>{{ form.text.label }}</strong>
+		    {{ form.text }}
+		    <strong>{{ form.group.label }}</strong>
+		    {{ form.group }}
+		    </div>
+		    <button class="btn btn-primary" name="submit">Save</button>
+		    <input type="hidden" name="next" value="{% url 'home:gms' %}" />
+		</form>
+		<p></p>
+	</div>
+</div>
+{% endblock body %}
+
+{% block script_base %}
+<script>
+$(document).ready(function(){
+	$("#id_description").addClass( "form-control" );
+	$("#id_proposal").addClass( "form-control" );
+	$("input").addClass( "form-control" );
+
+	$("#id_description").change(function(){
+		var converter 		= new showdown.Converter(),
+			description 	= $("#id_description").val(),
+			html 			= converter.makeHtml(description);
+
+		$("#preview").html( html )
+	})
+});
+</script>
+{% endblock script_base %}

@@ -10,10 +10,10 @@ from django.shortcuts import get_object_or_404
 import datetime
 
 from leases.models import Lease, Inventory
-from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm
+from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, UpdateForm
 
 from users.decorators import has_share
-from home.models import GM, Point
+from home.models import GM, Point, WgUpdate
 
 @login_required
 def index(request):
@@ -125,7 +125,7 @@ def map(request):
 @login_required
 @has_share
 def gms(request):
-	gms = GM.objects.all()
+	gms = GM.objects.all().order_by('number').reverse()
 	context = {'gms': gms}
 	return render(request, 'home/gms.html', context)
 
@@ -133,10 +133,24 @@ def gms(request):
 @has_share
 def agenda(request, pk):
 	gm = get_object_or_404(GM, pk=pk)
+	places = Group.objects.get(name='Places WG')
+	people = Group.objects.get(name='People WG')
+	participation = Group.objects.get(name='Participation WG')
+	procedures = Group.objects.get(name='Procedures WG')
+
+	places_updates = WgUpdate.objects.filter(choice=gm, group=places)
+	people_updates = WgUpdate.objects.filter(choice=gm, group=people)
+	participation_updates = WgUpdate.objects.filter(choice=gm, group=participation)
+	procedures_updates = WgUpdate.objects.filter(choice=gm, group=procedures)
 
 	proposals = gm.point_set.filter(proposal=True)
 	discussions = gm.point_set.filter(proposal=False)
-	context = {'gm': gm, 'proposals': proposals, 'discussions': discussions, 'today': datetime.datetime.now()}
+	context = {'gm': gm, 'proposals': proposals, 'discussions': discussions,
+		 'today': datetime.datetime.now(),
+		 'places_updates': places_updates, 
+		 'people_updates': people_updates, 
+		 'participation_updates': participation_updates, 
+		 'procedures_updates': procedures_updates, }
 	return render(request, 'home/agenda.html', context)
 
 @login_required
@@ -161,6 +175,27 @@ def submit(request, id):
 
 	context = {'gm': gm, 'form': point_form}
 	return render(request, 'home/submit.html', context)
+	
+@login_required
+@has_share
+def submit_update(request, id):
+	gm = get_object_or_404(GM, pk=id)
+
+	if request.method != 'POST':
+		update_form = UpdateForm()
+	else:
+		update_form = UpdateForm(data=request.POST)
+
+		if update_form.is_valid():
+			messages.add_message(request, messages.SUCCESS, 'WG Update added successfully!')
+			text = update_form.cleaned_data['text']
+			group = update_form.cleaned_data['group']
+			update = WgUpdate.objects.create(text=text, group=group, choice=gm)
+
+			return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
+
+	context = {'gm': gm, 'form': update_form}
+	return render(request, 'home/submit_update.html', context)
 
 @login_required
 @has_share

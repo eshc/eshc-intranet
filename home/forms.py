@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from users.models import Profile
 from django.contrib.auth.models import Group
 
-from home.models import Point
+from home.models import Point, WgUpdate
 
 class UserEditForm(forms.ModelForm):
 	"""
@@ -50,4 +50,10 @@ class PointAddForm(forms.ModelForm):
 			'title': 'Title', 
 			'description': 'Description', 
 		}
+
+class UpdateForm(forms.ModelForm):
+	
+	class Meta:
+		model = WgUpdate
+		fields = ['text', 'group']
 
