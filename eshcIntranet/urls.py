@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^polls/', include('polls.urls', namespace='polls')),
 
     # Waliki
-    url(r'^wiki/', include('waliki.urls')),
+    # url(r'^wiki/', include('waliki.urls')),
 
     # allauth
     url(r'^accounts/', include('allauth.urls')),

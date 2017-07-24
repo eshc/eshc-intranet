@@ -56,9 +56,9 @@ INSTALLED_APPS = [
     'storages',
 
     # Waliki apps
-    'waliki',
-    'waliki.git',           # optional but recommended
-    'waliki.attachments',   # optional but recommended
+    # 'waliki',
+    # 'waliki.git',           # optional but recommended
+    # 'waliki.attachments',   # optional but recommended
     # 'waliki.pdf',           # optional
     # 'waliki.search',        # optional, additional configuration required
     # 'waliki.slides',        # optional
@@ -215,7 +215,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
-    os.path.join(PROJECT_ROOT, 'waliki/static'),
+    # os.path.join(PROJECT_ROOT, 'waliki/static'),
     MACHINA_MAIN_STATIC_DIR,
 )
 
@@ -242,10 +242,10 @@ HAYSTACK_CONNECTIONS = {
 LOGIN_URL = '/accounts/login/'
 
 # Waliki settings
-WALIKI_ANONYMOUS_USER_PERMISSIONS = {}
-WALIKI_LOGGED_USER_PERMISSIONS = {'view_page', 'add_page', 'change_page'}
-WALIKI_AVAILABLE_MARKUPS = ['Markdown']
-WALIKI_DATA_DIR = STATIC_URL + 'waliki_data/'
+# WALIKI_ANONYMOUS_USER_PERMISSIONS = {}
+# WALIKI_LOGGED_USER_PERMISSIONS = {'view_page', 'add_page', 'change_page'}
+# WALIKI_AVAILABLE_MARKUPS = ['Markdown']
+# WALIKI_DATA_DIR = STATIC_URL + 'waliki_data/'
 
 # Email
 EMAIL_USE_TLS = True
