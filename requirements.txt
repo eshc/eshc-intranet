@@ -70,3 +70,4 @@ watchdog==0.8.3
 webencodings==0.5.1
 whitenoise==3.3.0
 Whoosh==2.7.4
+wiki==0.2.4
