@@ -105,3 +105,4 @@ ENV/
 eshcIntranet/gmail_pass.py
 eshcIntranet/aws.py
 eshcIntranet/staticfiles/*
+eshcIntranet/local_settings.py

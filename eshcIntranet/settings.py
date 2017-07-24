@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 # import eshcIntranet.gmail_pass as gmail_pass
-# import eshcIntranet.aws as aws
+import eshcIntranet.aws as aws
 
 # Machina
 from machina import get_apps as get_machina_apps
@@ -208,8 +208,6 @@ USE_TZ = True
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-# AWS_ACCESS_KEY_ID = aws.AWS_ACCESS_KEY_ID
-# AWS_SECRET_ACCESS_KEY = aws.AWS_SECRET_ACCESS_KEY
 
 AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
 AWS_S3_REGION_NAME = 'eu-west-2'
@@ -274,7 +272,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'eshc.finance@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
-# EMAIL_HOST_PASSWORD = gmail_pass.PASSWORD
 DEFAULT_FROM_EMAIL = 'eshc.finance@gmail.com'
 DEFAULT_TO_EMAIL = 'eshc.finance@gmail.com'
 
@@ -298,3 +295,7 @@ MACHINA_DEFAULT_AUTHENTICATED_USER_FORUM_PERMISSIONS = [
     'can_download_file',
 ]
 
+if os.environ.get('HEROKU') == 'True':
+    pass
+else:
+    from eshcIntranet.local_settings import *
