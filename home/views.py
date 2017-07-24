@@ -231,7 +231,8 @@ def check_leases(request):
 	leases = Lease.objects.filter(user_id=request.user.id)
 	valid_lease = False
 	inventories_made = False
-	now = timezone.localdate()
+	# now = timezone.localdate()	# django 1.11
+	now = timezone.now().date()		# django 1.10
 	for lease in leases:
 		if lease.start_date <= now <= lease.end_date:
 			valid_lease = True
