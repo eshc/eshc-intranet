@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -8,12 +8,16 @@ from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 import datetime
+import os
 
 from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, UpdateForm
 
 from users.decorators import has_share
 from home.models import GM, Point, WgUpdate
+
+import sendgrid
+from sendgrid.helpers.mail import *
 
 @login_required
 def index(request):
@@ -24,13 +28,16 @@ def mail_test(request):
 	if request.method != 'POST':
 		pass
 	else:
-		send_mail(
-		    'Subject here',
-		    'Here is the message.',
-		    'ESHC',
-		    ['filip.kaklin@gmail.com'],
-		    fail_silently=False,
-		)
+		sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+		from_email = Email("edinburghstudenthousingcoop@gmail.com")
+		to_email = Email("filip.kaklin@gmail.com")
+		subject = "Sending with SendGrid is Fun"
+		content = Content("text/plain", "and easy to do anywhere, even with Python")
+		mail = Mail(from_email, subject, to_email, content)
+		response = sg.client.mail.send.post(request_body=mail.get())
+		print(response.status_code)
+		print(response.body)
+		print(response.headers)
 		return HttpResponseRedirect(reverse('home:index'))
 
 	return render(request, 'home/mail_test.html')

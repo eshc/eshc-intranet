@@ -29,20 +29,23 @@ If not, you can probably just use SQLite locally, but you'll have to use the com
 ## Features implemented
 * Allauth based user management 
 * User information displayed on profile page
-* Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki) - modified
+* ~~Basic Wiki - based on [waliki](https://github.com/mgaitan/waliki) - modified~~ uses django-wiki
 * User management available through admin app
 * Lease management - admin and user sides
 * Mark Users as deactivated when they have moved out 
 * 'Share received' checkbox for admins, display on user profile
 * Style everything nicely (Bootstrap 3.3.0)
 * Navbar
-* Waliki app copied to main directory 
-* Wiki change history button appears in navbar again
-* Email sending - uses finance acc
+* ~~Waliki app copied to main directory ~~
+* ~~Wiki change history button appears in navbar again~~
+* ~~Email sending - uses finance acc~~ uses Sendgrid now
 * Email verification/authentication - allauth
 * Store ESHC member specific information 
 * Polling - can probably be later adapted to proposal voting
 * Allow user to edit relevant profile information
+* Allows users to sign up to / become members of specific working grops
+* Flat info / map
+* GM Agenda making
 
 ### Leases app
 * ~~Prompt if no valid lease registered~~
@@ -66,8 +69,6 @@ If not, you can probably just use SQLite locally, but you'll have to use the com
 * Browse bylaws - subset of wiki / or its own, non-editable section
 * User directory:
   * Shows convenors
-  * Allows users to sign up to / become members of specific grops
-  * Flat info / map
 * Cash overview
   * Open budgets
   * Open proposals with money status
@@ -79,7 +80,8 @@ If not, you can probably just use SQLite locally, but you'll have to use the com
 * Static files for wiki etc. S3 AWS recommended, requires credit card. Should cost micropennies
 
 ## Notes
-* Uses the [waliki](https://github.com/mgaitan/waliki) app for wiki functionality. 
-  * Had to modify the page creation views to use page.raw = " " instead of page.raw = "".
 * Uses bootstrap v3.3.0
-* If we decide to continue with Heroku, then to actually host the wiki (and any other files) we'll need S3 AWS
+* AWS S3 for static files in production
+* Uses django-wiki
+* Uses machina (a django package) for the forum
+* Sendgrid used for email sending
