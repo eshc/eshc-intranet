@@ -114,7 +114,7 @@ def edit_profile(request):
 	return render(request, 'account/account/edit_profile.html', context)
 
 @login_required
-@has_share
+# @has_share
 def map(request):
 	# current leases
 	leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
@@ -123,14 +123,14 @@ def map(request):
 	return render(request, 'home/map.html', context)
 
 @login_required
-@has_share
+# @has_share
 def gms(request):
 	gms = GM.objects.all().order_by('number').reverse()
 	context = {'gms': gms}
 	return render(request, 'home/gms.html', context)
 
 @login_required
-@has_share
+# @has_share
 def agenda(request, pk):
 	gm = get_object_or_404(GM, pk=pk)
 	places = Group.objects.get(name='Places WG')
@@ -154,7 +154,7 @@ def agenda(request, pk):
 	return render(request, 'home/agenda.html', context)
 
 @login_required
-@has_share
+# @has_share
 def submit(request, id):
 	gm = get_object_or_404(GM, pk=id)
 
@@ -177,7 +177,7 @@ def submit(request, id):
 	return render(request, 'home/submit.html', context)
 	
 @login_required
-@has_share
+# @has_share
 def submit_update(request, id):
 	gm = get_object_or_404(GM, pk=id)
 
@@ -198,7 +198,7 @@ def submit_update(request, id):
 	return render(request, 'home/submit_update.html', context)
 
 @login_required
-@has_share
+# @has_share
 def delete(request, pk):
 	point = get_object_or_404(Point, pk=pk)
 	gm = get_object_or_404(GM, pk=point.choice.pk)

@@ -279,7 +279,7 @@ DEFAULT_FROM_EMAIL = 'eshc.finance@gmail.com'
 DEFAULT_TO_EMAIL = 'eshc.finance@gmail.com'
 
 # allauth settings
-ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
