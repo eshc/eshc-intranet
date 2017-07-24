@@ -27,7 +27,7 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@4q_okbjg%)=z8wvp5$gpijii0-a*g1y39k$7dal==z#2ssc1p'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -52,15 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'storages',
-
-    # Waliki apps
-    # 'waliki',
-    # 'waliki.git',           # optional but recommended
-    # 'waliki.attachments',   # optional but recommended
-    # 'waliki.pdf',           # optional
-    # 'waliki.search',        # optional, additional configuration required
-    # 'waliki.slides',        # optional
-    # 'waliki.togetherjs',    # optional
 
     # allauth required
     # 'django.contrib.auth',  # Already included above
@@ -120,7 +111,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'), 
                 os.path.join(BASE_DIR, 'templates/account'),
-                os.path.join(BASE_DIR, 'templates/waliki'),
                 os.path.join(BASE_DIR, 'templates/machina'), 
                 MACHINA_MAIN_TEMPLATE_DIR],
         'APP_DIRS': True,
@@ -210,8 +200,6 @@ AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
 AWS_S3_REGION_NAME = 'eu-west-2'
 
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-# STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
