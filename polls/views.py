@@ -30,8 +30,16 @@ def index(request):
 		prepped_list = [question, vote_count]
 		closed_questions.append(prepped_list)
 
+	current_questions = []
+	for question in open_questions:
+		current_questions.append([question,Vote.objects.filter(question=question).count()])
 
-	context = {'past_questions': past_questions, 'open_questions': open_questions, 'closed_questions': closed_questions}
+
+
+	context = {'past_questions': past_questions, 
+			'open_questions': open_questions, 
+			'closed_questions': closed_questions,
+			'current_questions': current_questions}
 	return render(request, 'polls/index.html', context)
 
 @login_required

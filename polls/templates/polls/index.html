@@ -10,16 +10,16 @@
 						<th>Proposal</th>
 						<th>Submitted on</th>
 						<th>Closing date</th>
-						<th>Result</th>
+						<th>Vote Count</th>
 						<th>Submitted by</th>
 					</thead>
 		    	<tbody>
-	    	{% for question in open_questions %}
+	    	{% for question, votes in current_questions %}
 		    		<tr>
 		    			<td><a href="{% url 'polls:detail' question.id %}">{{ question.question_title }}</a></td>
 		    			<td>{{ question.pub_date }}</td>
 		    			<td>{{ question.close_date }}</td>
-		    			<td>Open</td>
+		    			<td>{{ votes }}</td>
 		    			<td>
 		    				{% if request.user == question.submitted_by %}
 								You
