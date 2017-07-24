@@ -1,7 +1,7 @@
 appdirs==1.4.3
 argh==0.26.2
 beautifulsoup4==4.6.0
-bleach==2.0.0
+bleach==1.5.0
 boto3==1.4.4
 botocore==1.5.86
 certifi==2017.4.17
@@ -10,14 +10,17 @@ cssselect==1.0.1
 defusedxml==0.5.0
 dj-database-url==0.4.1
 dj-static==0.0.6
-Django==1.11.1
+Django==1.10.7
 django-allauth==0.32.0
+django-classy-tags==0.8.0
 django-crispy-forms==1.6.1
 django-debug-toolbar==1.8
 django-haystack==2.6.1
 django-htmlmin==0.10.0
 django-machina==0.5.6
 django-mptt==0.8.7
+django-nyt==1.0b5
+django-sekizai==0.10.0
 django-sendfile==0.3.11
 django-storages==1.6.3
 django-widget-tweaks==1.4.1
@@ -27,7 +30,7 @@ fake-factory==9999.9.9
 Genshi==0.7
 gunicorn==19.7.1
 hovercraft==2.3
-html5lib==0.999999999
+html5lib==0.9999999
 idna==2.5
 jmespath==0.9.3
 lxml==3.7.3
@@ -42,6 +45,7 @@ path.py==10.3.1
 pathtools==0.1.2
 pdfrw==0.3
 Pillow==4.1.1
+pipdeptree==0.10.1
 psycopg2==2.7.1
 Pygments==2.2.0
 pyparsing==2.2.0
@@ -53,10 +57,10 @@ PyYAML==3.12
 reportlab==3.4.0
 requests==2.17.3
 requests-oauthlib==0.8.0
-rst2html5==1.9.3
 s3transfer==0.1.10
 sh==1.12.13
 six==1.10.0
+sorl-thumbnail==12.3
 sqlparse==0.2.3
 static3==0.7.0
 svg.path==2.2
