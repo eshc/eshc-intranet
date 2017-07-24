@@ -103,11 +103,12 @@ def detail(request, pk):
 	for choice in choices:
 		votes[choice.choice_text] = Vote.objects.filter(question=question, choice=choice).count()
 
-	
+	total_votes = Vote.objects.filter(question=question).count()
 	context = {'question': question, 
 				'question_open': question_open, 
 				'choices': choices,
 				'votes': votes,
+				'total_votes': total_votes,
 				}
 	return render(request, 'polls/detail.html', context)
 

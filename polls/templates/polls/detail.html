@@ -26,8 +26,10 @@
 				<input type="submit" class="btn" name="{{ choice.choice_text }}" value="{{ choice.choice_text }}">
 			{% endfor %}
 			</form>
+			Total votes so far: {{ total_votes }}
 			</div>
 		{% endif %}
+
 
 		{% if not question_open %}
 			<h1>Results</h1>
