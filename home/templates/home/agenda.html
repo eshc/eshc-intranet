@@ -108,7 +108,7 @@
 					</div>
 					{% endif %}
 				{% else %}
-					{{ dis.submitted_by.first_name }} {{ dis.submitted_by.last_name }} ({{ dis.submitted_by.username }})
+					{{ dis.submitted_by.first_name }} {{ dis.submitted_by.last_name }} ({{ dis.submitted_by.username }}) on {{ dis.pub_date }}.
 				{% endif %}</h6>
 				<hr>
 				<p style="border-right: solid 1px; padding-right: 5px">{{ dis.description }}</p>
@@ -132,7 +132,7 @@
 						<a href="{% url 'home:delete' prop.pk %}" class="btn btn-xs btn-danger" role="button">Delete</a>
 					</div>
 				{% else %}
-					{{ prop.submitted_by.first_name }} {{ prop.submitted_by.last_name }} ({{ prop.submitted_by.username }})
+					{{ prop.submitted_by.first_name }} {{ prop.submitted_by.last_name }} ({{ prop.submitted_by.username }}) on {{ prop.pub_date }}.
 				{% endif %}</h6>
 			<hr>
 			<p style="border-right: solid 1px; padding-right: 5px">{{ prop.description }}</p>
