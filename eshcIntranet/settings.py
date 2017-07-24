@@ -222,12 +222,10 @@ STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-# STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
-    # os.path.join(PROJECT_ROOT, 'waliki/static'),
     MACHINA_MAIN_STATIC_DIR,
 )
 
@@ -252,12 +250,6 @@ HAYSTACK_CONNECTIONS = {
 
 # Custom settings
 LOGIN_URL = '/accounts/login/'
-
-# Waliki settings
-# WALIKI_ANONYMOUS_USER_PERMISSIONS = {}
-# WALIKI_LOGGED_USER_PERMISSIONS = {'view_page', 'add_page', 'change_page'}
-# WALIKI_AVAILABLE_MARKUPS = ['Markdown']
-# WALIKI_DATA_DIR = STATIC_URL + 'waliki_data/'
 
 # django-wiki settings
 WIKI_ACCOUNT_HANDLING = False
@@ -293,7 +285,8 @@ MACHINA_DEFAULT_AUTHENTICATED_USER_FORUM_PERMISSIONS = [
     'can_download_file',
 ]
 
-if os.environ.get('HEROKU') == 'True':
-    pass
-else:
+try:
     from eshcIntranet.local_settings import *
+except ImportError:
+    pass
+        
