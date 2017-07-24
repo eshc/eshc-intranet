@@ -73,6 +73,19 @@ INSTALLED_APPS = [
     # specific providers
     # 'allauth.socialaccount.providers.facebook',
 
+    # django-wiki apps
+    # 'django.contrib.sites',   # Already included above
+    'django.contrib.humanize',
+    'django_nyt',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'wiki.plugins.macros',
+
     # Custom apps
     'home.apps.HomeConfig',
     'users.apps.UsersConfig',
@@ -80,7 +93,7 @@ INSTALLED_APPS = [
     'polls.apps.PollsConfig',
 
     # Machina related apps:
-    'mptt',
+    # 'mptt',   # Already included above
     'haystack',
     'widget_tweaks'
 ] + get_machina_apps()
@@ -122,6 +135,9 @@ TEMPLATES = [
 
                 # Machina
                 'machina.core.context_processors.metadata',
+
+                # django-wiki
+                "sekizai.context_processors.sekizai",
             ],
             # 'loaders': [
                 # 'django.template.loaders.filesystem.Loader',
