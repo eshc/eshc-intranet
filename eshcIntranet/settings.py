@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 # import eshcIntranet.gmail_pass as gmail_pass
-import eshcIntranet.aws as aws
+# import eshcIntranet.aws as aws
 
 # Machina
 from machina import get_apps as get_machina_apps
@@ -206,10 +206,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_ACCESS_KEY_ID = aws.AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY = aws.AWS_SECRET_ACCESS_KEY
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_ACCESS_KEY_ID = aws.AWS_ACCESS_KEY_ID
+# AWS_SECRET_ACCESS_KEY = aws.AWS_SECRET_ACCESS_KEY
 
 AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
 AWS_S3_REGION_NAME = 'eu-west-2'
