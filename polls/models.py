@@ -12,7 +12,7 @@ class Question(models.Model):
 	close_date = models.DateField('close date')
 	# closed = models.Boolean('closed')
 	# closed = models.CharField('result')
-	submitted_by = models.ForeignKey(User, on_delete=models.PROTECT)
+	submitted_by = models.ForeignKey(User, on_delete=models.CASCADE)
 	result = models.BooleanField(default=False)
 
 

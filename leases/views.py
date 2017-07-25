@@ -6,7 +6,10 @@ from django.urls import reverse
 from .models import Lease, Inventory
 from .forms import InventoryForm
 
+from users.decorators import has_share
+
 @login_required
+@has_share
 def inventory(request, pk):
 	# lease = Lease.objects.get(pk=pk)
 	lease = get_object_or_404(Lease, pk=pk)
