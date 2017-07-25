@@ -111,6 +111,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'), 
                 os.path.join(BASE_DIR, 'templates/account'),
+                os.path.join(BASE_DIR, 'templates/account/email'),
                 os.path.join(BASE_DIR, 'templates/machina'), 
                 MACHINA_MAIN_TEMPLATE_DIR],
         'APP_DIRS': True,
@@ -194,19 +195,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# Settings for serving statics from AWS
+# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
-AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
-AWS_S3_REGION_NAME = 'eu-west-2'
+# AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
+# AWS_S3_REGION_NAME = 'eu-west-2'
 
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-# S3_USE_SIGV4 = True
-AWS_S3_SIGNATURE_VERSION='s3v4'
+# AWS_S3_SIGNATURE_VERSION='s3v4'
 
-STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
+# STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
+######################
+
+# Settings for serving statics from Heroku
+STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+######################
+
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
@@ -245,18 +253,21 @@ WIKI_ANONYMOUS = False
 WIKI_ANONYMOUS_WRITE = False
 
 # Email
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'eshc.finance@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
-DEFAULT_FROM_EMAIL = 'eshc.finance@gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'eshc.finance@gmail.com'
+# EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
+DEFAULT_FROM_EMAIL = 'edinburghstudenthousingcoop@gmail.com'
 DEFAULT_TO_EMAIL = 'eshc.finance@gmail.com'
 
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+EMAIL_SUBJECT_PREFIX = ''
+
 # allauth settings
-# ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 
 # Machina settings
@@ -272,6 +283,8 @@ MACHINA_DEFAULT_AUTHENTICATED_USER_FORUM_PERMISSIONS = [
     'can_vote_in_polls',
     'can_download_file',
 ]
+
+
 
 try:
     from eshcIntranet.local_settings import *
