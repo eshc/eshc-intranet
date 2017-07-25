@@ -260,6 +260,8 @@ WIKI_ANONYMOUS_WRITE = False
 # EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
 DEFAULT_FROM_EMAIL = 'edinburghstudenthousingcoop@gmail.com'
 DEFAULT_TO_EMAIL = 'eshc.finance@gmail.com'
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+
 
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 EMAIL_SUBJECT_PREFIX = ''
