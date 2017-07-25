@@ -7,40 +7,36 @@
 <div class="col-lg-offset-1 col-lg-5 col-sm-6 col-md-6">
   <div class="panel panel-default">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Personal Information</h3>
+		<h3 class="panel-title">Personal Information</h3>
 	  </div>
 	  <div class="panel-body">
 	  	<p>Username: {{ user.username }}</p>
-			<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
-			<p>Email: {{ user.email }}</p>
-			<p>Phone number: {{ user.profile.phone_number }}</p>
-			<p>Permanent address: {{ user.profile.perm_address }}</p>
+		<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+		<p>Email: {{ user.email }}</p>
+		<p>Phone number: {{ user.profile.phone_number }}</p>
+		<p>Permanent address: {{ user.profile.perm_address }}</p>
 	  </div>
 	  <div class="panel-footer">
-		  <a href="{% url 'home:edit_profile' %}">Edit Profile</a>
-		  -
-		  <a href="{% url 'account_email' %}">Edit E-mail</a>
+		<a href="{% url 'home:edit_profile' %}">Edit Profile</a>
+		-
+		<a href="{% url 'account_email' %}">Edit E-mail</a>
 	  </div>
 	</div>
-  <a class="btn btn-block btn-default" href="{% url 'forum_member:profile' user.id %}">Go to your Forum Profile</a>
-
-
-
-
+	<a class="btn btn-block btn-default" style="margin-bottom: 1.2em" href="{% url 'forum_member:profile' user.id %}">Go to your Forum Profile</a>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Bank Reference Number</h3>
+	  </div>
+	  <div class="panel-body">
+		  {% if user.profile.ref_number %}
+			<strong>{{ user.profile.ref_number }}</strong>
+		  {% else %}
+		  	Not yet assigned.
+		  {% endif %}
+	  </div>
+	</div>
 </div>
 <div class="col-lg-5 col-sm-6 col-md-6">
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Bank Reference Number</h3>
-  </div>
-  <div class="panel-body">
-	  {% if user.profile.ref_number %}
-			<strong>{{ user.profile.ref_number }}</strong>
-	  {% else %}
-	  	Not yet assigned.
-	  {% endif %}
-  </div>
-</div>
 	<div class="panel panel-default">
 	  <div class="panel-heading">
 	    <h3 class="panel-title">Share</h3>
@@ -49,7 +45,7 @@
 		  {% if share_received %}
 				<strong>Received, thank you!</strong>
 		  {% else %}
-		  	Not yet received. <strong>You will not be able to access all sections of the site until we receive it.</span>
+		  	Not yet received. <strong>You will not be able to access all sections of the site until we receive it.</strong>
 		  {% endif %}
 	  </div>
 	</div>
