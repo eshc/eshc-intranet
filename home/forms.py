@@ -58,10 +58,6 @@ class UpdateForm(forms.ModelForm):
 	"""
 	Used to add WG updates to upcoming GMs
 	"""
-	def __init__(self, **kwargs):
-		super(UpdateForm, self).__init__()
-		# Make sure only WGs can be connected to updates
-		self.fields['group'].queryset = Group.objects.filter(name__endswith='WG')
 
 	class Meta:
 		model = WgUpdate

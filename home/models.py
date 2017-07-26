@@ -14,6 +14,9 @@ class GM(models.Model):
 	def proposals(self):
 		return len(self.point_set.filter(proposal=True))
 
+	def updates(self):
+		return len(self.wgupdate_set.values())
+
 class Point(models.Model):
 	def __str__(self):
 		return self.title
@@ -30,6 +33,8 @@ class WgUpdate(models.Model):
 		return self.text
 
 	text = models.CharField(max_length=500)
-	group = models.ForeignKey(Group, on_delete=models.CASCADE)
+	group = models.ForeignKey(Group, limit_choices_to=models.Q(name__endswith='WG'),
+			on_delete=models.CASCADE)
+
 	choice = models.ForeignKey(GM, on_delete=models.CASCADE)
 	
