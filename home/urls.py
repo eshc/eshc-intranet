@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^gms/(?P<id>[0-9]+)/submit/$', views.submit, name='submit'),
     url(r'^gms/(?P<id>[0-9]+)/submit_update/$', views.submit_update, name='submit_update'),
     url(r'^gms/(?P<pk>[0-9]+)/delete/$', views.delete, name='delete'),
+    url(r'^groups/$', views.groups, name='groups'),
 
 
 ]

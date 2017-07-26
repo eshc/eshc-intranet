@@ -227,6 +227,16 @@ def delete(request, pk):
 
 	return render(request, 'home/delete.html', context)
 
+@login_required
+@has_share
+def groups(request):
+	# groups = Group.objects.all()
+
+	wgs = Group.objects.filter(name__endswith='WG')
+
+	context = {'wgs': wgs}
+	return render(request, 'home/groups.html', context)
+
 
 def check_info_share(request):
 	# Check if info is updated and share received

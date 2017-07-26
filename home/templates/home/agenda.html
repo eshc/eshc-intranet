@@ -22,6 +22,7 @@
 
 	<hr>
 	<!-- AGENDA -->
+	<div style="margin-left: 2.1em">
 	<h2>Agenda</h2>
 
 	<ol type='I' style="padding-left:20px;">
@@ -42,17 +43,18 @@
 		{% for prop in proposals %}
 			<li>{{ prop.title }}</li>
 		{% endfor %}
-		</ol>
+	</ol>
 
 	{% else %}
 		<li>No proposals submitted</li>
 	{% endif %}
 		<li>All Other Business</li>
 	</ol>
+	</div>
 <!-- WG UPDATES -->
 
 <!-- POINTS -->
-	<ol type="I" style="padding-left:0;">
+	<ol type="I" style="padding-left:0; margin-left: 2.1em">
 	<h2><li>WG Updates</li></h2>
 		<ul type="none" style="padding-left:10px;">
 		{% if places_updates %}
