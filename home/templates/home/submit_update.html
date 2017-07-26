@@ -2,8 +2,8 @@
 
 {% block extra_head %}
 <!-- MD to HTML https://github.com/showdownjs/showdown -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.1/showdown.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.7.1/showdown.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script> -->
 
 <style>
 #id_description {
@@ -20,10 +20,10 @@
 		<form method="POST" action="{% url 'home:submit_update' gm.id %}">
 	        {% csrf_token %}
 		    <div class="form-group">
-		    <strong>{{ form.text.label }}</strong>
-		    <p>{{form.text}}</p>
-		    <strong>{{ form.group.label }}</strong>
-		    {{ form.group }}
+			    <strong>{{ form.text.label }}</strong>
+			    <p>{{form.text}}</p>
+			    <strong>{{ form.group.label }}</strong>
+			    <p>{{ form.group }}</p>
 		    </div>
 		    <button class="btn btn-primary" name="submit">Save</button>
 		    <input type="hidden" name="next" value="{% url 'home:gms' %}" />

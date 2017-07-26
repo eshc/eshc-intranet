@@ -22,7 +22,9 @@ from sendgrid.helpers.mail import *
 @login_required
 def index(request):
 	check_info_share(request)
-	return render(request, 'home/index.html')
+	gm = GM.objects.latest('date_conv')
+	context = {'gm': gm,}
+	return render(request, 'home/index.html', context)
 
 def mail_test(request):
 	if request.method != 'POST':
@@ -200,6 +202,9 @@ def submit_update(request, id):
 			update = WgUpdate.objects.create(text=text, group=group, choice=gm)
 
 			return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
+		else:
+			messages.add_message(request, messages.WARNING, 'Something went wrong?')
+
 
 	context = {'gm': gm, 'form': update_form}
 	return render(request, 'home/submit_update.html', context)

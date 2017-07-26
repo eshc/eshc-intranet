@@ -2,20 +2,47 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-lg-offset-1 col-sm-8 col-md-8">
-	<h1>ESHC Intranet Homepage</h1>
-	<p>Here (will) be all things nice.</p>
-	<p>Some sort of overview of what's been going on. Recent cashflows, useful links.</p>
+<div class="col-lg-offset-1">
+  <div class="col-sm-10">
+		<h1>ESHC Intranet Homepage</h1>
 	</div>
-	<div class="col-lg-2">
-	<h2 style="text-align: right;">Useful links</h2>
-	<ul style="list-style-type: none; margin: 0px; padding: 0px; text-align: right">
-		<li><a href="">Company Rules</a></li>
-		<li><a href="">Bylaws List</a></li>
-		<li><a href="">Cash Overview</a></li>
-		<li><a href="{% url 'home:map' %}">Flat Map</a></li>
-		<li><a href="{% url 'home:gms' %}">GM History</a></li>
-	</ul>
+
+	<div class="col-xs-6">
+		<div class="list-group">
+		  <a href="/" class="list-group-item active">
+		    Home Page
+		  </a>
+		  <a href="{% url 'home:gms' %}" class="list-group-item">GM History</a>
+		  <a href="#" class="list-group-item disabled">Company Rules</a>
+		  <a href="#" class="list-group-item disabled">Member Directory</a>
+		  <a href="{% url 'home:map' %}" class="list-group-item">Flat Map</a>
+		</div>
 	</div>
+
+	<div class="col-xs-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title"><a href="{% url 'home:agenda' gm.id %}">Upcoming GM {{gm.number}}</a> on <small>{{gm.date_conv}}</small></h3>
+		  </div>
+		  <div class="panel-body">
+			  <p>Submissions so far:</p>
+		    <p>{{ gm.updates }} Update{{ gm.updates|pluralize:",s" }}</p>
+		    <p>{{ gm.discussions }} Discussion{{ gm.discussions|pluralize:",s" }}</p>
+		    <p>{{ gm.proposals }} Proposal{{ gm.proposals|pluralize:",s" }}</p>
+		  </div>
+		</div>
+	</div>
+
+	<div class="col-xs-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Cash Overview</h3>
+		  </div>
+		  <div class="panel-body">
+		    £$£$£$£$£$£$£$£
+		  </div>
+		</div>
+	</div>
+</div>
 </div>
 {% endblock body %}
