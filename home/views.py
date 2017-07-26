@@ -233,8 +233,15 @@ def groups(request):
 	# groups = Group.objects.all()
 
 	wgs = Group.objects.filter(name__endswith='WG')
+	wgs_with_conv = [(wg, Group.objects.filter(name__endswith='Conv', name__startswith=wg.name)[0]) for wg in wgs]
 
-	context = {'wgs': wgs}
+	supers = User.objects.filter(is_superuser=True)
+	staff = User.objects.filter(is_staff=True)
+
+	context = {'wgs': wgs_with_conv,
+		'supers': supers,
+		'staff': staff,
+		}
 	return render(request, 'home/groups.html', context)
 
 
