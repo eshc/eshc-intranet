@@ -196,16 +196,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # Settings for serving statics from AWS
-# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
-# AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
-# AWS_S3_REGION_NAME = 'eu-west-2'
+AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
+AWS_S3_REGION_NAME = 'eu-west-2'
 
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-# AWS_S3_SIGNATURE_VERSION='s3v4'
+AWS_S3_SIGNATURE_VERSION='s3v4'
 
 # STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 ######################
@@ -286,7 +287,9 @@ MACHINA_DEFAULT_AUTHENTICATED_USER_FORUM_PERMISSIONS = [
     'can_download_file',
 ]
 
-
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'mediafiles')
+MEDIA_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/media/'
+MACHINA_FORUM_IMAGE_UPLOAD_TO = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/machina/'
 
 try:
     from eshcIntranet.local_settings import *
