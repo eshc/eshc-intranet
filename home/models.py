@@ -7,6 +7,7 @@ class GM(models.Model):
 
 	number = models.IntegerField()
 	date_conv = models.DateField('date convened')
+	# minutes = models.FileField(upload_to='minutes/', default=None, null=True, blank=True)
 
 	def discussions(self):
 		return len(self.point_set.filter(proposal=False))
@@ -37,4 +38,9 @@ class WgUpdate(models.Model):
 			on_delete=models.CASCADE)
 
 	choice = models.ForeignKey(GM, on_delete=models.CASCADE)
+
+class Minutes(models.Model):
+	gm = models.OneToOneField(GM, on_delete=models.CASCADE)
+	minutes_file = models.FileField(upload_to='minutes/')
+
 	

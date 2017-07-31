@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block body %}
 <div class="row">
 <div class="col-lg-offset-1">
@@ -7,7 +9,7 @@
 		<h1>ESHC Intranet Homepage</h1>
 	</div>
 
-	<div class="col-xs-6">
+	<div class="col-xs-6 col-lg-5">
 		<div class="list-group">
 		  <a href="/" class="list-group-item active">
 		    Home Page
@@ -19,7 +21,7 @@
 		</div>
 	</div>
 
-	<div class="col-xs-6">
+	<div class="col-xs-6 col-lg-5">
 		<div class="panel panel-default">
 		  <div class="panel-heading">
 		    <h3 class="panel-title"><a href="{% url 'home:agenda' gm.id %}">Upcoming GM {{gm.number}}</a> <small>on {{gm.date_conv}}</small></h3>
@@ -33,7 +35,11 @@
 		</div>
 	</div>
 
-	<div class="col-xs-6">
+	<div class="col-xs-6 col-lg-5">
+		<img class="img-responsive" src="{{ image }}">
+	</div>
+	
+	<div class="col-xs-6 col-lg-5">
 		<div class="panel panel-default">
 		  <div class="panel-heading">
 		    <h3 class="panel-title">Cash Overview</h3>

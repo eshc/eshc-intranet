@@ -148,6 +148,13 @@
 
 	<hr>
 	<p>All done! <span class="glyphicon glyphicon-heart-empty"></span></p>
+	{% if today.date >= gm.date_conv %}
+		{% if gm.minutes %}
+			<a href="{{ file }}" target="_blank">View the uploaded minutes here</a>
+		{% else %}
+			<a href="{% url 'home:upload_minutes' gm.id %}" class="btn btn-success" role="button">Upload Minutes</a>
+		{% endif %}
+	{% endif %}
 	</div>
 </div>
 {% endblock body %}

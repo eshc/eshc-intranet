@@ -12,6 +12,7 @@
 				<th>Date</th>
 				<th>Proposals</th>
 				<th>Discussions</th>
+				<th>Minutes</th>
 				<th></th>
 			</thead>
 			<tbody>
@@ -22,6 +23,13 @@
 				<td>{{ gm.date_conv }}</td>
 				<td>{{ gm.proposals }}</td>
 				<td>{{ gm.discussions }}</td>
+				<td>
+					{% if gm.minutes %}
+						<p>Uploaded</p>
+					{% else %}
+						<strong>Missing</strong>
+					{% endif %}
+				</td>
 				<td><a href="{% url 'home:agenda' gm.id %}">View agenda</a></td>
 			</tr>
 			{% endfor %}

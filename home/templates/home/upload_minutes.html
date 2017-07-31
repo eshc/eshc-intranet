@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+	    <h1>GM {{ gm.number }} Minutes Upload</h1>
+	    {% if gm.minutes %}
+	    	<p>GM minutes already uploaded.</p>
+	    	<p>If you want to upload a different version contact an administrator.</p>
+    	{% else %}
+		    <p>Upload a file with minutes.</p>
+		    <h4>Only upload PDF files!</h4>
+			<form method="POST" action="{% url 'home:upload_minutes' gm.id %}" enctype="multipart/form-data">
+		        {% csrf_token %}
+			    <div class="form-group">
+			    	<strong>{{ form.minutes_file }}</strong>
+			    </div>
+			    <button class="btn btn-primary" name="submit">Save</button>
+			    <input type="hidden" name="next" value="{% url 'home:gms' %}" />
+			</form>
+			<p></p>
+		{% endif %}
+	</div>
+</div>
+{% endblock body %}

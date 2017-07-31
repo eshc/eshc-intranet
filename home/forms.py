@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from users.models import Profile
 from django.contrib.auth.models import Group
 
-from home.models import Point, WgUpdate
+from home.models import Point, WgUpdate, Minutes
 
 class UserEditForm(forms.ModelForm):
 	"""
@@ -62,4 +62,13 @@ class UpdateForm(forms.ModelForm):
 	class Meta:
 		model = WgUpdate
 		fields = ['text', 'group']
+
+class MinutesForm(forms.ModelForm):
+	"""
+	Used to add WG updates to upcoming GMs
+	"""
+
+	class Meta:
+		model = Minutes
+		fields = ['minutes_file']
 

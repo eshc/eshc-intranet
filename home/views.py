@@ -11,19 +11,44 @@ import datetime
 import os
 
 from leases.models import Lease, Inventory
-from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, UpdateForm
+from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, UpdateForm, MinutesForm
 
-from users.decorators import has_share
-from home.models import GM, Point, WgUpdate
+from users.decorators import has_share, check_grouup
+from home.models import GM, Point, WgUpdate, Minutes
 
 import sendgrid
 from sendgrid.helpers.mail import *
 
+import boto3
+import botocore
+import eshcIntranet.settings as settings
+
 @login_required
 def index(request):
 	check_info_share(request)
+
+	test = 'Lorem'
+
+	# Create an S3 client
+	s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+	    		aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+	    		config=botocore.client.Config(
+	    			signature_version='s3v4',
+	    			region_name='eu-west-2',
+	    			)
+    		)
+
+	image = s3.generate_presigned_url('get_object', Params={
+						'Bucket': 'eshc-bucket',
+						'Key': 'media/dr.png'},
+						)
+
 	gm = GM.objects.latest('date_conv')
-	context = {'gm': gm,}
+
+	context = {'gm': gm,
+		'test': test,
+		'image': image}
+
 	return render(request, 'home/index.html', context)
 
 def mail_test(request):
@@ -152,6 +177,22 @@ def agenda(request, pk):
 	participation_updates = WgUpdate.objects.filter(choice=gm, group=participation)
 	procedures_updates = WgUpdate.objects.filter(choice=gm, group=procedures)
 
+	s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+    		aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    		config=botocore.client.Config(
+    			signature_version='s3v4',
+    			region_name='eu-west-2',
+    			)
+		)
+
+	if Minutes.objects.filter(gm=gm).exists():
+		file = s3.generate_presigned_url('get_object', Params={
+					'Bucket': 'eshc-bucket',
+					'Key': Minutes.objects.get(gm=gm).minutes_file.name},
+					)
+	else:
+		file = '#'
+
 	proposals = gm.point_set.filter(proposal=True)
 	discussions = gm.point_set.filter(proposal=False)
 	context = {'gm': gm, 'proposals': proposals, 'discussions': discussions,
@@ -159,7 +200,9 @@ def agenda(request, pk):
 		 'places_updates': places_updates, 
 		 'people_updates': people_updates, 
 		 'participation_updates': participation_updates, 
-		 'procedures_updates': procedures_updates, }
+		 'procedures_updates': procedures_updates,
+		 'file': file,
+		  }
 	return render(request, 'home/agenda.html', context)
 
 @login_required
@@ -196,11 +239,11 @@ def submit_update(request, id):
 		update_form = UpdateForm(data=request.POST)
 
 		if update_form.is_valid():
-			messages.add_message(request, messages.SUCCESS, 'WG Update added successfully!')
 			text = update_form.cleaned_data['text']
 			group = update_form.cleaned_data['group']
 			update = WgUpdate.objects.create(text=text, group=group, choice=gm)
 
+			messages.add_message(request, messages.SUCCESS, 'WG Update added successfully!')
 			return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
 		else:
 			messages.add_message(request, messages.WARNING, 'Something went wrong?')
@@ -208,6 +251,28 @@ def submit_update(request, id):
 
 	context = {'gm': gm, 'form': update_form}
 	return render(request, 'home/submit_update.html', context)
+
+@login_required
+@has_share
+@check_grouup('Procedures WG')
+def upload_minutes(request, id):
+	gm = get_object_or_404(GM, pk=id)
+
+	if request.method != 'POST':
+		minutes_form = MinutesForm()
+	else:
+		minutes_form = MinutesForm(request.POST, request.FILES)
+
+		if minutes_form.is_valid():
+			instance = Minutes.objects.create(minutes_file=request.FILES['minutes_file'], gm=gm)
+			messages.add_message(request, messages.SUCCESS, 'Minutes uploaded successfully!')
+			return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
+		else:
+			messages.add_message(request, messages.WARNING, 'Something went wrong?')
+
+
+	context = {'gm': gm, 'form': minutes_form}
+	return render(request, 'home/upload_minutes.html', context)
 
 @login_required
 @has_share
