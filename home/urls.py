@@ -13,6 +13,7 @@ urlpatterns = [
 
 	url(r'^map/$', views.map, name='map'),
 	url(r'^gms/$', views.gms, name='gms'),
+	url(r'^archive/$', views.archive, name='archive'),
     url(r'^gms/(?P<pk>[0-9]+)/$', views.agenda, name='agenda'),
     url(r'^gms/(?P<id>[0-9]+)/submit/$', views.submit, name='submit'),
     url(r'^gms/(?P<id>[0-9]+)/submit_update/$', views.submit_update, name='submit_update'),

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+	<h1>General Meetings</h1>
+	<h4>Archive from before September 2017</h4>
+	<p></p>
+	<h2>Pre Move-in Meetings</h2>
+		<table class="table">
+			<thead>
+				<th>#</th>
+				<th>Filename / Date</th>
+				<th></th>
+			</thead>
+			<tbody>
+			{% for url, key in oldest_gms %}
+			<tr>
+				<td>{{ forloop.counter }}</td>
+				<td>{{ key }}</td>
+				<td><a href="{{ url }}" target="_blank">View agenda / Minutes</a></td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	<h2>Numbered General Meetings</h2>
+	<h3>Year 1 of Coop Existance</h3>
+		<table class="table">
+			<thead>
+				<th>#</th>
+				<th>Filename / Date</th>
+				<th></th>
+			</thead>
+			<tbody>
+			{% for url, key, number in year_1_gms %}
+			<tr>
+				<td>{{ number }}</td>
+				<td>{{ key }}</td>
+				<td><a href="{{ url }}" target="_blank">View agenda / Minutes</a></td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	<h3>All Further Coop Existance</h3>
+		<table class="table">
+			<thead>
+				<th>#</th>
+				<th>Filename / Date</th>
+				<th></th>
+			</thead>
+			<tbody>
+			{% for url, key, number in further_gms %}
+			<tr>
+				<td>{{ number }}</td>
+				<td>{{ key }}</td>
+				<td><a href="{{ url }}" target="_blank">View agenda / Minutes</a></td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+
+
+	</div>
+</div>
+{% endblock body %}

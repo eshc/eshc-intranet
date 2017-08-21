@@ -291,6 +291,9 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'mediafiles')
 MEDIA_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/media/'
 MACHINA_FORUM_IMAGE_UPLOAD_TO = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/machina/'
 
+# Achievements conf
+ACHIEVEMENT_CLASSES = ['accounts.handlers', 'backend.handlers']
+
 try:
     from eshcIntranet.local_settings import *
 except ImportError:

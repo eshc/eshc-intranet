@@ -43,11 +43,19 @@ def index(request):
 						'Key': 'media/dr.png'},
 						)
 
+	pdf = s3.generate_presigned_url('get_object', Params={
+						'Bucket': 'eshc-bucket',
+						'Key': 'minutes/2017.07.07_-_PhoneCoop_-_Internet_-_160gbp.pdf'
+						}
+					)
+
 	gm = GM.objects.latest('date_conv')
 
 	context = {'gm': gm,
 		'test': test,
-		'image': image}
+		'image': image,
+		'pdf': pdf,
+		}
 
 	return render(request, 'home/index.html', context)
 
@@ -162,6 +170,136 @@ def gms(request):
 	gms = GM.objects.all().order_by('number').reverse()
 	context = {'gms': gms}
 	return render(request, 'home/gms.html', context)
+
+@login_required
+@has_share
+def archive(request):
+
+	# Create an S3 client
+	s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+	    		aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+	    		config=botocore.client.Config(
+	    			signature_version='s3v4',
+	    			region_name='eu-west-2',
+	    			)
+    		)
+
+	oldest_archive_keys = [
+		'minutes/2013_11_14.pdf',
+		'minutes/2014_01_08.pdf',
+		'minutes/2014_03_07.pdf',
+		'minutes/2014_04_03.pdf',
+		'minutes/2014_04_24.pdf',
+		'minutes/2014_04_27.pdf',
+		'minutes/2014_05_01.pdf',
+		'minutes/2014_05_15.pdf',
+		'minutes/2014_05_22.pdf',
+		'minutes/2014_06_06.pdf',
+		'minutes/2014_06_10.pdf',
+		'minutes/2014_06_19.pdf',
+		'minutes/2014_06_26.pdf',
+		'minutes/2014_07_03.pdf',
+	]
+
+	year_1_archive_keys = [
+		'minutes/2014_09_17_1st GM Minutes.pdf',
+		'minutes/2014_09_24_2nd GM Minutes.pdf',
+		'minutes/2014_10_12_4th GM Minutes.pdf',
+		'minutes/2014_10_19_5thGM.pdf',
+		'minutes/2014_10_26_6thGM.pdf',
+		'minutes/2014_11_05_7thGM.pdf',
+		'minutes/2014_11_16_8thGM.pdf',
+		'minutes/2014_11_26_9thGM.pdf',
+		'minutes/2014_12_07_10thGM.pdf',
+		'minutes/2015_01_11_11thGM.pdf',
+		'minutes/2015_01_25_12thGM.pdf',
+		'minutes/2015_02_08_13thGM.pdf',
+		'minutes/2015_02_22_14thGM.pdf',
+		'minutes/2015_03_08_15thGM.pdf',
+		'minutes/2015_03_22_16thGM.pdf',
+		'minutes/2015_03_30_SpecialGM.pdf',
+		'minutes/2015_04_05_17thGM.pdf',
+		'minutes/2015_04_19_18thGM.pdf',
+		'minutes/2015_05_03_19thGM.pdf',
+		'minutes/2015_05_17_20thGM.pdf',
+		'minutes/2015_05_31_21stGM.pdf',
+		'minutes/2015_06_14_22ndGM.pdf',
+		'minutes/2015_06_28_23rdGM.pdf',
+		'minutes/2015_07_12_24thGM.pdf',
+		'minutes/2015_07_26_25thGM.pdf',
+		'minutes/2015_08_09_26thGM.pdf',
+		'minutes/2015_08_23_27thGM.pdf',
+		'minutes/2015_09_06_28thGM.pdf',
+	]
+
+	further_archive_keys = [
+		'minutes/29th_gm_2015_09_20.pdf',
+		'minutes/30th_gm_2015_10_04.pdf',
+		'minutes/31st_2015_10_18.pdf',
+		'minutes/32ndGM_2015_11_01.pdf',
+		'minutes/33rd_GM_15_11_2015.pdf',
+		'minutes/34th General Meeting 29_11_2015.pdf',
+		'minutes/35th General Meeting Minutes 2015.12.13.pdf',
+		'minutes/36th General Meeting Minutes 2016.01.17.pdf',
+		'minutes/37th General Meeting, 31_01_2016.pdf',
+		'minutes/38thGeneralMeetingAgenda14022016_POSTPONED.pdf',
+		'minutes/38th General Meeting Agenda _ re-convened 21.02.2016.pdf',
+		'minutes/39th GM Minutes 28_02_2016.pdf',
+		'minutes/40th General Meeting 2016.03.13.pdf',
+		'minutes/41st General Meeting 2016.04.03.pdf',
+		'minutes/42nd General Meeting (2nd AGM) 2016.10.04.pdf',
+		'minutes/43rd General Meeting 2016.04.24.pdf',
+		'minutes/44th General Meeting Agenda, 08_05_2016.pdf',
+		'minutes/45th GM Meeting Agenda 22_05_2016.pdf',
+		'minutes/46th General Meeting, 05_06_2016_.pdf',
+		'minutes/47th Annual General Meeting Agenda, 03_07_2016.pdf',
+		'minutes/48th General Meeting Agenda, 17_07_2016.pdf',
+		'minutes/49th General Meeting Agenda, 31_07_2016.pdf',
+		'minutes/50th General Meeting Agenda, 07_08_16.pdf',
+		'minutes/51st General Meeting Agenda, 04_09_2016.pdf',
+		'minutes/52nd General Meeting Agenda, 18_09_2016.pdf',
+		'minutes/53rd General Meeting Agenda, 02_10_16.pdf',
+		'minutes/54th General Meeting Agenda, 16_10_16.pdf',
+		'minutes/55th General Meeting Agenda - 30_10_16.pdf',
+		'minutes/56th General Meeting Agenda - 13_11_16.pdf',
+		'minutes/57th General Meeting Agenda.pdf',
+		'minutes/58th Meeting Agenda 2016_12_11.pdf',
+		'minutes/59th General Meeting Agenda - 15_01_17.pdf',
+		'minutes/60th General Meeting Agenda - 05_02_17 [the postponed meeting].pdf',
+		'minutes/60th General Meeting Agenda - 29_01_17.pdf',
+		'minutes/61st General Meeting Agenda - 12_02_17.pdf',
+		'minutes/62nd_GM_26_02_2017.pdf',
+		'minutes/63rd General Meeting Minutes [postponed] - 12_03_17.pdf',
+		'minutes/64th General Meeting Agenda 09_04_17.pdf',
+		'minutes/65th General Meeting Agenda 2017.04.23.pdf',
+		'minutes/66th General Meeting Agenda 07_05_2017.pdf',
+		'minutes/67th General Meeting Agenda 21_05_2017.pdf',
+		'minutes/68th General Meeting Agenda 4_06_17.pdf',
+		'minutes/69th General Meeting Agenda 02.07.17.pdf',
+		'minutes/70th General Meeting Agenda 09_07_17.pdf',
+		'minutes/71st General Meeting Agenda 23_07_17.pdf',
+		'minutes/72nd General Meeting Agenda 06_08_17.pdf',
+	]
+
+	oldest_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket',	'Key': x}) for x in oldest_archive_keys]
+	year_1_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket',	'Key': x}) for x in year_1_archive_keys]
+	further_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket',	'Key': x}) for x in further_archive_keys]
+
+	oldest_gms = zip(oldest_gms, [x[8:] for x in oldest_archive_keys])
+
+	counter = [1,2]+list(range(4,17))+['S']+list(range(17,29))
+	year_1_gms = zip(year_1_gms, [x[8:] for x in year_1_archive_keys], counter)
+
+	counter2 = list(range(29,39))+[38]+list(range(39,61))+[60]+list(range(61,73))
+	further_gms = zip(further_gms, [x[8:] for x in further_archive_keys], counter2)
+
+
+	context = {'oldest_gms': oldest_gms,
+		'year_1_gms': year_1_gms,
+		'further_gms': further_gms,
+		}
+	return render(request, 'home/archive.html', context)
+
 
 @login_required
 @has_share
