@@ -41,6 +41,6 @@ class WgUpdate(models.Model):
 
 class Minutes(models.Model):
 	gm = models.OneToOneField(GM, on_delete=models.CASCADE)
-	minutes_file = models.FileField(upload_to='minutes/', null=True)
+	minutes_file = models.FileField(upload_to='minutes/')
 
 	
