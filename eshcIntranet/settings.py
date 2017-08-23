@@ -148,21 +148,23 @@ WSGI_APPLICATION = 'eshcIntranet.wsgi.application'
 #     }
 # }
 
+# MOVED NOW TO LOCAL SETTINGS
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'eshcdb',                      
+#         'USER': 'django',
+#         'PASSWORD': 'djangopass',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'eshcdb',                      
-        'USER': 'django',
-        'PASSWORD': 'djangopass',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# db_from_env = dj_database_url.config()
+# DATABASES['default'].update(db_from_env)
 
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
-
+DATABASES = {}
+DATABASES['default'] =  dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
