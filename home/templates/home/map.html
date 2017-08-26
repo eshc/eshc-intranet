@@ -1,5 +1,90 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+<style media="screen">
+	.wrapper {
+	  display: grid;
+	  grid-gap: 1em;
+	  grid-template-columns: 1fr 2fr;
+	  /*margin: 1em;*/
+	  grid-template-areas:
+	    "title title"
+	    ". header"
+	    "sidebar content"
+	    "sidebar content"
+	    "sidebar content"
+	    "footer footer";
+	}
+
+	.building28 {
+	  display: grid;
+	  grid-gap: 0.5em;
+	  grid-template-areas:
+	    "f7 ."
+	    "f6 f5"
+	    "f4 f3"
+	    "f2 f1"
+	}
+
+	.building28 > div {
+	  border: #333 1px solid;
+	  padding: 0.5em;
+	  display: grid;
+	  grid-template-columns: 1fr 1fr;
+	  grid-gap: 0.5em;
+	}
+
+	.building34 {
+	  display: grid;
+	  grid-gap: 0.5em;
+	  grid-template-areas:
+	  "b15 b15 b16 b16"
+	  ".   b14 b17 .  "
+	  "b11 b11 b12 b12"
+	  ".   b10 b13 .  "
+	  "b7  b7  b8  b8 "
+	  ".   b6  b9  .  "
+	  "b3  b3  b4  b4 "
+	  ".   b2  b5  .  "
+	  ".   .  b1  b1  "
+	}
+
+	.f7 {grid-area: f7}
+	.f6 {grid-area: f6}
+	.f5 {grid-area: f5}
+	.f4 {grid-area: f4}
+	.f3 {grid-area: f3}
+	.f2 {grid-area: f2}
+	.f1 {grid-area: f1}
+
+	.building34 > div {
+	  display: grid;
+	  grid-template-columns: 1fr 1fr 1fr;
+	  grid-gap: 0.5em;
+	  border: #333 1px solid;
+	  padding: 0.5em;
+	}
+
+	.b1 {grid-area: b1}
+	.b2 {grid-area: b2}
+	.b3 {grid-area: b3}
+	.b4 {grid-area: b4}
+	.b5 {grid-area: b5}
+	.b6 {grid-area: b6}
+	.b7 {grid-area: b7}
+	.b8 {grid-area: b8}
+	.b9 {grid-area: b9}
+	.b10 {grid-area: b10}
+	.b11 {grid-area: b11}
+	.b12 {grid-area: b12}
+	.b13 {grid-area: b13}
+	.b14 {grid-area: b14}
+	.b15 {grid-area: b15}
+	.b16 {grid-area: b16}
+	.b17 {grid-area: b17}
+</style>
+{% endblock extra_head %}
+
 {% block body %}
 <div class="row">
     <div class="col-lg-offset-1 col-sm-8 col-md-8">
@@ -23,4 +108,157 @@
 	{% endif %}
 	</div>
 </div>
+<div class="col-sm-12 col-md-12">
+	<h1>CSS Grid</h1>
+	<div class="wrapper">
+	  <div class="building28">
+	    <div class="f7">
+	      <strong>7</strong>
+	      {% for lease in leases_28_7 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="f6">
+	      <strong>6</strong>
+	      {% for lease in leases_28_6 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="f5">
+	      <strong>5</strong>
+	      {% for lease in leases_28_5 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="f4">
+	      <strong>4</strong>
+	      {% for lease in leases_28_4 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="f3">
+	      <strong>3</strong>
+	      {% for lease in leases_28_3 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="f2">
+	      <strong>2</strong>
+	      {% for lease in leases_28_2 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="f1">
+	      <strong>1</strong>
+	      {% for lease in leases_28_1 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	  </div>
+	  <div class="building34">
+	    <div class="b17">
+	      <strong>17</strong>
+	      {% for lease in leases_34_17 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b16">
+	      <strong>16</strong>
+	      {% for lease in leases_34_16 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b15">
+	      <strong>15</strong>
+	      {% for lease in leases_34_15 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b14">
+	      <strong>14</strong>
+	      {% for lease in leases_34_14 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b13">
+	      <strong>13</strong>
+	      {% for lease in leases_34_13 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b12">
+	      <strong>12</strong>
+	      {% for lease in leases_34_12 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b11">
+	      <strong>11</strong>
+	      {% for lease in leases_34_11 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b10">
+	      <strong>10</strong>
+	      {% for lease in leases_34_10 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b9">
+	      <strong>9</strong>
+	      {% for lease in leases_34_9 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b8">
+	      <strong>8</strong>
+	      {% for lease in leases_34_8 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b7">
+	      <strong>7</strong>
+	      {% for lease in leases_34_7 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b6">
+	      <strong>6</strong>
+	      {% for lease in leases_34_6 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b5">
+	      <strong>5</strong>
+	      {% for lease in leases_34_5 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b4">
+	      <strong>4</strong>
+	      {% for lease in leases_34_4 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b3">
+	      <strong>3</strong>
+	      {% for lease in leases_34_3 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b2">
+	      <strong>2</strong>
+	      {% for lease in leases_34_2 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+	    <div class="b1">
+          <strong>1</strong>
+	      {% for lease in leases_34_1 %}
+	      	<div>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}</div>
+	      {% endfor %}
+	    </div>
+    </div>
+</div>
+
 {% endblock body %}

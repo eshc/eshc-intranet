@@ -160,8 +160,58 @@ def edit_profile(request):
 def map(request):
 	# current leases
 	leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
+	leases_28_1 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=1)
+	leases_28_2 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=2)
+	leases_28_3 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=3)
+	leases_28_4 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=4)
+	leases_28_5 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=5)
+	leases_28_6 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=6)
+	leases_28_7 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=7)
 
-	context = {'leases': leases}
+	leases_34_1 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=1)
+	leases_34_2 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=2)
+	leases_34_3 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=3)
+	leases_34_4 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=4)
+	leases_34_5 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=5)
+	leases_34_6 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=6)
+	leases_34_7 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=7)
+	leases_34_8 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=8)
+	leases_34_9 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=9)
+	leases_34_10 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=10)
+	leases_34_11 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=11)
+	leases_34_12 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=12)
+	leases_34_13 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=13)
+	leases_34_14 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=14)
+	leases_34_15 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=15)
+	leases_34_16 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=16)
+	leases_34_17 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=17)
+
+	context = {'leases': leases,
+		'leases_28_1': leases_28_1,
+		'leases_28_2': leases_28_2,
+		'leases_28_3': leases_28_3,
+		'leases_28_4': leases_28_4,
+		'leases_28_5': leases_28_5,
+		'leases_28_6': leases_28_6,
+		'leases_28_7': leases_28_7,
+		'leases_34_1': leases_34_1,
+		'leases_34_2': leases_34_2,
+		'leases_34_3': leases_34_3,
+		'leases_34_4': leases_34_4,
+		'leases_34_5': leases_34_5,
+		'leases_34_6': leases_34_6,
+		'leases_34_7': leases_34_7,
+		'leases_34_8': leases_34_8,
+		'leases_34_9': leases_34_9,
+		'leases_34_10': leases_34_10,
+		'leases_34_11': leases_34_11,
+		'leases_34_12': leases_34_12,
+		'leases_34_13': leases_34_13,
+		'leases_34_14': leases_34_14,
+		'leases_34_15': leases_34_15,
+		'leases_34_16': leases_34_16,
+		'leases_34_17': leases_34_17,
+	}
 	return render(request, 'home/map.html', context)
 
 @login_required
