@@ -36,7 +36,7 @@ If not, you can probably just use SQLite locally, but you'll have to use the com
 * 'Share received' checkbox for admins, display on user profile
 * Style everything nicely (Bootstrap 3.3.0)
 * Navbar
-* ~~Waliki app copied to main directory ~~
+* ~~Waliki app copied to main directory~~
 * ~~Wiki change history button appears in navbar again~~
 * ~~Email sending - uses finance acc~~ uses Sendgrid now
 * Email verification/authentication - allauth

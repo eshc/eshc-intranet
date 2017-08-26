@@ -84,7 +84,10 @@ INSTALLED_APPS = [
     # Machina related apps:
     # 'mptt',   # Already included above
     'haystack',
-    'widget_tweaks'
+    'widget_tweaks',
+
+    # For exporting databse into layman formats
+    'import_export'
 ] + get_machina_apps()
 
 SITE_ID = 1 # This is for facebook login integration

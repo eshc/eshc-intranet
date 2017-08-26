@@ -17,4 +17,6 @@ class LeaseAdmin(admin.ModelAdmin):
 
 	list_display = list_display + ['member']
 
+	search_fields = ['lease_type', 'start_date', 'end_date',]
+
 admin.site.register(Lease, LeaseAdmin)

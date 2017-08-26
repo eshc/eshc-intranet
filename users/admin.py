@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 
 from users.models import Profile
 from leases.models import Lease
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
 
 admin.site.unregister(User)
 
@@ -16,7 +19,15 @@ class LeaseInLine(admin.StackedInline):
 	model = Lease
 	extra = 0
 
-class UserAdmin(BaseUserAdmin):
+class UserResource(resources.ModelResource):
+
+	class Meta:
+		model = User
+		fields = ('first_name', 'last_name', 'email','profile__ref_number', 'profile__share_received', 'username')
+
+# class UserAdmin(BaseUserAdmin):
+class UserAdmin(ImportExportModelAdmin):
+	resource_class = UserResource
 	inlines = [LeaseInLine, ProfileInLine, ]
 
 	def ref_number(self, obj):
@@ -33,5 +44,7 @@ class UserAdmin(BaseUserAdmin):
 			
 	share_received.boolean = True
 	list_display = BaseUserAdmin.list_display + ('ref_number', 'share_received')
+
+
 
 admin.site.register(User, UserAdmin)
