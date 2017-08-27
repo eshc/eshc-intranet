@@ -6,20 +6,13 @@
 	  display: grid;
 	  grid-gap: 1em;
 	  grid-template-columns: 1fr 2fr;
-	  /*margin: 1em;*/
-	  grid-template-areas:
-	    "title title"
-	    ". header"
-	    "sidebar content"
-	    "sidebar content"
-	    "sidebar content"
-	    "footer footer";
 	}
 
 	.building28 {
 	  display: grid;
 	  grid-gap: 0.5em;
 	  grid-template-areas:
+	    "h  h "
 	    "f7 ."
 	    "f6 f5"
 	    "f4 f3"
@@ -27,7 +20,7 @@
 	}
 
 	.building28 > div {
-	  border: #333 1px solid;
+	  border: #CCC 1px solid;
 	  padding: 0.5em;
 	  display: grid;
 	  grid-template-columns: 1fr 1fr;
@@ -38,6 +31,7 @@
 	  display: grid;
 	  grid-gap: 0.5em;
 	  grid-template-areas:
+	  "h   h   h   h  "
 	  "b15 b15 b16 b16"
 	  ".   b14 b17 .  "
 	  "b11 b11 b12 b12"
@@ -48,6 +42,8 @@
 	  ".   b2  b5  .  "
 	  ".   .  b1  b1  "
 	}
+
+	.h {grid-area: h}
 
 	.f7 {grid-area: f7}
 	.f6 {grid-area: f6}
@@ -61,7 +57,7 @@
 	  display: grid;
 	  grid-template-columns: 1fr 1fr 1fr;
 	  grid-gap: 0.5em;
-	  border: #333 1px solid;
+	  border: #CCC 1px solid;
 	  padding: 0.5em;
 	}
 
@@ -82,6 +78,14 @@
 	.b15 {grid-area: b15}
 	.b16 {grid-area: b16}
 	.b17 {grid-area: b17}
+
+	@media screen and (max-width: 800px) {
+	.wrapper {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 {% endblock extra_head %}
 
@@ -91,6 +95,7 @@
 		<h1>Map</h1>
 		<div class="wrapper">
 		  <div class="building28">
+		    <h4>28</h4>
 		    <div class="f7">
 		      <strong>7</strong>
 		      {% for lease in leases_28_7 %}
@@ -135,6 +140,7 @@
 		    </div>
 		  </div>
 		  <div class="building34">
+		  <h4>34</h4>
 		    <div class="b17">
 		      <strong>17</strong>
 		      {% for lease in leases_34_17 %}
