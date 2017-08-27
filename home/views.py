@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 import datetime
 import os
+import csv
 
 from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, UpdateForm, MinutesForm
@@ -496,6 +497,81 @@ def groups(request):
 		'staff': staff,
 		}
 	return render(request, 'home/groups.html', context)
+
+@login_required
+@has_share
+def cash(request):
+	context = {}
+
+	s3 = boto3.resource('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+	    		aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+	    		config=botocore.client.Config(
+	    			signature_version='s3v4',
+	    			region_name='eu-west-2',
+	    			)
+    		)
+
+	s3.meta.client.download_file('eshc-bucket', 'money/year_1.csv', '/tmp/year_1.csv')
+	with open('/tmp/year_1.csv', 'r') as csvfile:
+		# context['y1_data'] = str(data.read(), "utf-8")
+		reader = csv.reader(csvfile, delimiter = ',')
+		rows = []
+		total = 0
+		for row in reader:
+			total += float(row[3].replace(',',''))
+			# rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
+			date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
+			rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
+			# rows.append([date, total])
+
+		context['y1_data'] = rows
+
+	s3.meta.client.download_file('eshc-bucket', 'money/year_2.csv', '/tmp/year_2.csv')
+	with open('/tmp/year_2.csv', 'r') as csvfile:
+		# context['y1_data'] = str(data.read(), "utf-8")
+		reader = csv.reader(csvfile, delimiter = ',')
+		rows = []
+		# total = 0
+		for row in reader:
+			total += float(row[3].replace(',',''))
+			# rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
+			date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
+			rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
+			# rows.append([date, total])
+
+		context['y2_data'] = rows
+
+	s3.meta.client.download_file('eshc-bucket', 'money/year_3.csv', '/tmp/year_3.csv')
+	with open('/tmp/year_3.csv', 'r') as csvfile:
+		# context['y1_data'] = str(data.read(), "utf-8")
+		reader = csv.reader(csvfile, delimiter = ',')
+		rows = []
+		# total = 0
+		for row in reader:
+			total += float(row[3].replace(',',''))
+			# rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
+			date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
+			rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
+			# rows.append([date, total])
+
+		context['y3_data'] = rows
+
+	s3.meta.client.download_file('eshc-bucket', 'money/year_4.csv', '/tmp/year_4.csv')
+	with open('/tmp/year_4.csv', 'r') as csvfile:
+		# context['y1_data'] = str(data.read(), "utf-8")
+		reader = csv.reader(csvfile, delimiter = ',')
+		rows = []
+		# total = 0
+		for row in reader:
+			total += float(row[3].replace(',',''))
+			# rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
+			date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
+			rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
+			# rows.append([date, total])
+
+		context['y4_data'] = rows
+
+	return render(request, 'home/cash_overview.html', context)
 
 
 def check_info_share(request):

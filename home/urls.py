@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^gms/(?P<id>[0-9]+)/upload_minutes/$', views.upload_minutes, name='upload_minutes'),
     url(r'^gms/(?P<pk>[0-9]+)/delete/$', views.delete, name='delete'),
     url(r'^groups/$', views.groups, name='groups'),
+    url(r'^cash/$', views.cash, name='cash'),
 
 
 ]

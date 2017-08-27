@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+{% endblock extra_head %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+	<h1>Cash Overview</h1>
+	<h4>Aligned to our financial year</h4>
+	<h2>Year 4</h2>
+	<h5>Current</h5>
+		<canvas id="myChart_4" width="200" height="80"></canvas>
+
+	<h2>Year 3</h2>
+		<canvas id="myChart_3" width="200" height="80"></canvas>
+
+	<h2>Year 2</h2>
+		<canvas id="myChart_2" width="200" height="80"></canvas>
+
+	<h2>Year 1</h2>
+		<canvas id="myChart_1" width="200" height="80"></canvas>
+		<script>
+			var ctx_1 = document.getElementById("myChart_1").getContext('2d');
+			var ctx_2 = document.getElementById("myChart_2").getContext('2d');
+			var ctx_3 = document.getElementById("myChart_3").getContext('2d');
+			var ctx_4 = document.getElementById("myChart_4").getContext('2d');
+
+			options = {
+		        scales: {
+		            xAxes: [{
+		            	type: 'time',
+		                time: {
+		                    displayFormats: {
+		                        quarter: 'MMM YYYY'
+		                    }
+		                },
+		            }],
+		            yAxes:[{
+		            	ticks: {
+		            		beginAtZero:true,
+		            		max:200000
+		            	}
+		            }]
+		        }
+		    };
+			var data_1 = {
+			        datasets: [{
+			            label: 'Cash in Bank',
+			            data: [
+		            		{% for point in y1_data %}
+			            {
+							x: new Date({{point.year}}, {{point.month}}-1, {{point.day}}), y: {{point.total}}
+						},
+							{% endfor %}
+			            ]
+			        }]
+			    }
+			var data_2 = {
+			        datasets: [{
+			            label: 'Cash in Bank',
+			            data: [
+		            		{% for point in y2_data %}
+			            {
+							x: new Date({{point.year}}, {{point.month}}-1, {{point.day}}), y: {{point.total}}
+						},
+							{% endfor %}
+			            ]
+			        }]
+			    }
+			var data_3 = {
+			        datasets: [{
+			            label: 'Cash in Bank',
+			            data: [
+		            		{% for point in y3_data %}
+			            {
+							x: new Date({{point.year}}, {{point.month}}-1, {{point.day}}), y: {{point.total}}
+						},
+							{% endfor %}
+			            ]
+			        }]
+			    }
+			var data_4 = {
+			        datasets: [{
+			            label: 'Cash in Bank',
+			            data: [
+		            		{% for point in y4_data %}
+			            {
+							x: new Date({{point.year}}, {{point.month}}-1, {{point.day}}), y: {{point.total}}
+						},
+							{% endfor %}
+			            ]
+			        }]
+			    }
+
+			var myLineChart = new Chart(ctx_1, {
+			    type: 'line',
+			    data: data_1,
+			    options: options,
+			});
+			var myLineChart = new Chart(ctx_2, {
+			    type: 'line',
+			    data: data_2,
+			    options: options,
+			});
+			var myLineChart = new Chart(ctx_3, {
+			    type: 'line',
+			    data: data_3,
+			    options: options,
+			});
+			var myLineChart = new Chart(ctx_4, {
+			    type: 'line',
+			    data: data_4,
+			    options: options,
+			});
+		</script>
+	</div>
+</div>
+{% endblock body %}
