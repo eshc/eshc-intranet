@@ -29,9 +29,10 @@
 	  </div>
 	  <div class="panel-body">
 		  {% if user.profile.ref_number %}
-			<strong>{{ user.profile.ref_number }}</strong>
+			<strong>{{ user.profile.ref_number }}</strong> 
+			Use it when paying rent.
 		  {% else %}
-		  	Not yet assigned.
+		  	Not yet assigned. You will need to use this number when buying a <a href="/wiki/procedures-wg/shares/">share</a> or paying <a href="/wiki/procedures-wg/rent/">rent</a>.
 		  {% endif %}
 	  </div>
 	</div>
@@ -46,6 +47,7 @@
 				<strong>Received, thank you!</strong>
 		  {% else %}
 		  	Not yet received. <strong>You will not be able to access all sections of the site until we receive it.</strong>
+		  	See <a href="/wiki/procedures-wg/shares/">this page</a> on the wiki for a quick explanation of the share is.
 		  {% endif %}
 	  </div>
 	</div>
