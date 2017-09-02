@@ -85,6 +85,11 @@
                   {% if "wiki.plugins.notifications"|plugin_enabled %}
                     {% include "wiki/plugins/notifications/menubaritem.html" %}
                   {% endif %}
+                  <li>
+                    <a href="{% url 'account_logout' %}">
+                      <span class="glyphicon glyphicon-log-out"></span>
+                    Logout</a>
+                  </li>
                 </ul>
               </li>
             </ul>
