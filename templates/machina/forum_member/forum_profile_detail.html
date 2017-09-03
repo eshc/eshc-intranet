@@ -11,7 +11,7 @@
   </div>
 </div>
 <div class="row profile">
-  <div class="col-md-3">
+  <div class="col-sm-3">
     <div class="profile-sidebar">
       <div class="panel panel-default">
         {% if profile.avatar %}
@@ -31,11 +31,11 @@
     {% if profile.user == request.user %}
     <a href="{%url 'forum_member:profile_update' %}" class="btn btn-block btn-primary">{% trans "Edit profile" %}</a>
     <p></p>
-    <a class="btn btn-block btn-default" style="margin-bottom: 1em" href="{% url 'profile' %}">Go to your ESHC Profile</a>
+    <a class="btn btn-block btn-default" style="margin-bottom: 1em" href="{% url 'profile' %}">Link to ESHC Profile</a>
 
     {% endif %}
   </div>
-  <div class="col-md-9">
+  <div class="col-sm-9">
     <div class="row">
       <div class="col-md-12">
         <div class="profile-content">
