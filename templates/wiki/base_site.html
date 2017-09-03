@@ -60,6 +60,12 @@
                   <span class="badge notification-cnt">0</span> 
                 </a>
                 <ul class="dropdown-menu">
+                  <li>
+                    <a href="{% url 'profile' %}">
+                      <span class="glyphicon glyphicon-user"></span> ESHC Profile
+                    </a>
+                  </li>
+
                   {% if "ACCOUNT_HANDLING"|wiki_settings %}
                   <li>
                     <a href="{% url 'wiki:profile_update' %}">
