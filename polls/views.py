@@ -17,10 +17,6 @@ def index(request):
 	past_questions = Question.objects.filter(close_date__lt=date.today())
 	open_questions = Question.objects.filter(close_date__gte=date.today())
 
-	# tuples = [
-	# 		[question, [[yes, 1]
-	# 					[no, 4]]]
-	# 		]
 	closed_questions = []
 
 	for question in past_questions:
