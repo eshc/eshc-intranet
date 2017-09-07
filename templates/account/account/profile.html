@@ -20,11 +20,12 @@
 	  <div>
 	  	{% if user.first_name %}
 		<a href="{% url 'home:edit_profile' %}">Edit Profile</a>
-		{% else %}
-		<a style="font-size: x-large; font-weight: bold;" href="{% url 'home:edit_profile' %}">Edit Profile</a>
-	  	{% endif %}
 		-
-		<a href="{% url 'account_email' %}">Edit E-mail</a></div>
+		<a href="{% url 'account_email' %}">Edit E-mail</a>
+		{% else %}
+		<a style="font-size: x-large; font-weight: bold;" href="{% url 'home:edit_profile' %}">Fill in missing profile info (click or tap)</a>
+	  	{% endif %}
+	  	</div>
 	  </div>
 	</div>
 	<a class="btn btn-block btn-default" style="margin-bottom: 1.2em" href="{% url 'forum_member:profile' user.id %}">Go to your Forum Profile</a>
@@ -63,12 +64,10 @@
 	</div>
 	<div class="panel panel-default">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Login Info</h3>
+	    <h3 class="panel-title">Deposit</h3>
 	  </div>
 	  <div class="panel-body">
-			<!-- <h2>Login info</h2> -->
-			<p>Last login: {{ user.last_login }}</p>
-			<p>Date joined: {{ user.date_joined }}</p>
+		<p>For info on deposits visit <a href="/wiki/procedures-wg/deposits/">this wiki page</a>.</p>
 	  </div>
 	</div> 
 	<div class="panel panel-default">
