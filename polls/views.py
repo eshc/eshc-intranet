@@ -14,7 +14,7 @@ from .forms import QuestionSubmitForm
 @login_required
 @has_share
 def index(request):
-	past_questions = Question.objects.filter(close_date__lte=date.today())
+	past_questions = Question.objects.filter(close_date__lt=date.today())
 	open_questions = Question.objects.filter(close_date__gte=date.today())
 
 	# tuples = [
