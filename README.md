@@ -69,7 +69,7 @@ If not, you can probably just use SQLite locally, but you'll have to use the com
 * Browse bylaws - subset of wiki / or its own, non-editable section
 * User directory:
   * Shows convenors
-* Cash overview
+* ~~Cash overview~~
   * Open budgets
   * Open proposals with money status
 * Moving refunds and liaisons to the intranet? Make public list of refunds?
