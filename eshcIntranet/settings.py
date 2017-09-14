@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'leases.apps.LeasesConfig',
     'polls.apps.PollsConfig',
+    'hours.apps.HoursConfig',
 
     # Machina related apps:
     # 'mptt',   # Already included above

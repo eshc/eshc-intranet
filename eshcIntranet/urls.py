@@ -25,6 +25,7 @@ urlpatterns = [
     # url(r'^users/', include('users.urls', namespace='users')),
     url(r'^leases/', include('leases.urls', namespace='leases')),
     url(r'^polls/', include('polls.urls', namespace='polls')),
+    url(r'^hours/', include('hours.urls', namespace='hours')),
 
     # Waliki
     # url(r'^wiki/', include('waliki.urls')),
