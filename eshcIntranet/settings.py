@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'leases.apps.LeasesConfig',
     'polls.apps.PollsConfig',
     'hours.apps.HoursConfig',
+    'whiteboard.apps.WhiteboardConfig',
 
     # Machina related apps:
     # 'mptt',   # Already included above
