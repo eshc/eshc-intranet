@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+.wrapper {
+    width: 95%;
+    margin: 3em auto;
+}
+
+.masonry {
+    margin: 1.5em 0;
+    padding: 0;
+    -moz-column-gap: 1.5em;
+    -webkit-column-gap: 1.5em;
+    column-gap: 1.5em;
+    font-size: .85em;
+}
+
+.item {
+    display: inline-block;
+    background: rgb(245,245,245);
+    padding: 1em;
+    margin: 0 0 1.5em;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-shadow: 1px 2px 4px 0 #ccc;
+}
+
+@media only screen and (min-width: 400px) {
+    .masonry {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .masonry {
+        -moz-column-count: 3;
+        -webkit-column-count: 3;
+        column-count: 3;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .masonry {
+        -moz-column-count: 4;
+        -webkit-column-count: 4;
+        column-count: 4;
+    }
+}
+
+@media only screen and (min-width: 1100px) {
+    .masonry {
+        -moz-column-count: 5;
+        -webkit-column-count: 5;
+        column-count: 5;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+    .wrapper {
+        width: 1260px;
+    }
+}
+</style>
+{% endblock extra_head %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+		<h1>The Whiteboard</h1>
+		<h4>Announcements of all sorts</h4>
+	        <div class="masonry">
+			<div class="item" style="font-size: large"><a href="{% url 'whiteboard:add_note' %}"><span class="glyphicon glyphicon-plus"></span> <strong>Add new</strong></a>
+			</div>
+		{% if notes %}
+			{% for note in notes %}
+			<div class="item">
+				<p>{{ note.text }}</p>
+				<small>by {{ note.submitted_by.first_name }} on {{ note.pub_date}} </small>
+			</div>
+			{% endfor %}
+			</div>
+		{% else %}
+			<h2>No current announcements.</h2>
+		{% endif %}
+	</div>
+</div>
+	
+		
+{% endblock body %}
+
+
