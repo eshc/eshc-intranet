@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+		<h1>New Whiteboard Announcement</h1>
+        <h4>Best keep it short and sweet.</h4>
+        <h5>Announcement will be automatically deleted after 7 days.</h5>
+		<form method="POST" action="{% url 'whiteboard:add_note' %}">
+	        {% csrf_token %}
+		    <div class="form-group">
+			    <strong>Your announcement:</strong>
+			    <p>{{form.text}}</p>
+		    </div>
+		    <button class="btn btn-primary" name="submit">Save</button>
+		    <input type="hidden" name="next" value="{% url 'whiteboard:index' %}" />
+		</form>
+
+	</div>
+</div>
+	
+		
+{% endblock body %}
+
+
