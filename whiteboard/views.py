@@ -22,6 +22,7 @@ def index(request):
 	context = {'notes': notes}
 	today = datetime.datetime.today().date()
 
+	# delete notes older than 7 days
 	current_notes = [note if note.pub_date+datetime.timedelta(days=7) >= today else note.delete() for note in notes]
 
 	context = {'notes': current_notes}

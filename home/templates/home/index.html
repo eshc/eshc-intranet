@@ -2,43 +2,132 @@
 
 {% load static %}
 
+{% block extra_head %}
+<style>
+.wrapper {
+    width: 95%;
+    margin: 3em auto;
+}
+
+.masonry {
+    margin: 1.5em 0;
+    padding: 0;
+    -moz-column-gap: 1.5em;
+    -webkit-column-gap: 1.5em;
+    column-gap: 1.5em;
+    font-size: .85em;
+}
+
+.item {
+    display: inline-block;
+    background: rgb(245,245,245);
+    padding: 1em;
+    margin: 0 0 1.5em;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-shadow: 1px 2px 4px 0 #ccc;
+}
+
+@media only screen and (min-width: 400px) {
+    .masonry {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .masonry {
+        -moz-column-count: 3;
+        -webkit-column-count: 3;
+        column-count: 3;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .masonry {
+        -moz-column-count: 4;
+        -webkit-column-count: 4;
+        column-count: 4;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .masonry {
+        -moz-column-count: 5;
+        -webkit-column-count: 5;
+        column-count: 5;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+    .wrapper {
+        width: 1260px;
+    }
+}
+</style>
+{% endblock extra_head %}
+
 {% block body %}
 <div class="row">
-<div class="col-lg-offset-1">
-  <div class="col-sm-10">
-		<h1>ESHC Intranet Homepage</h1>
-	</div>
-	<div class="col-xs-12 col-lg-10">
-		<p>Welcome to the ESHC internal site. Keep in mind this is a constant work in progress. If you spot a bug, want to suggest an improvement or a new feature go to the <a href="/forum/">forums</a>.</p>
-	</div>
+	<div class="col-lg-offset-1">
+	  <div class="col-sm-10">
+			<h1>ESHC Intranet Homepage</h1>
+		</div>
+		<div class="col-xs-12 col-lg-10">
+			<p>Welcome to the ESHC internal site. Keep in mind this is a constant work in progress. If you spot a bug, want to suggest an improvement or a new feature go to the <a href="/forum/">forums</a>.</p>
+		</div>
 
 
-	<div class="col-xs-6 col-lg-5">
-		<div class="list-group">
-		  <a href="/" class="list-group-item active">
-		    Home Page
-		  </a>
-		  <a href="{% url 'home:gms' %}" class="list-group-item">GM History</a>
-		  <a href="#" class="list-group-item disabled">Company Rules</a>
-		  <a href="{% url 'home:groups' %}" class="list-group-item">Member Directory</a>
-		  <a href="{% url 'home:map' %}" class="list-group-item">Flat Map</a>
-		  <a href="{% url 'home:cash' %}" class="list-group-item">Cash Overview</a>
-		  <a href="{% url 'whiteboard:index' %}" class="list-group-item">The Whiteboard</a>
+		<div class="col-xs-6 col-lg-5">
+			<div class="list-group">
+			  <a href="/" class="list-group-item active">
+			    Home Page
+			  </a>
+			  <a href="{% url 'home:gms' %}" class="list-group-item">GM History</a>
+			  <a href="#" class="list-group-item disabled">Company Rules</a>
+			  <a href="{% url 'home:groups' %}" class="list-group-item">Member Directory</a>
+			  <a href="{% url 'home:map' %}" class="list-group-item">Flat Map</a>
+			  <a href="{% url 'home:cash' %}" class="list-group-item">Cash Overview</a>
+			  <a href="{% url 'whiteboard:index' %}" class="list-group-item">The Whiteboard</a>
+			</div>
+		</div>
+
+		<div class="col-xs-6 col-lg-5">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title"><a href="{% url 'home:agenda' gm.id %}">Upcoming GM {{gm.number}}</a> <small>on {{gm.date_conv}}</small></h3>
+			  </div>
+			  <div class="panel-body">
+				  <p>Submissions so far:</p>
+			    <p>{{ gm.updates }} Update{{ gm.updates|pluralize:",s" }}</p>
+			    <p>{{ gm.discussions }} Discussion{{ gm.discussions|pluralize:",s" }}</p>
+			    <p>{{ gm.proposals }} Proposal{{ gm.proposals|pluralize:",s" }}</p>
+			  </div>
+			</div>
 		</div>
 	</div>
-
-	<div class="col-xs-6 col-lg-5">
-		<div class="panel panel-default">
-		  <div class="panel-heading">
-		    <h3 class="panel-title"><a href="{% url 'home:agenda' gm.id %}">Upcoming GM {{gm.number}}</a> <small>on {{gm.date_conv}}</small></h3>
-		  </div>
-		  <div class="panel-body">
-			  <p>Submissions so far:</p>
-		    <p>{{ gm.updates }} Update{{ gm.updates|pluralize:",s" }}</p>
-		    <p>{{ gm.discussions }} Discussion{{ gm.discussions|pluralize:",s" }}</p>
-		    <p>{{ gm.proposals }} Proposal{{ gm.proposals|pluralize:",s" }}</p>
-		  </div>
-		</div>
+</div>
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+		<a href="{% url 'whiteboard:index' %}"><h1>The Whiteboard</h1></a>
+		<h6>Announcements of all sorts</h6>
+	        <div class="masonry">
+			<div class="item" style="font-size: large"><a href="{% url 'whiteboard:add_note' %}"><span class="glyphicon glyphicon-plus"></span> <strong>Add new</strong></a>
+			</div>
+		{% if notes %}
+			{% for note in notes %}
+			<div class="item">
+				<p>{{ note.text }}</p>
+				<small>by {{ note.submitted_by.first_name }} on {{ note.pub_date}} </small>
+			</div>
+			{% endfor %}
+			</div>
+		{% else %}
+			<h4>No current announcements.</h4>
+		{% endif %}
 	</div>
 </div>
 </div>

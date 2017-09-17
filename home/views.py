@@ -16,6 +16,7 @@ from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, Upda
 
 from users.decorators import has_share, check_grouup
 from home.models import GM, Point, WgUpdate, Minutes
+from whiteboard.models import Note
 
 import sendgrid
 from sendgrid.helpers.mail import *
@@ -52,10 +53,17 @@ def index(request):
 
 	gm = GM.objects.latest('date_conv')
 
+	notes = Note.objects.all()
+	today = datetime.datetime.today().date()
+
+	# delete notes older than 7 days
+	current_notes = [note if note.pub_date+datetime.timedelta(days=7) >= today else note.delete() for note in notes]
+
 	context = {'gm': gm,
 		'test': test,
 		'image': image,
 		'pdf': pdf,
+		'notes': notes,
 		}
 
 	return render(request, 'home/index.html', context)
