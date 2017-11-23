@@ -10,6 +10,7 @@ urlpatterns = [
 	url(r'^mail/$', views.mail_test, name='mail_test'),
 	# User profile editing
 	url(r'^accounts/edit_profile/$', views.edit_profile, name='edit_profile'),
+	url(r'^accounts/signup/$', views.MySignupView.as_view()),
 
 	url(r'^map/$', views.map, name='map'),
 	url(r'^gms/$', views.gms, name='gms'),
