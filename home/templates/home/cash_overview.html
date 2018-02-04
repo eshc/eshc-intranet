@@ -9,8 +9,11 @@
     <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
 	<h1>Cash Overview</h1>
 	<h4>Aligned to our financial year</h4>
-	<h2>Year 4</h2>
+	<h2>Year 5</h2>
 	<h5>Current</h5>
+		<canvas id="myChart_5" width="200" height="80"></canvas>
+
+	<h2>Year 4</h2>
 		<canvas id="myChart_4" width="200" height="80"></canvas>
 
 	<h2>Year 3</h2>
@@ -26,6 +29,7 @@
 			var ctx_2 = document.getElementById("myChart_2").getContext('2d');
 			var ctx_3 = document.getElementById("myChart_3").getContext('2d');
 			var ctx_4 = document.getElementById("myChart_4").getContext('2d');
+			var ctx_5 = document.getElementById("myChart_5").getContext('2d');
 
 			options = {
 		        scales: {
@@ -93,6 +97,18 @@
 			            ]
 			        }]
 			    }
+			var data_5 = {
+			        datasets: [{
+			            label: 'Cash in Bank',
+			            data: [
+		            		{% for point in y5_data %}
+			            {
+							x: new Date({{point.year}}, {{point.month}}-1, {{point.day}}), y: {{point.total}}
+						},
+							{% endfor %}
+			            ]
+			        }]
+			    }
 
 			var myLineChart = new Chart(ctx_1, {
 			    type: 'line',
@@ -112,6 +128,11 @@
 			var myLineChart = new Chart(ctx_4, {
 			    type: 'line',
 			    data: data_4,
+			    options: options,
+			});
+			var myLineChart = new Chart(ctx_5, {
+			    type: 'line',
+			    data: data_5,
 			    options: options,
 			});
 		</script>

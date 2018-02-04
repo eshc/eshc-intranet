@@ -673,6 +673,21 @@ def cash(request):
 
         context['y4_data'] = rows
 
+    s3.meta.client.download_file('eshc-bucket', 'money/year_5.csv', '/tmp/year_5.csv')
+    with open('/tmp/year_5.csv', 'r') as csvfile:
+        # context['y1_data'] = str(data.read(), "utf-8")
+        reader = csv.reader(csvfile, delimiter = ',')
+        rows = []
+        # total = 0
+        for row in reader:
+            total += float(row[3].replace(',',''))
+            # rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
+            date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
+            rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
+            # rows.append([date, total])
+
+        context['y5_data'] = rows
+
     return render(request, 'home/cash_overview.html', context)
 
 
