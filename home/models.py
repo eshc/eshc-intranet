@@ -47,3 +47,13 @@ class WgUpdate(models.Model):
 class Minutes(models.Model):
     gm = models.OneToOneField(GM, on_delete=models.CASCADE)
     minutes_file = models.FileField(upload_to='minutes/', null=True)
+
+
+class Role(models.Model):
+    role_name = models.CharField(max_length=50)
+    group = models.ForeignKey(Group, limit_choices_to=models.Q(name__endswith='WG'),
+                              on_delete=models.CASCADE)
+    description = models.TextField(max_length=500)
+    assigned_to = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+
+

@@ -690,6 +690,12 @@ def cash(request):
 
     return render(request, 'home/cash_overview.html', context)
 
+@login_required
+@has_share
+def wsp(request):
+    context = {}
+    return render(request, 'home/wsp.html', context)
+
 
 def check_info_share(request):
     # Check if info is updated and share received

@@ -41,9 +41,15 @@ class UserAdmin(ImportExportModelAdmin):
 			return obj.profile.share_received
 		except Profile.DoesNotExist:
 			return ''
+
+	def active(self, obj):
+		try:
+			return obj.profile.is_active
+		except Profile.DoesNotExist:
+			return ''
 			
 	share_received.boolean = True
-	list_display = BaseUserAdmin.list_display + ('ref_number', 'share_received')
+	list_display = BaseUserAdmin.list_display + ('ref_number', 'share_received', 'is_active')
 
 
 

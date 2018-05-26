@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^gms/(?P<pk>[0-9]+)/delete/$', views.delete, name='delete'),
     url(r'^groups/$', views.groups, name='groups'),
     url(r'^cash/$', views.cash, name='cash'),
+    url(r'^wsp/$', views.wsp, name='wsp'),
 
 
 ]

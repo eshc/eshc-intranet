@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
+from .models import GM, Point, WgUpdate, Role
 
-from .models import GM, Point, WgUpdate
 
 class PointInline(admin.TabularInline):
 	model = Point
@@ -23,4 +24,25 @@ class GMAdmin(admin.ModelAdmin):
 	# list_filter = ['pub_date']
 	# search_fields = ['question_text']
 
+
+class RoleAdmin(admin.ModelAdmin):
+	readonly_fields = ('all_members',)
+	def member(self, obj):
+		try:
+			return obj.assigned_to.first_name + ' ' + obj.assigned_to.last_name
+		except:
+			return 'NOT ASSIGNED'
+
+	def all_members(self, obj):
+		users = User.objects.filter(is_active=True)
+		extracted = [u.get_full_name()+'________USERNAME:'+u.username for u in users]
+		return '\n'.join(extracted)
+
+	fieldsets = [
+		(None,	{'fields': ['role_name', 'assigned_to', 'group', 'description']}),
+		('Use the', {'fields': [readonly_fields,]})
+		] 
+	list_display = ('role_name', 'member', 'group')
+
 admin.site.register(GM, GMAdmin)
+admin.site.register(Role, RoleAdmin)
