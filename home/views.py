@@ -41,7 +41,7 @@ from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, UpdateForm, MinutesForm
 
 from users.decorators import has_share, check_grouup
-from home.models import GM, Point, WgUpdate, Minutes
+from home.models import GM, Point, WgUpdate, Minutes, Role
 from whiteboard.models import Note
 
 import sendgrid
@@ -693,7 +693,14 @@ def cash(request):
 @login_required
 @has_share
 def wsp(request):
-    context = {}
+    wgs = Group.objects.filter(name__endswith='WG')
+    wgs_with_conv = [(wg, Group.objects.filter(name__endswith='Conv', name__startswith=wg.name)[0]) for wg in wgs]
+
+    roles = Role.objects.all()
+    context = {'wgs': wgs_with_conv,
+            # 'conv': wgs_with_conv,
+            'roles': roles
+    }
     return render(request, 'home/wsp.html', context)
 
 

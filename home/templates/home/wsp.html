@@ -5,6 +5,61 @@
     <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
 		<h1>Work Share Plan</h1>
 		<h4>Allocations etc.</h4>
+		{% for group, conv in wgs %}
+			<h3>{{ group.name }}</h3>
+				<table class="table">
+					<tr>
+						<th>
+							Convenors
+						</th>
+					</tr>
+					{% for user in conv.user_set.all %}
+						{% if user.profile.share_received %}
+						<tr>
+							<td>{{ user.first_name }} 
+							{{ user.last_name }}</td>
+						</tr>
+						{% endif %}
+					{% endfor %}
+				</table>
+				<table class="table">
+					<tr>
+						<th>
+							Role
+						</th>
+						<th>
+							Responsible
+						</th>
+						<th>
+						 	Job Description
+						</th>
+					</tr>
+			{% for role in roles %}
+				{% if role.group.name == group.name %}
+					<tr>
+						<td>
+							{{role.role_name}}
+						</td>
+						<td>
+							{% if role.assigned_to %}
+							<a href="/admin/home/role/{{role.id}}/change/" style="color: black;">
+								{{role.assigned_to.first_name}} {{role.assigned_to.last_name}}
+							</a>
+							{% else %}
+								<strong><a href="/admin/home/role/{{role.id}}/change/">Assign</a></strong>
+							{% endif %}
+						</td>
+						<td>
+							{{role.description}}
+						</td>
+
+					</tr>
+				{% endif %}
+			{% endfor %}
+				</table>
+			
+		{% endfor %}
+		<br>
 	</div>
 </div>
 {% endblock body %}
