@@ -6,7 +6,8 @@
 		<h1>Work Share Plan</h1>
 		<h4>Allocations etc.</h4>
 		{% for group, conv in wgs %}
-			<h3>{{ group.name }}</h3>
+		<h3>{{ group.name }}</h3>
+			<div style="border: 1px solid lightgrey; border-radius: 5px">
 				<table class="table">
 					<tr>
 						<th>
@@ -57,7 +58,7 @@
 				{% endif %}
 			{% endfor %}
 				</table>
-			
+			</div>
 		{% endfor %}
 		<br>
 	</div>
