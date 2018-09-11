@@ -683,10 +683,16 @@ def cash(request):
             total += float(row[3].replace(',',''))
             # rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
             date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
-            rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
+            rows.append({'year': date.year, 'month': date.month,
+                         'day': date.day, 'total': total,
+                         'detail': row[5],
+                         'amount': row[3]})
             # rows.append([date, total])
 
         context['y5_data'] = rows
+
+    with open('/tmp/year_5.csv', 'r') as csvfile:
+        context['last_30'] = rows[-30:][::-1]
 
     return render(request, 'home/cash_overview.html', context)
 

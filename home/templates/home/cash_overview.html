@@ -10,8 +10,27 @@
 	<h1>Cash Overview</h1>
 	<h4>Aligned to our financial year</h4>
 	<h2>Year 5</h2>
-	<h5>Current</h5>
+	<h5>Current Year</h5>
 		<canvas id="myChart_5" width="200" height="80"></canvas>
+
+	<h4>Last 30 Transactions
+
+	<button type="button" class="btn" data-toggle="collapse" data-target="#collapseme">Show / Hide</button>
+	</h4>
+	<table class="table table-condensed table-striped">
+		<thead>
+			<th>Detail</th>
+			<th style="text-align: right">Amount</th>
+		</thead>
+		<tbody id="collapseme" class="collapse out">
+		{% for row in last_30 %}
+		<tr >
+			<td>{{row.detail}}</td><td style="text-align: right">{{row.amount}}</td>
+		</tr>
+		{% endfor %}
+			
+		</tbody>
+	</table>
 
 	<h2>Year 4</h2>
 		<canvas id="myChart_4" width="200" height="80"></canvas>
