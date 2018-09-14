@@ -5,6 +5,9 @@
     <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
 		<h1>Work Share Plan</h1>
 		<h4>Allocations etc.</h4>
+		{% if user.is_superuser %}
+		<a href="/admin/home/role/">Edit roles</a>
+		{% endif %}
 		{% for group, conv in wgs %}
 		<h3>{{ group.name }}</h3>
 			<div style="border: 1px solid lightgrey; border-radius: 5px">
@@ -26,6 +29,9 @@
 				<table class="table">
 					<tr>
 						<th>
+							Subgroup
+						</th>
+						<th>
 							Role
 						</th>
 						<th>
@@ -38,6 +44,13 @@
 			{% for role in roles %}
 				{% if role.group.name == group.name %}
 					<tr>
+						<td>
+							{% if role.subgroup %}
+								{{role.subgroup}}
+							{% else %}
+								-
+							{% endif %}
+						</td>
 						<td>
 							{{role.role_name}}
 						</td>

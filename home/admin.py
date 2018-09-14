@@ -39,7 +39,7 @@ class RoleAdmin(admin.ModelAdmin):
 		return '\n'.join(extracted)
 
 	fieldsets = [
-		(None,	{'fields': ['role_name', 'assigned_to', 'group', 'description']}),
+		(None,	{'fields': ['role_name', 'assigned_to', 'group', 'subgroup', 'description']}),
 		('Use the', {'fields': [readonly_fields,]})
 		] 
 	list_display = ('role_name', 'member', 'group')

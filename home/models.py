@@ -51,8 +51,8 @@ class Minutes(models.Model):
 
 class Role(models.Model):
     role_name = models.CharField(max_length=50)
-    group = models.ForeignKey(Group, limit_choices_to=models.Q(name__endswith='WG'),
-                              on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    subgroup = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(max_length=500)
     assigned_to = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 

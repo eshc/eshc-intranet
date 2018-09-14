@@ -72,16 +72,22 @@
 	</div> 
 	<div class="panel panel-default">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">WG Membership</h3>
+	    <h3 class="panel-title">Your WSP Role</h3>
 	  </div>
 	  <div class="panel-body">
-		<form method="POST" action="{% url 'profile' %}">
+	  	{% if role_assigned %}
+	  	<p>Your role title is: <a href="">Role name</a></p>
+	  	{% else %}
+	  	<p>You have not been assigned a role yet.</p>
+	  	<p><a href="/wsp/">WSP Roles List</a></p>
+	  	<p><a href="">Work Share Plan Introduction</a></p>
+	  	{% endif %}
+<!-- 		<form method="POST" action="{% url 'profile' %}">
 	        {% csrf_token %}
 		    <div style="line-height: 0">{{ wg_form.as_p }}</div>
 		    <button class="btn btn-info btn-xs" role="button" name="submit">Update</button>
-		    <!-- <input type="hidden" name="next" value="{% url 'profile' %}" /> -->
 	    </form>
-	  </div>
+ -->	  </div>
 	</div>
 
 </div>
