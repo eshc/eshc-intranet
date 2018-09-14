@@ -14,6 +14,12 @@ class UserEditForm(forms.ModelForm):
 		fields = ['first_name', 'last_name', 'email']
 		# fields = '__all__'
 
+	def __init__(self, *args, **kwargs):
+		super(UserEditForm, self).__init__(*args, **kwargs)
+		self.fields['first_name'].required = True
+		self.fields['last_name'].required = True
+
+
 	def save(self, commit=True):
 		user = super(UserEditForm, self).save(commit=False)
 		# user.set_password(self.cleaned_data["password1"])

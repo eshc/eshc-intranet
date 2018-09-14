@@ -23,7 +23,7 @@
 		-
 		<a href="{% url 'account_email' %}">Edit E-mail</a>
 		{% else %}
-		<a style="font-size: x-large; font-weight: bold;" href="{% url 'home:edit_profile' %}">Fill in missing profile info (click or tap)</a>
+		<a style="font-size: x-large; font-weight: bold; color:red" href="{% url 'home:edit_profile' %}">Fill in missing profile info (click or tap)</a>
 	  	{% endif %}
 	  	</div>
 	  </div>

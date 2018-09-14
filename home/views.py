@@ -709,13 +709,13 @@ def wsp(request):
     }
     return render(request, 'home/wsp.html', context)
 
-
+"""Helper functions below. Not views."""
 def check_info_share(request):
     # Check if info is updated and share received
     user = request.user
     if user.is_authenticated():
         if user.first_name == '' or user.last_name == '' or user.profile.phone_number == '' or user.profile.perm_address == '':
-            messages.add_message(request, messages.WARNING, 'Your <a href="/accounts/profile/" class="alert-link">Profile</a> is missing information. Go fill in extra info!', extra_tags='safe')
+            messages.add_message(request, messages.WARNING, 'Your <a href="/accounts/profile/" class="alert-link">Profile</a> is missing information. <a href="/accounts/edit_profile/" class="alert-link">Go fill in extra info!</a>', extra_tags='safe')
         if request.user.profile.share_received == False:
             messages.add_message(request, messages.WARNING, 
                 'We have not yet received your share. Have you bought one? ')
