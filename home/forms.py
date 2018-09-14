@@ -39,14 +39,6 @@ class ProfileEditForm(forms.ModelForm):
 		model = Profile
 		fields = ['phone_number', 'perm_address']
 
-class WgEditForm(forms.Form):
-	"""
-	Form used in the profile view, to select WG membership.
-	"""
-	places = forms.BooleanField(required=False)
-	people = forms.BooleanField(required=False)
-	procedures = forms.BooleanField(required=False)
-	participation = forms.BooleanField(required=False)
 
 class PointAddForm(forms.ModelForm):
 	"""

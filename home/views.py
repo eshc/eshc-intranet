@@ -38,7 +38,7 @@ import os
 import csv
 
 from leases.models import Lease, Inventory
-from .forms import UserEditForm, ProfileEditForm, WgEditForm, PointAddForm, UpdateForm, MinutesForm
+from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm #WgEditForm
 
 from users.decorators import has_share, check_grouup
 from home.models import GM, Point, WgUpdate, Minutes, Role
@@ -185,53 +185,10 @@ def profile(request):
     leases, valid_lease = check_leases(request)
     check_info_share(request)
 
-    groups = [x for x in Group.objects.values() if 'WG' in x['name']]
-
-    places = Group.objects.get(name='Places WG')
-    people = Group.objects.get(name='People WG')
-    participation = Group.objects.get(name='Participation WG')
-    procedures = Group.objects.get(name='Procedures WG')
-
-    if request.method != 'POST':
-        wg_form = WgEditForm(initial={'places': request.user in places.user_set.get_queryset(),
-                                    'procedures': request.user in procedures.user_set.get_queryset(),
-                                    'people': request.user in people.user_set.get_queryset(),
-                                    'participation': request.user in participation.user_set.get_queryset(),})
-    else:
-        wg_form = WgEditForm(data=request.POST)
-        # wg_form.places
-        if wg_form.is_valid():
-            messages.add_message(request, messages.SUCCESS, 'WG Membership updated successfully.')
-
-            if wg_form.cleaned_data['places'] == True:
-                places.user_set.add(request.user)
-            else:
-                places.user_set.remove(request.user)
-
-            if wg_form.cleaned_data['people'] == True:
-                people.user_set.add(request.user)
-            else:
-                people.user_set.remove(request.user)
-
-            if wg_form.cleaned_data['procedures'] == True:
-                procedures.user_set.add(request.user)
-            else:
-                procedures.user_set.remove(request.user)
-
-            if wg_form.cleaned_data['participation'] == True:
-                participation.user_set.add(request.user)
-            else:
-                participation.user_set.remove(request.user)
-
-        return HttpResponseRedirect(reverse('profile'))
-
     context = {'leases': leases, 
         'share_received': request.user.profile.share_received, 
         'valid_lease': valid_lease,
-        'groups': groups,
-        'wg_form': wg_form
         }
-
     return render(request, 'account/account/profile.html', context)
 
 @login_required
@@ -699,13 +656,9 @@ def cash(request):
 @login_required
 @has_share
 def wsp(request):
-    wgs = Group.objects.filter(name__endswith='WG')
-    wgs_with_conv = [(wg, Group.objects.filter(name__endswith='Conv', name__startswith=wg.name)[0]) for wg in wgs]
-
-    roles = Role.objects.all()
-    context = {'wgs': wgs_with_conv,
-            # 'conv': wgs_with_conv,
-            'roles': roles
+    wgs = Group.objects.all()
+    wgs_and_roles = [(wg, Role.objects.filter(group=wg.id)) for wg in wgs]
+    context = {'groups': wgs_and_roles,
     }
     return render(request, 'home/wsp.html', context)
 

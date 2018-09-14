@@ -8,70 +8,65 @@
 		{% if user.is_superuser %}
 		<a href="/admin/home/role/">Edit roles</a>
 		{% endif %}
-		{% for group, conv in wgs %}
-		<h3>{{ group.name }}</h3>
-			<div style="border: 1px solid lightgrey; border-radius: 5px">
-				<table class="table">
-					<tr>
-						<th>
-							Convenors
-						</th>
-					</tr>
-					{% for user in conv.user_set.all %}
-						{% if user.profile.share_received %}
+		{% for group, roles in groups %}
+			{% if roles %}
+			<h3>{{ group.name }}</h3>
+				<div style="border: 1px solid lightgrey; border-radius: 5px">
+					<table class="table">
 						<tr>
-							<td>{{ user.first_name }} 
-							{{ user.last_name }}</td>
+							<th>
+								Convenors
+							</th>
 						</tr>
-						{% endif %}
-					{% endfor %}
-				</table>
-				<table class="table">
-					<tr>
-						<th>
-							Subgroup
-						</th>
-						<th>
-							Role
-						</th>
-						<th>
-							Responsible
-						</th>
-						<th>
-						 	Job Description
-						</th>
-					</tr>
-			{% for role in roles %}
-				{% if role.group.name == group.name %}
-					<tr>
-						<td>
-							{% if role.subgroup %}
-								{{role.subgroup}}
-							{% else %}
-								-
-							{% endif %}
-						</td>
-						<td>
-							{{role.role_name}}
-						</td>
-						<td>
-							{% if role.assigned_to %}
-							<a href="/admin/home/role/{{role.id}}/change/" style="color: black;">
-								{{role.assigned_to.first_name}} {{role.assigned_to.last_name}}
-							</a>
-							{% else %}
-								<strong><a href="/admin/home/role/{{role.id}}/change/">Assign</a></strong>
-							{% endif %}
-						</td>
-						<td>
-							<a href="/wiki/{{ role.role_name|slugify }}">{{role.description}}</a>
-						</td>
+						
+					</table>
+					<table class="table">
+						<tr>
+							<th>
+								Subgroup
+							</th>
+							<th>
+								Role
+							</th>
+							<th>
+								Responsible
+							</th>
+							<th>
+							 	Job Description
+							</th>
+						</tr>
+				{% for role in roles %}
+					{% if role.group.name == group.name %}
+						<tr>
+							<td>
+								{% if role.subgroup %}
+									{{role.subgroup}}
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							<td>
+								{{role.role_name}}
+							</td>
+							<td>
+								{% if role.assigned_to %}
+								<a href="/admin/home/role/{{role.id}}/change/" style="color: black;">
+									{{role.assigned_to.first_name}} {{role.assigned_to.last_name}}
+								</a>
+								{% else %}
+									<strong><a href="/admin/home/role/{{role.id}}/change/">Assign</a></strong>
+								{% endif %}
+							</td>
+							<td>
+								<a href="/wiki/{{ role.role_name|slugify }}">{{role.description}}</a>
+							</td>
 
-					</tr>
-				{% endif %}
-			{% endfor %}
-				</table>
-			</div>
+						</tr>
+					{% endif %}
+				{% endfor %}
+					</table>
+				</div>
+			{% endif %}
 		{% endfor %}
 		<br>
 	</div>
