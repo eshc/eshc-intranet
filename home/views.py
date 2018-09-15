@@ -184,10 +184,12 @@ def mail_test(request):
 def profile(request):
     leases, valid_lease = check_leases(request)
     check_info_share(request)
+    roles = Role.objects.filter(assigned_to=request.user.id)
 
     context = {'leases': leases, 
         'share_received': request.user.profile.share_received, 
         'valid_lease': valid_lease,
+        'roles': roles,
         }
     return render(request, 'account/account/profile.html', context)
 

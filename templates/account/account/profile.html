@@ -72,22 +72,30 @@
 	</div> 
 	<div class="panel panel-default">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Your WSP Role</h3>
+	    <h3 class="panel-title">Your WSP Roles</h3>
 	  </div>
 	  <div class="panel-body">
-	  	{% if role_assigned %}
-	  	<p>Your role title is: <a href="">Role name</a></p>
+	  	{% if roles %}
+	  		<table class="table">
+	  		{% for role in roles %}
+	  			<tr>
+					<td>
+						<a href="/wiki/{{ role.role_name|slugify }}">{{role.role_name}}</a> 
+		  			</td>
+					<td>
+						{{ role.description }}
+					</td>
+	  			</tr>
+	  		{% endfor %}
+	  		</table>
 	  	{% else %}
 	  	<p>You have not been assigned a role yet.</p>
-	  	<p><a href="/wsp/">WSP Roles List</a></p>
-	  	<p><a href="">Work Share Plan Introduction</a></p>
+	  	<p><a href="wiki/work-share-plan">Work Share Plan Introduction</a></p>
 	  	{% endif %}
-<!-- 		<form method="POST" action="{% url 'profile' %}">
-	        {% csrf_token %}
-		    <div style="line-height: 0">{{ wg_form.as_p }}</div>
-		    <button class="btn btn-info btn-xs" role="button" name="submit">Update</button>
-	    </form>
- -->	  </div>
+		</div>
+		<div class="panel-footer">
+		  	<a href="/wsp/">WSP Roles List</a>
+		</div>
 	</div>
 
 </div>
