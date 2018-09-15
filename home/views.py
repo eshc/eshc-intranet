@@ -157,6 +157,7 @@ def index(request):
         'image': image,
         'pdf': pdf,
         'notes': notes,
+        'test': test
         }
 
     return render(request, 'home/index.html', context)

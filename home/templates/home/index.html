@@ -111,10 +111,10 @@
 		</div>
 	</div>
 </div>
-{% if user.has_share %}
+{% if user.profile.share_received %}
 <div class="row">
     <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
-		<a href="{% url 'whiteboard:index' %}"><h1>The Whiteboard</h1></a>
+		<a href="{% url 'whiteboard:index' %}"><h3>The Whiteboard</h3></a>
 		<h6>Announcements of all sorts</h6>
 	        <div class="masonry">
 			<div class="item" style="font-size: large"><a href="{% url 'whiteboard:add_note' %}"><span class="glyphicon glyphicon-plus"></span> <strong>Add new</strong></a>
