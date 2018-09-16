@@ -660,7 +660,7 @@ def cash(request):
 @has_share
 def wsp(request):
     wgs = Group.objects.all()
-    wgs_and_roles = [(wg, Role.objects.filter(group=wg.id)) for wg in wgs]
+    wgs_and_roles = [(wg, Role.objects.filter(group=wg.id).order_by('subgroup')) for wg in wgs]
     context = {'groups': wgs_and_roles,
     }
     return render(request, 'home/wsp.html', context)
