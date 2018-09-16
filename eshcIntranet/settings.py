@@ -260,6 +260,18 @@ WIKI_ACCOUNT_HANDLING = False
 WIKI_ANONYMOUS = False
 WIKI_ANONYMOUS_WRITE = False
 
+
+def wiki_restrict_edit_access(article, user):
+    """restrict editing to users with shares"""
+    if user.profile.share_received or user.is_superuser:
+        permission = True
+    else:
+        permission = False
+    return permission
+
+
+WIKI_CAN_WRITE = wiki_restrict_edit_access
+
 # Email
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = 'smtp.gmail.com'
