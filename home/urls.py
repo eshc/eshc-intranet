@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^groups/$', views.groups, name='groups'),
     url(r'^cash/$', views.cash, name='cash'),
     url(r'^wsp/$', views.wsp, name='wsp'),
+    url(r'^laundry/$', views.laundry, name='laundry'),
 
 
 ]

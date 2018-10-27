@@ -665,6 +665,11 @@ def wsp(request):
     }
     return render(request, 'home/wsp.html', context)
 
+@login_required
+@has_share
+def laundry(request):
+    return render(request, 'home/laundry.html')
+
 """Helper functions below. Not views."""
 def check_info_share(request):
     # Check if info is updated and share received
