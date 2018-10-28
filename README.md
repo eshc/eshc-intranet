@@ -20,8 +20,26 @@ Follow the instructions on setting up a [postgres database](https://www.digitalo
 If not, you can probably just use SQLite locally, but you'll have to use the commented out database setup in `settings.py`.
 
 ## Testing Instructions
-1. `cd` into eshcIntranet
-2. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/static/` folder for serving.
+1. Create a local_settings.py file in the eshcIntranet directory with the following contents:
+ ```python
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+DEFAULT_FILE_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+MEDIA_FILE_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+SECRET_KEY = 'none'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ ```
+2. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/staticfiles/` folder for serving.
 3. Run `python manage.py runserver`.
 4. Go to 127.0.0.1:8000 to access the site or 127.0.0.1:8000/admin/ to view the admin panel.
 5. To use the admin panel run `python manage.py createsuperuser` and follow the instructions to create an admin user.

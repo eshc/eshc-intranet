@@ -105,5 +105,6 @@ ENV/
 eshcIntranet/gmail_pass.py
 eshcIntranet/aws.py
 eshcIntranet/staticfiles/*
+staticfiles/*
 eshcIntranet/local_settings.py
 sendgrid.env
