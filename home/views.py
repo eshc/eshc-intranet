@@ -124,26 +124,6 @@ def index(request):
 
     test = 'Lorem'
 
-    # Create an S3 client
-    s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                config=botocore.client.Config(
-                    signature_version='s3v4',
-                    region_name='eu-west-2',
-                    )
-            )
-
-    image = s3.generate_presigned_url('get_object', Params={
-                        'Bucket': 'eshc-bucket',
-                        'Key': 'media/dr.png'},
-                        )
-
-    pdf = s3.generate_presigned_url('get_object', Params={
-                        'Bucket': 'eshc-bucket',
-                        'Key': 'minutes/2017.07.07_-_PhoneCoop_-_Internet_-_160gbp.pdf'
-                        }
-                    )
-
     gm = GM.objects.latest('date_conv')
 
     notes = Note.objects.all()
@@ -154,10 +134,7 @@ def index(request):
 
     context = {'gm': gm,
         'test': test,
-        'image': image,
-        'pdf': pdf,
-        'notes': notes,
-        'test': test
+        'notes': notes
         }
 
     return render(request, 'home/index.html', context)
