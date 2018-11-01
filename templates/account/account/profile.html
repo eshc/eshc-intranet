@@ -22,6 +22,8 @@
 		<a href="{% url 'home:edit_profile' %}">Edit Profile</a>
 		-
 		<a href="{% url 'account_email' %}">Edit E-mail</a>
+		-
+		<a href="{% url 'account_change_password' %}">Change password</a>
 		{% else %}
 		<a style="font-size: x-large; font-weight: bold; color:red" href="{% url 'home:edit_profile' %}">Fill in missing profile info (click or tap)</a>
 	  	{% endif %}
