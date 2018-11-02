@@ -37,7 +37,7 @@ class ProfileEditForm(forms.ModelForm):
 	"""
 	class Meta:
 		model = Profile
-		fields = ['phone_number', 'perm_address']
+		fields = ['preferred_name', 'phone_number', 'perm_address']
 
 
 class PointAddForm(forms.ModelForm):
