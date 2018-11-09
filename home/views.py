@@ -43,6 +43,7 @@ from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, Minu
 from users.decorators import has_share, check_grouup
 from home.models import GM, Point, WgUpdate, Minutes, Role
 from whiteboard.models import Note
+from django.core.mail import send_mail
 
 import sendgrid
 from sendgrid.helpers.mail import *
@@ -79,23 +80,17 @@ class MySignupView(SignupView):
         # By assigning the User to a property on the view, we allow subclasses
         # of SignupView to access the newly created User instance
         self.user = form.save(self.request)
-        try:
-            sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-            from_email = Email("edinburghstudenthousingcoop@gmail.com")
-            to_email = Email("filip.kaklin@gmail.com")
-            subject = "New user signed up!"
-            content = Content("text/plain", "http://eshc.herokuapp.com/admin to assign a reference number")
-            mail = Mail(from_email, subject, to_email, content)
-            response = sg.client.mail.send.post(request_body=mail.get())
-            print(response.status_code)
-            print(response.body)
-            print(response.headers)
-            return complete_signup(
-                self.request, self.user,
-                app_settings.EMAIL_VERIFICATION,
-                self.get_success_url())
-        except ImmediateHttpResponse as e:
-            return e.response
+        send_mail(
+            "New user signed up!",
+            "https://intranet.eshc.coop/admin to assign a reference number",
+            "intranet@eshc.coop",
+            ["root@eshc.coop"],
+            fail_silently=True
+        )
+        return complete_signup(
+            self.request, self.user,
+            app_settings.EMAIL_VERIFICATION,
+            self.get_success_url())
 
     def get_context_data(self, **kwargs):
         ret = super(SignupView, self).get_context_data(**kwargs)
@@ -144,16 +139,16 @@ def mail_test(request):
         pass
     else:
         # sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
-        sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-        from_email = Email("edinburghstudenthousingcoop@gmail.com")
-        to_email = Email("filip.kaklin@gmail.com")
-        subject = "No os environ"
-        content = Content("text/plain", "and easy to do anywhere, even with Python")
-        mail = Mail(from_email, subject, to_email, content)
-        response = sg.client.mail.send.post(request_body=mail.get())
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
+        # sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
+        # from_email = Email("edinburghstudenthousingcoop@gmail.com")
+        # to_email = Email("filip.kaklin@gmail.com")
+        # subject = "No os environ"
+        # content = Content("text/plain", "and easy to do anywhere, even with Python")
+        # mail = Mail(from_email, subject, to_email, content)
+        # response = sg.client.mail.send.post(request_body=mail.get())
+        # print(response.status_code)
+        # print(response.body)
+        # print(response.headers)
         return HttpResponseRedirect(reverse('home:index'))
 
     return render(request, 'home/mail_test.html')
