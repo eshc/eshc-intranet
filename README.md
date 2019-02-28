@@ -13,7 +13,7 @@ Make usable intranet.
 4. `cd` into the directory and `git clone <repo_url>`
 5. Make new virtual environment `virtualenv venv `
 6. Activate virtualenv `source ./venv/bin/activate` on linux
-7. Install python dependencies `pip install -r ./eshcIntranet/requirements.txt`
+7. Install python dependencies `pip install -r ./eshc-intranet/requirements.txt`
 
 Follow the instructions on setting up a [postgres database](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04) if you want to set up the database in the same way it is set up on Heroku. Set it up using the settings in `settings.py`.
 
@@ -24,6 +24,7 @@ If not, you can probably just use SQLite locally, but you'll have to use the com
  ```python
 import os
 
+DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
