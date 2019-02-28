@@ -73,13 +73,12 @@
 {% block body %}
 <div class="row">
 	<div class="col-lg-offset-1">
-	  <div class="col-sm-10">
+		<div class="col-sm-10">
 			<h1>ESHC Intranet Homepage</h1>
 		</div>
 		<div class="col-xs-12 col-lg-10">
-			<p>Welcome to the ESHC internal site. Keep in mind this is a constant work in progress. If you spot a bug, want to suggest an improvement or a new feature go to the <a href="/forum/">forums</a>.</p>
+			<p>Welcome to the ESHC internal site. Keep in mind this is a constant work in progress. If you spot a bug, want to suggest an improvement or a new feature let's chat on <a href="https://zulip.eshc.coop">Zulip</a>.</p>
 		</div>
-
 
 		<div class="col-xs-6 col-lg-5">
 			<div class="list-group">
@@ -94,9 +93,7 @@
 			  <a href="{% url 'home:cash' %}" class="list-group-item">Cash Overview</a>
 			  <a href="{% url 'whiteboard:index' %}" class="list-group-item">The Whiteboard</a>
 			</div>
-		</div>
 
-		<div class="col-xs-6 col-lg-5">
 			<div class="panel panel-default">
 			{% if gm %}
 			  <div class="panel-heading">
@@ -113,7 +110,22 @@
 			{% endif %}
 			</div>
 		</div>
+
 		<div class="col-xs-6 col-lg-5">
+		    {% if user.profile.share_received %}
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+				    <h3 class="panel-title">Intranet Essentials</h3>
+				</div>
+				<div class="list-group">
+				  <a href="https://nextcloud.eshc.coop/" class="list-group-item">Nextcloud (files)</a>
+				  <a href="https://zulip.eshc.coop/" class="list-group-item">Zulip (chat platform)</a>
+				  <a href="https://otrs.eshc.coop/" class="list-group-item">OTRS (tickets, requests)</a>
+				  <a href="https://www.eshc.coop/wp-admin/" class="list-group-item">Website administration</a>
+				  <a href="https://diradmin.eshc.coop/" class="list-group-item">Permission delegation</a>
+				</div>
+			</div>
+		    {% endif %}
 			<div class="panel panel-default">
 				<div class="panel-heading">
 				    <h3 class="panel-title">Useful External Links</h3>
@@ -121,16 +133,12 @@
 				<div class="list-group">
 				  <a href="https://www.facebook.com/groups/edinburghstudenthousingcoop/" class="list-group-item">The Members' Group on FB - <small>Secret group</small></a>
 				  <a href="https://www.facebook.com/groups/700689273360847/" class="list-group-item">The Swap and Share Group on FB</a>
-				  <a href="https://www.eshc.coop/" class="list-group-item">Website</a>
-				  {% if user.profile.share_received %}
-				  <a href="https://nextcloud.eshc.coop/" class="list-group-item">Nextcloud (files)</a>
-				  <a href="https://zulip.eshc.coop/" class="list-group-item">Zulip (chat platform)</a>
-				  <a href="https://otrs.eshc.coop/" class="list-group-item">OTRS (tickets, requests)</a>
-				  <a href="https://www.eshc.coop/wp-admin/" class="list-group-item">Website administration</a>
-				  <a href="https://diradmin.eshc.coop/" class="list-group-item">Permission delegation</a>
-				  {% endif %}
+				  <a href="https://www.eshc.coop/" class="list-group-item">Main Website</a>
 				</div>
 			</div>
+		</div>
+		<div class="col-xs-6 col-lg-5">
+			
 		</div>
 	</div>
 </div>
