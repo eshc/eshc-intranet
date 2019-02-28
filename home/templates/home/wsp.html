@@ -4,10 +4,13 @@
 <div class="row">
     <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
 		<h1>Work Share Plan</h1>
-		<h4>Allocations etc.</h4>
+		<h4>Roles and Allocations</h4>
 		{% if user.is_superuser %}
-		<a href="/admin/home/role/">Edit roles</a>
+		<h2>Instructions</h2>
+		<p><a href="/admin/home/role/">Click here to go to the Admin panel to edit roles</a></p>
+		<p>Click on the name of the current responsible person to reassign them.</p>
 		{% endif %}
+		<p>Click on the role description to go to the Wiki page and find out more.</p>
 		{% for group, roles in groups %}
 			{% if roles %}
 			<h3>{{ group.name }}</h3>
