@@ -119,7 +119,10 @@ def index(request):
 
     test = 'Lorem'
 
-    gm = GM.objects.latest('date_conv')
+    if GM.objects.exists():
+        gm = GM.objects.latest('date_conv')
+    else:
+        gm = None
 
     notes = Note.objects.all()
     today = datetime.datetime.today().date()
