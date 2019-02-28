@@ -1,7 +1,8 @@
 # ESHC Intranet
-[ESHC Homepage](http://edinburghcoop.wordpress.com/)
 
-[Heroku deployment](https://eshc.herokuapp.com/)
+[ESHC Homepage](http://eshc.coop/)
+
+[Deployment](https://intranet.eshc.coop/)
 
 ## Goal
 Make usable intranet.
