@@ -94,7 +94,7 @@
 	border: #BBB 1px solid ;
 	position: absolute;
 	width: 200px;
-	left: 100px;
+	left: 50px;
 	top: -10px;
 	color: #000000;
 	background-color: #FFFFFF;
@@ -114,6 +114,11 @@
 		      <strong>7</strong>
 		      {% for lease in leases_28_7 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -122,6 +127,11 @@
 		      <strong>6</strong>
 		      {% for lease in leases_28_6 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	{% if forloop.last %}
+			      	{% if forloop.counter != 5 %}
+			      		<strong>Check!</strong>
+			      	{% endif %}
+		      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -130,6 +140,11 @@
 		      <strong>5</strong>
 		      {% for lease in leases_28_5 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -138,6 +153,11 @@
 		      <strong>4</strong>
 		      {% for lease in leases_28_4 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -146,6 +166,11 @@
 		      <strong>3</strong>
 		      {% for lease in leases_28_3 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -154,6 +179,11 @@
 		      <strong>2</strong>
 		      {% for lease in leases_28_2 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 4 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -162,6 +192,11 @@
 		      <strong>1</strong>
 		      {% for lease in leases_28_1 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -173,6 +208,11 @@
 		      <strong>17</strong>
 		      {% for lease in leases_34_17 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 3 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -181,6 +221,11 @@
 		      <strong>16</strong>
 		      {% for lease in leases_34_16 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -189,6 +234,11 @@
 		      <strong>15</strong>
 		      {% for lease in leases_34_15 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -197,6 +247,11 @@
 		      <strong>14</strong>
 		      {% for lease in leases_34_14 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 4 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -205,6 +260,11 @@
 		      <strong>13</strong>
 		      {% for lease in leases_34_13 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 3 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -213,6 +273,11 @@
 		      <strong>12</strong>
 		      {% for lease in leases_34_12 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -221,6 +286,11 @@
 		      <strong>11</strong>
 		      {% for lease in leases_34_11 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -229,6 +299,11 @@
 		      <strong>10</strong>
 		      {% for lease in leases_34_10 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 4 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -237,6 +312,11 @@
 		      <strong>9</strong>
 		      {% for lease in leases_34_9 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 3 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -245,6 +325,11 @@
 		      <strong>8</strong>
 		      {% for lease in leases_34_8 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -253,6 +338,11 @@
 		      <strong>7</strong>
 		      {% for lease in leases_34_7 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -261,6 +351,11 @@
 		      <strong>6</strong>
 		      {% for lease in leases_34_6 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 4 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -269,6 +364,11 @@
 		      <strong>5</strong>
 		      {% for lease in leases_34_5 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 3 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -277,6 +377,11 @@
 		      <strong>4</strong>
 		      {% for lease in leases_34_4 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -285,6 +390,11 @@
 		      <strong>3</strong>
 		      {% for lease in leases_34_3 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -293,6 +403,11 @@
 		      <strong>2</strong>
 		      {% for lease in leases_34_2 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 3 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
@@ -301,6 +416,11 @@
 	          <strong>1</strong>
 		      {% for lease in leases_34_1 %}
 		      	<div id="tooltip"><p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>End date: {{ lease.end_date }}</span></p></div>
+		      	      	{% if forloop.last %}
+		      		      	{% if forloop.counter != 5 %}
+		      		      		<strong>Check!</strong>
+		      		      	{% endif %}
+		      	      	{% endif %}
 		      	{% empty %}
 			      	<div>No leases!</div>
 		      {% endfor %}
