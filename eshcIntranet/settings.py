@@ -219,7 +219,8 @@ AWS_S3_SIGNATURE_VERSION='s3v4'
 ######################
 
 # Settings for serving statics from Heroku
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 ######################
 
