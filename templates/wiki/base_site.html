@@ -36,7 +36,7 @@
             <span class="icon-bar"></span>
           </button>
           {% block wiki_header_branding %}
-          <a class="navbar-brand" href="/">ESHC</a>
+          <a class="navbar-brand" href="{% url 'home:index' %}">ESHC<img class="navbar-brand" src="{% static "img/logoheader.png"%}" alt="Cooper Cat" style="margin-left: -50px ;margin-right: -10px"></a>
           {% endblock %}
         </div>
         <div class="navbar-collapse collapse">
@@ -115,8 +115,8 @@
           {% block wiki_header_navlinks %}
           <ul class="nav navbar-nav">
             <li><a href="{% url 'wiki:root' %}">Wiki</a></li>
-            <li><a href="/polls/">Proposals</a></li>
-            <li><a href="/forum/">Forum</a></li>
+            <li><a target="_blank" href="https://nextcloud.eshc.coop">Nextcloud</a></li>
+            <li><a target="_blank" href="https://zulip.eshc.coop">Zulip</a></li>
           </ul>
           {% endblock %}
         </div>
