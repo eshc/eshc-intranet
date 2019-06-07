@@ -84,7 +84,7 @@ class MySignupView(SignupView):
             "New user signed up!",
             "https://intranet.eshc.coop/admin to assign a reference number",
             "intranet@eshc.coop",
-            ["root@eshc.coop"],
+            ["intranet-notify@lists.eshc.coop"],
             fail_silently=True
         )
         return complete_signup(
