@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import GM, Point, WgUpdate, Role
+from .models import GM, Point, WgUpdate, LdapGroup, Role
 
 
 class PointInline(admin.TabularInline):
@@ -39,10 +39,11 @@ class RoleAdmin(admin.ModelAdmin):
 		return '\n'.join(extracted)
 
 	fieldsets = [
-		(None,	{'fields': ['role_name', 'assigned_to', 'group', 'subgroup', 'description']}),
+		(None,	{'fields': ['role_name', 'assigned_to', 'group', 'subgroup', 'description', 'ldap_groups']}),
 		('Use the', {'fields': [readonly_fields,]})
 		] 
 	list_display = ('role_name', 'member', 'group')
 
 admin.site.register(GM, GMAdmin)
+admin.site.register(LdapGroup)
 admin.site.register(Role, RoleAdmin)

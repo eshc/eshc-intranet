@@ -49,11 +49,20 @@ class Minutes(models.Model):
     minutes_file = models.FileField(upload_to='minutes/', null=True)
 
 
+class LdapGroup(models.Model):
+    def __str__(self):
+        return self.ldap_cn.partition(',')[0].rpartition('=')[2] # extract from cn=*NAME*,ou=junk
+
+    ldap_cn = models.CharField(max_length=128)
+    description = models.TextField(max_length=500)
+
+
 class Role(models.Model):
     role_name = models.CharField(max_length=50)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     subgroup = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(max_length=500)
     assigned_to = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    ldap_groups = models.ManyToManyField(LdapGroup)
 
 
