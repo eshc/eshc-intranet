@@ -47,6 +47,12 @@ class UserAdmin(ImportExportModelAdmin):
 			return obj.profile.is_active
 		except Profile.DoesNotExist:
 			return ''
+
+	def extra_ldap_groups(self, obj):
+		try:
+			return obj.profile.ref_number
+		except Profile.DoesNotExist:
+			return ''
 			
 	share_received.boolean = True
 	list_display = BaseUserAdmin.list_display + ('ref_number', 'share_received', 'is_active')
