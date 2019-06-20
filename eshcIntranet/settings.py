@@ -315,6 +315,11 @@ MACHINA_FORUM_IMAGE_UPLOAD_TO = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazo
 # Achievements conf
 ACHIEVEMENT_CLASSES = ['accounts.handlers', 'backend.handlers']
 
+LDAP_SERVER_ADDR = '127.0.0.1'
+LDAP_SERVER_ROOT_DN = 'dc=directory,dc=eshc,dc=coop'
+LDAP_SERVER_AUTH_USER = 'cn=Manager,dc=directory,dc=eshc,dc=coop'
+LDAP_SERVER_AUTH_PASSWORD = ''
+
 try:
     from eshcIntranet.local_settings import *
 except ImportError:
