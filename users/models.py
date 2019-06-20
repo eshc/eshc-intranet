@@ -12,7 +12,8 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=15, blank=True)
     perm_address = models.TextField(max_length=500, blank=True)
     share_received = models.BooleanField(default=False)
-    extra_ldap_groups = models.ManyToManyField(LdapGroup)
+    current_member = models.BooleanField(default=False)
+    extra_ldap_groups = models.ManyToManyField(LdapGroup, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.preferred_name:
