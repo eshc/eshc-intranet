@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
@@ -106,11 +108,31 @@ class UserAdmin(ImportExportModelAdmin):
             usr.profile.share_received = False
             usr.profile.save()
         self.message_user(request, '%s members\' share removed' % (rows_updated,))
-
     action_remove_share.short_description = 'Remove selected members\' share paid status'
 
+    def action_mark_current_read_lease(self, request, queryset):
+        new_current = 0
+        new_ex = 0
+        scanned = 0
+
+        now = date.today()
+        for usr in queryset.select_related('profile'):
+            scanned += 1
+            valid_lease = (Lease.objects.filter(user=usr, start_date__lte=now, end_date__gte=now).count() > 0)
+            if valid_lease != usr.profile.current_member:
+                if valid_lease:
+                    new_current += 1
+                else:
+                    new_ex += 1
+                usr.profile.current_member = valid_lease
+                usr.profile.save()
+        self.message_user(request, '%s (out of %s) members updated: %s new members, %s members deactivated' % (new_current+new_ex, scanned, new_current, new_ex))
+    action_mark_current_read_lease.short_description = "Update selected members' active status based on signed lease"
+
+
     actions = ['action_mark_members_current', 'action_mark_members_left',
-               'action_give_share', 'action_remove_share']
+               'action_give_share', 'action_remove_share',
+               'action_mark_current_read_lease']
 
 
 admin.site.register(User, UserAdmin)
