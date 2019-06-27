@@ -8,6 +8,7 @@ from users.models import Profile
 from leases.models import Lease
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+from ajax_select import make_ajax_form
 
 admin.site.unregister(User)
 
@@ -15,6 +16,7 @@ admin.site.unregister(User)
 class ProfileInLine(admin.StackedInline):
     model = Profile
     can_delete = False
+    form = make_ajax_form(Profile, {'extra_ldap_groups': 'ldap'})
 
 
 class LeaseInLine(admin.StackedInline):

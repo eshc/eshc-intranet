@@ -18,9 +18,11 @@ from django.contrib import admin
 from allauth.account import urls
 from machina.app import board
 import home
+from ajax_select import urls as ajax_select_urls
 
 urlpatterns = [
 	url(r'', include('home.urls', namespace='home')),
+    url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^admin/', admin.site.urls),
     # url(r'^users/', include('users.urls', namespace='users')),
     url(r'^leases/', include('leases.urls', namespace='leases')),

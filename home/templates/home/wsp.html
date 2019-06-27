@@ -44,13 +44,12 @@
 								{{role.role_name}}
 							</td>
 							<td>
-								{% if role.assigned_to %}
+								{% for person in role.assigned_to.all %}
 								<a href="/admin/home/role/{{role.id}}/change/" style="color: black;">
-									{{role.assigned_to.first_name}} {{role.assigned_to.last_name}}
+									{{person.profile.format_name}} <br/>
 								</a>
-								{% else %}
-									<strong><a href="/admin/home/role/{{role.id}}/change/">Assign</a></strong>
-								{% endif %}
+                                {% endfor %}
+                                <strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
 							</td>
 							<td>
 								<a href="/wiki/work-share-plan/{{ role.role_name|slugify }}">{{role.description}}</a>

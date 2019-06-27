@@ -58,11 +58,14 @@ class LdapGroup(models.Model):
 
 
 class Role(models.Model):
+    def __str__(self):
+        return self.role_name
+
     role_name = models.CharField(max_length=50)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     subgroup = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(max_length=500)
-    assigned_to = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
-    ldap_groups = models.ManyToManyField(LdapGroup)
+    assigned_to = models.ManyToManyField(User, blank=True)
+    ldap_groups = models.ManyToManyField(LdapGroup, blank=True)
 
 

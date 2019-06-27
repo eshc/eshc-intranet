@@ -1,8 +1,9 @@
 """Defines URL patterns for home"""
 
 from django.conf.urls import url
-
 from . import views
+
+
 
 urlpatterns = [
 	# Home page
@@ -24,6 +25,4 @@ urlpatterns = [
     url(r'^cash/$', views.cash, name='cash'),
     url(r'^wsp/$', views.wsp, name='wsp'),
     url(r'^laundry/$', views.laundry, name='laundry'),
-
-
 ]

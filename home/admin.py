@@ -1,7 +1,11 @@
+from ajax_select.admin import AjaxSelectAdmin
 from django.contrib import admin
-from django.contrib.auth.models import User
 from .models import GM, Point, WgUpdate, LdapGroup, Role
+from ajax_select import make_ajax_form
 
+# make sure lookups are loaded
+import users.lookups
+import home.lookups
 
 class PointInline(admin.TabularInline):
 	model = Point
@@ -25,24 +29,26 @@ class GMAdmin(admin.ModelAdmin):
 	# search_fields = ['question_text']
 
 
-class RoleAdmin(admin.ModelAdmin):
-	readonly_fields = ('all_members',)
-	def member(self, obj):
+class RoleAdmin(AjaxSelectAdmin):
+	def members(self, obj):
 		try:
-			return obj.assigned_to.first_name + ' ' + obj.assigned_to.last_name
+			names = ''
+			for u in obj.assigned_to.all():
+				if len(names) > 0:
+					names += ', '
+				names += u.first_name + ' ' + u.last_name
+			if len(names) == 0:
+				return 'NOT ASSIGNED'
+			return names
 		except:
 			return 'NOT ASSIGNED'
 
-	def all_members(self, obj):
-		users = User.objects.filter(is_active=True)
-		extracted = [u.get_full_name()+'________USERNAME:'+u.username for u in users]
-		return '\n'.join(extracted)
-
 	fieldsets = [
-		(None,	{'fields': ['role_name', 'assigned_to', 'group', 'subgroup', 'description', 'ldap_groups']}),
-		('Use the', {'fields': [readonly_fields,]})
+		(None,	{'fields': ['role_name', 'assigned_to', 'group', 'subgroup', 'description', 'ldap_groups']})
 		] 
-	list_display = ('role_name', 'member', 'group')
+	list_display = ('role_name', 'members', 'group')
+	search_fields = ['role_name']
+	form = make_ajax_form(Role, {'assigned_to':'user', 'ldap_groups':'ldap'}, show_help_text=True)
 
 admin.site.register(GM, GMAdmin)
 admin.site.register(LdapGroup)

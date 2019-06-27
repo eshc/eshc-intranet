@@ -15,6 +15,15 @@ class Profile(models.Model):
     current_member = models.BooleanField(default=False)
     extra_ldap_groups = models.ManyToManyField(LdapGroup, blank=True)
 
+    def __str__(self):
+        return self.format_name()
+
+    def format_name(self):
+        if len(self.preferred_name) > 0:
+            return self.preferred_name + ' ' + self.user.last_name
+        else:
+            return self.user.get_full_name()
+
     def save(self, *args, **kwargs):
         if not self.preferred_name:
             self.preferred_name = self.user.first_name
