@@ -45,9 +45,7 @@
 							</td>
 							<td>
 								{% for person in role.assigned_to.all %}
-								<a href="/admin/home/role/{{role.id}}/change/" style="color: black;">
 									{{person.profile.format_name}} <br/>
-								</a>
                                 {% endfor %}
                                 <strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
 							</td>
