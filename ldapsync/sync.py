@@ -4,7 +4,7 @@ from eshcIntranet.settings import *
 from leases.models import Lease
 from users.models import User, Profile
 from home.models import Role, LdapGroup
-from typing import Callable, Dict, Union
+from typing import Callable, Dict, Union, Set
 from datetime import date
 
 
@@ -60,6 +60,7 @@ LDAP_ATTR_MAP: Dict[str, Callable[[Profile], str]] = {
 
 class IntranetLdapSync:
     connection = None
+    members_group = 'cn=AllMembers,ou=Groups,%s' % (LDAP_SERVER_ROOT_DN,)
     members_dn = 'ou=Members,%s' % (LDAP_SERVER_ROOT_DN,)
     exmembers_dn = 'ou=DeactivatedMembers,%s' % (LDAP_SERVER_ROOT_DN,)
     empty_group_member = 'uid=groupfiller,%s' % (LDAP_SERVER_ROOT_DN,)
@@ -224,3 +225,54 @@ class IntranetLdapSync:
                 assert succ
             else:
                 print("Changing %d fields for dn %s" % (num_changes, user_dn))
+
+    def __fill_ldap_group(self, group_cn: str, uids: Set[str]):
+        if self.mock:
+            print(" * Mocking group update:", group_cn)
+        ldap_uids = set()
+        self.connection.search(group_cn, '(cn=*)', BASE, attributes=['member'])
+        response = self.connection.response[0]
+        has_empty = False
+        to_remove_ex = set()
+        for ldn in response['attributes']['member']:
+            if ldn != self.empty_group_member:
+                if ldn.endswith(self.exmembers_dn):
+                    to_remove_ex.add(ldn)
+                else:
+                    ldap_uids.add(ldn.split(',')[0][4:])
+            else:
+                has_empty = True
+        to_remove = ldap_uids - uids
+        to_add = uids - ldap_uids
+        modifications = []
+        for uid in to_add:
+            modifications.append((MODIFY_ADD, 'uid=%s,%s' % (uid, self.members_dn)))
+        if not has_empty:
+            modifications.append((MODIFY_ADD, self.empty_group_member))
+        for uid in to_remove:
+            modifications.append((MODIFY_DELETE, 'uid=%s,%s' % (uid, self.members_dn)))
+        for dn in to_remove_ex:
+            modifications.append((MODIFY_DELETE, dn))
+        if self.mock:
+            print(modifications)
+        else:
+            self.connection.modify(group_cn, {'member': modifications})
+        pass
+
+    def sync_intranet_ldap_group(self, group: LdapGroup):
+        uids = set()
+        for p in Profile.objects.filter(extra_ldap_groups=group, current_member=True):
+            uids.add(p.user.username)
+        for r in Role.objects.filter(ldap_groups=group):
+            for u in r.assigned_to.filter(profile__current_member=True):
+                if u.username not in uids:
+                    uids.add(u.username)
+        self.__fill_ldap_group(group.ldap_cn, uids)
+
+    def sync_all_ldap_groups(self):
+        for g in LdapGroup.objects.all():
+            self.sync_intranet_ldap_group(g)
+        uids = set()
+        for u in User.objects.filter(profile__current_member=True):
+            uids.add(u.username)
+        self.__fill_ldap_group(self.members_group, uids)

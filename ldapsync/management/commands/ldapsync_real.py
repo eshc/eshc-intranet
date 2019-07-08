@@ -19,3 +19,4 @@ class Command(BaseCommand):
         for u in qs:
             ils.sync_intranet_user(u)
         self.stdout.write(" * Finished syncing users")
+        ils.sync_all_ldap_groups()
