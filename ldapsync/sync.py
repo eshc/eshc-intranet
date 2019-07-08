@@ -256,7 +256,8 @@ class IntranetLdapSync:
         if self.mock:
             print(modifications)
         else:
-            self.connection.modify(group_cn, {'member': modifications})
+            if len(modifications) > 0:
+                self.connection.modify(group_cn, {'member': modifications})
         pass
 
     def sync_intranet_ldap_group(self, group: LdapGroup):
