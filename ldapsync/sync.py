@@ -76,7 +76,7 @@ class IntranetLdapSync:
         Move user to the LDAP ex-members group.
         """
         uid = user.pk
-        u_query = '(&%s(employeeNumber=%d))' % (self.filter_member, uid)
+        u_query = '(&%s(|(uid=%s)(employeeNumber=%d)))' % (self.filter_member, user.username, uid)
         self.connection.search(self.members_dn, u_query)
         response = self.connection.response
         if len(response) < 1:
@@ -140,7 +140,7 @@ class IntranetLdapSync:
 
         assert profile.current_member
         uid = user.pk
-        u_query = '(&%s(employeeNumber=%d))' % (self.filter_member, uid)
+        u_query = '(&%s(|(uid=%s)(employeeNumber=%d)))' % (self.filter_member, user.username, uid)
         self.connection.search(self.members_dn, u_query)
         response = self.connection.response
         found_users = len(response)
