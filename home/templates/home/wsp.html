@@ -43,10 +43,13 @@
 							<td>
 								{{role.role_name}}
 							</td>
-							<td>
+							<td style="white-space: nowrap">
 								{% for person in role.assigned_to.all %}
 									{{person.profile.format_name}} <br/>
                                 {% endfor %}
+                                {% if role.assigned_to.all.count == 0 %}
+                                    <strong style="color: #E11;">UNASSIGNED</strong> <br/>
+                                {% endif %}
                                 <strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
 							</td>
 							<td>
