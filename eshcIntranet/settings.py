@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'polls.apps.PollsConfig',
     'hours.apps.HoursConfig',
     'whiteboard.apps.WhiteboardConfig',
+    'ldapsync.apps.LdapSyncConfig',
 
     # Machina related apps:
     # 'mptt',   # Already included above
