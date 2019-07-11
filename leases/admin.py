@@ -18,5 +18,6 @@ class LeaseAdmin(admin.ModelAdmin):
 	list_display = list_display + ['member']
 
 	search_fields = ['lease_type', 'start_date', 'end_date', 'user__first_name', 'user__last_name']
+	autocomplete_fields = ['user']
 
 admin.site.register(Lease, LeaseAdmin)

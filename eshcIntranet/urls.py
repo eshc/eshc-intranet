@@ -16,34 +16,24 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from allauth.account import urls
-from machina.app import board
+from django.urls import path
+
 import home
-from ajax_select import urls as ajax_select_urls
 
 urlpatterns = [
-	url(r'', include('home.urls', namespace='home')),
-    url(r'^ajax_select/', include(ajax_select_urls)),
+    url(r'', include('home.urls')),
     url(r'^admin/', admin.site.urls),
     # url(r'^users/', include('users.urls', namespace='users')),
-    url(r'^leases/', include('leases.urls', namespace='leases')),
-    url(r'^polls/', include('polls.urls', namespace='polls')),
-    url(r'^hours/', include('hours.urls', namespace='hours')),
-    url(r'^whiteboard/', include('whiteboard.urls', namespace='whiteboard')),
-
-    # Waliki
-    # url(r'^wiki/', include('waliki.urls')),
+    url(r'^leases/', include('leases.urls')),
+    url(r'^polls/', include('polls.urls')),
+    url(r'^hours/', include('hours.urls')),
+    url(r'^whiteboard/', include('whiteboard.urls')),
 
     # allauth
     url(r'^accounts/', include('allauth.urls')),
     url(r'^accounts/profile/', home.views.profile, name='profile'),
 
-    # Machina
-    url(r'^forum/', include(board.urls)),
+    path('notifications/', include('django_nyt.urls')),
+    path('wiki/', include('wiki.urls')),
 ]
 
-from wiki.urls import get_pattern as get_wiki_pattern
-from django_nyt.urls import get_pattern as get_nyt_pattern
-urlpatterns += [
-    url(r'^notifications/', get_nyt_pattern()),
-    url(r'wiki/', get_wiki_pattern())
-]

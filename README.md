@@ -103,5 +103,3 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 * Uses bootstrap v3.3.0
 * AWS S3 for static files in production
 * Uses django-wiki
-* Uses machina (a django package) for the forum
-* Sendgrid used for email sending

@@ -4,6 +4,13 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from home.models import LdapGroup
 
+
+def user_to_str(u: User):
+    return '%s %s (%s)' % (u.first_name, u.last_name, u.username)
+
+
+User.__str__ = user_to_str
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     ref_number = models.CharField(

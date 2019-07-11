@@ -1,9 +1,10 @@
 """Defines URL patters for leases"""
 
 from django.conf.urls import url, include
-from django.contrib.auth.views import login
 
 from . import views
+
+app_name = 'leases'
 
 urlpatterns = [
 	# Inventory page

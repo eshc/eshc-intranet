@@ -13,11 +13,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 
-# Machina
-from machina import get_apps as get_machina_apps
-from machina import MACHINA_MAIN_TEMPLATE_DIR
-from machina import MACHINA_MAIN_STATIC_DIR
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -44,7 +39,6 @@ AUTHENTICATION_BACKENDS = (
 # Application definition
 
 INSTALLED_APPS = [
-    'ajax_select',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,16 +59,16 @@ INSTALLED_APPS = [
 
     # django-wiki apps
     # 'django.contrib.sites',   # Already included above
-    'django.contrib.humanize',
-    'django_nyt',
+    'django.contrib.humanize.apps.HumanizeConfig',
+    'django_nyt.apps.DjangoNytConfig',
     'mptt',
     'sekizai',
     'sorl.thumbnail',
-    'wiki',
-    'wiki.plugins.attachments',
-    'wiki.plugins.notifications',
-    'wiki.plugins.images',
-    'wiki.plugins.macros',
+    'wiki.apps.WikiConfig',
+    'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.macros.apps.MacrosConfig',
 
     # Custom apps
     'home.apps.HomeConfig',
@@ -85,14 +79,9 @@ INSTALLED_APPS = [
     'whiteboard.apps.WhiteboardConfig',
     'ldapsync.apps.LdapSyncConfig',
 
-    # Machina related apps:
-    # 'mptt',   # Already included above
-    'haystack',
-    'widget_tweaks',
-
     # For exporting databse into layman formats
     'import_export'
-] + get_machina_apps()
+]
 
 SITE_ID = 1 # This is for facebook login integration
 
@@ -105,9 +94,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # Machina
-    'machina.apps.forum_permission.middleware.ForumPermissionMiddleware',
 ]
 
 
@@ -118,9 +104,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'), 
                 os.path.join(BASE_DIR, 'templates/account'),
-                os.path.join(BASE_DIR, 'templates/account/email'),
-                os.path.join(BASE_DIR, 'templates/machina'), 
-                MACHINA_MAIN_TEMPLATE_DIR],
+                os.path.join(BASE_DIR, 'templates/account/email')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,9 +112,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
-                # Machina
-                'machina.core.context_processors.metadata',
 
                 # django-wiki
                 "sekizai.context_processors.sekizai",
@@ -158,7 +139,7 @@ WSGI_APPLICATION = 'eshcIntranet.wsgi.application'
 # MOVED NOW TO LOCAL SETTINGS
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'eshcdb',                      
 #         'USER': 'django',
 #         'PASSWORD': 'djangopass',
@@ -172,6 +153,10 @@ WSGI_APPLICATION = 'eshcIntranet.wsgi.application'
 
 DATABASES = {}
 DATABASES['default'] =  dj_database_url.config()
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -233,17 +218,12 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
-    MACHINA_MAIN_STATIC_DIR,
 )
 
 CACHES = {
   'default': {
     'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
   },
-  'machina_attachments': {
-    'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-    'LOCATION': '/tmp',
-  }
 }
 
 HAYSTACK_CONNECTIONS = {
@@ -296,23 +276,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[ESHC] "
 # ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 
-# Machina settings
-MACHINA_FORUM_NAME = 'ESHC Forum'
-MACHINA_DEFAULT_AUTHENTICATED_USER_FORUM_PERMISSIONS = [
-    'can_see_forum',
-    'can_read_forum',
-    'can_start_new_topics',
-    'can_reply_to_topics',
-    'can_edit_own_posts',
-    'can_post_without_approval',
-    'can_create_polls',
-    'can_vote_in_polls',
-    'can_download_file',
-]
-
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'mediafiles')
 MEDIA_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/media/'
-MACHINA_FORUM_IMAGE_UPLOAD_TO = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/machina/'
 
 # Achievements conf
 ACHIEVEMENT_CLASSES = ['accounts.handlers', 'backend.handlers']

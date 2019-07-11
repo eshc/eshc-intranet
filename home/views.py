@@ -45,9 +45,6 @@ from home.models import GM, Point, WgUpdate, Minutes, Role
 from whiteboard.models import Note
 from django.core.mail import send_mail
 
-import sendgrid
-from sendgrid.helpers.mail import *
-
 import boto3
 import botocore
 import eshcIntranet.settings as settings
@@ -649,7 +646,7 @@ def laundry(request):
 def check_info_share(request):
     # Check if info is updated and share received
     user = request.user
-    if user.is_authenticated():
+    if user.is_authenticated:
         if user.first_name == '' or user.last_name == '' or user.profile.phone_number == '' or user.profile.perm_address == '':
             messages.add_message(request, messages.WARNING, 'Your <a href="/accounts/profile/" class="alert-link">Profile</a> is missing information. <a href="/accounts/edit_profile/" class="alert-link">Click here to fill in extra info!</a>', extra_tags='safe')
         if request.user.profile.share_received == False:

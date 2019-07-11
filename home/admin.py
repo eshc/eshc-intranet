@@ -1,11 +1,5 @@
-from ajax_select.admin import AjaxSelectAdmin
 from django.contrib import admin
 from .models import GM, Point, WgUpdate, LdapGroup, Role
-from ajax_select import make_ajax_form
-
-# make sure lookups are loaded
-import users.lookups
-import home.lookups
 
 class PointInline(admin.TabularInline):
 	model = Point
@@ -29,7 +23,7 @@ class GMAdmin(admin.ModelAdmin):
 	# search_fields = ['question_text']
 
 
-class RoleAdmin(AjaxSelectAdmin):
+class RoleAdmin(admin.ModelAdmin):
 	def members(self, obj):
 		try:
 			names = ''
@@ -48,8 +42,13 @@ class RoleAdmin(AjaxSelectAdmin):
 		] 
 	list_display = ('role_name', 'members', 'group')
 	search_fields = ['role_name']
-	form = make_ajax_form(Role, {'assigned_to':'user', 'ldap_groups':'ldap'}, show_help_text=True)
+	autocomplete_fields = ['assigned_to', 'ldap_groups']
+
+
+class LdapAdmin(admin.ModelAdmin):
+	search_fields = ['ldap_cn']
+
 
 admin.site.register(GM, GMAdmin)
-admin.site.register(LdapGroup)
+admin.site.register(LdapGroup, LdapAdmin)
 admin.site.register(Role, RoleAdmin)
