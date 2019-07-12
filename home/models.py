@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 from django.contrib.auth.models import User, Group
 
@@ -10,6 +11,9 @@ class GM(models.Model):
     number = models.IntegerField()
     date_conv = models.DateField('date convened')
     # minutes = models.FileField(upload_to='minutes/', default=None, null=True, blank=True)
+
+    def is_upcoming(self):
+        return date.today() <= self.date_conv
 
     def discussions(self):
         return len(self.point_set.filter(proposal=False))
