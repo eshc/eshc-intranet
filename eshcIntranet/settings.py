@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'hours.apps.HoursConfig',
     'whiteboard.apps.WhiteboardConfig',
     'ldapsync.apps.LdapSyncConfig',
+    'apply.apps.ApplyConfig',
 
     # For exporting databse into layman formats
     'import_export'
