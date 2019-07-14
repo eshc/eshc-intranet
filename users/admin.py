@@ -69,6 +69,7 @@ class UserAdmin(ImportExportModelAdmin):
     share_received.boolean = True
     current_member.boolean = True
     list_display = BaseUserAdmin.list_display + ('ref_number', 'current_member', 'share_received', 'is_active')
+    list_filter = ('profile__current_member', 'profile__share_received')
     search_fields = ['username', 'email', 'first_name', 'last_name']
 
     def action_mark_members_current(self, request, queryset):
