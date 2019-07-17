@@ -3,6 +3,11 @@ from django.contrib.auth.models import User
 from django.db.models import CASCADE
 from ordered_model.models import OrderedModel
 from enum import Enum
+from datetime import datetime, timezone
+
+
+def now():
+    return datetime.now(timezone.utc)
 
 
 class ApplicationSession(models.Model):
@@ -10,7 +15,8 @@ class ApplicationSession(models.Model):
     special_title = models.CharField(verbose_name='Special name, e.g. Summerletter', max_length=30, blank=True)
     move_in_date = models.DateField(verbose_name='Move-in date')
     open_time = models.DateTimeField(verbose_name='Applications form opening time')
-    close_time = models.DateTimeField(verbose_name='Applications form closing time, Voting opening time')
+    close_time = models.DateTimeField(verbose_name='Applications form closing time')
+    voting_open_time = models.DateTimeField(verbose_name='Members voting opening time')
     voting_close_time = models.DateTimeField(verbose_name='Members voting closing time')
 
     class Meta:
@@ -22,6 +28,15 @@ class ApplicationSession(models.Model):
 
     def __str__(self):
         return ('%s %s move-in' % (self.special_title, self.move_in_str())).strip()
+
+    def is_applying_open(self):
+        return self.open_time <= now() <= self.close_time
+
+    def is_voting_open(self):
+        return self.voting_open_time <= now() <= self.voting_close_time
+
+    def questions(self):
+        return ApplicationQuestion.objects.filter(session=self).order_by('order')
 
 
 class QuestionType(Enum):
@@ -46,6 +61,9 @@ class ApplicationQuestion(OrderedModel):
 
     def __str__(self):
         return self.question_text
+
+    def options_array(self):
+        return self.question_options.splitlines(False)
 
 
 class Applicant(models.Model):

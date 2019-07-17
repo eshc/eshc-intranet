@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^polls/', include('polls.urls')),
     url(r'^hours/', include('hours.urls')),
     url(r'^whiteboard/', include('whiteboard.urls')),
+    path('apply/', include('apply.urls')),
 
     # allauth
     url(r'^accounts/', include('allauth.urls')),

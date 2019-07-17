@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.db.models import Sum
 from ordered_model.admin import OrderedTabularInline, OrderedInlineModelAdminMixin
 
-from .models import ApplicationSession, ApplicationQuestion, Applicant, ApplicationAnswer
+from .models import ApplicationSession, ApplicationQuestion, Applicant, ApplicationAnswer, ApplicationVote
 
 
 class QuestionsAdmin(OrderedTabularInline):
@@ -26,6 +27,16 @@ class ApplicantQuestionsInline(admin.StackedInline):
 
 @admin.register(Applicant)
 class ApplicantViewAdmin(admin.ModelAdmin):
+
+    def vote_stats(self, applicant: Applicant) -> str:
+        count = ApplicationVote.objects.filter(applicant=applicant).count()
+        pos = ApplicationVote.objects.filter(applicant=applicant, points__gte=0).aggregate(Sum('points'))['points__sum'] or 0
+        neg = ApplicationVote.objects.filter(applicant=applicant, points__lt=0).aggregate(Sum('points'))['points__sum'] or 0
+
+        return '%d votes, score: %d (+%d,-%d)' % (count, pos+neg, pos, -neg)
+
+    list_display = ('session', '__str__', 'email', 'phone_number',
+                    'is_past_applicant', 'verified_past_applicant', 'vote_stats')
     list_filter = ('session', 'is_past_applicant')
     readonly_fields = ('date_applied',)
     inlines = (ApplicantQuestionsInline,)
