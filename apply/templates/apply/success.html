@@ -1,0 +1,9 @@
+{% extends "apply/base.html" %}
+{% load index %}
+
+{% block body %}
+    <br>
+    <h1>Thank you for applying, {{ preferred_name }}!</h1>
+    <br>
+    <p class="alert alert-success">You should soon receive an e-mail at {{ email }} (check your spam!) with the details of your application.</p>
+{% endblock %}

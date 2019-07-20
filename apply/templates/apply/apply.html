@@ -63,7 +63,7 @@
                     {% if question.question_type == 'ShortText' %}
                         <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}" required>
                     {% elif question.question_type == 'LongText' %}
-                        <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000" value="{{ answer }}" required></textarea>
+                        <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000" required>{{ answer }}</textarea>
                     {% elif question.question_type == 'SingleChoice' %}
                         <select class="custom-select custom-select-lg mb-3" id="question_{{ qpk }}" name="question_{{ qpk }}">
                             {% for choice in question.options_array %}

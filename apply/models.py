@@ -68,16 +68,16 @@ class ApplicationQuestion(OrderedModel):
 
 class Applicant(models.Model):
 
-    session = models.ForeignKey(ApplicationSession, on_delete=CASCADE)
+    session = models.ForeignKey(ApplicationSession, on_delete=CASCADE, verbose_name='Application session')
     first_name = models.CharField(verbose_name='First name', max_length=30)
     last_name = models.CharField(verbose_name='Last name', max_length=150)
     preferred_name = models.CharField(verbose_name='Preferred name', max_length=30, blank=True)
     email = models.EmailField(verbose_name='Email address')
-    phone_number = models.CharField(max_length=15, blank=True)
+    phone_number = models.CharField(verbose_name='Phone number', max_length=15, blank=True)
     is_past_applicant = models.BooleanField(verbose_name='Past applicant', default=False)
     verified_past_applicant = models.BooleanField(verbose_name='Verified past applicant', default=False)
     date_applied = models.DateTimeField(verbose_name='Date applied', auto_now=True)
-    answers = models.ManyToManyField(ApplicationQuestion, through='ApplicationAnswer')
+    answers = models.ManyToManyField(ApplicationQuestion, through='ApplicationAnswer', blank=True)
 
     class Meta:
         ordering = ('session__move_in_date', 'last_name', 'first_name')
@@ -87,6 +87,12 @@ class Applicant(models.Model):
             return '%s (%s %s)' % (self.preferred_name, self.first_name, self.last_name)
         else:
             return '%s %s' % (self.first_name, self.last_name)
+
+    def get_introduction_name(self):
+        if self.preferred_name:
+            return self.preferred_name
+        else:
+            return self.first_name
 
 
 class ApplicationAnswer(models.Model):
