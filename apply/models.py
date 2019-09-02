@@ -76,8 +76,11 @@ class Applicant(models.Model):
     phone_number = models.CharField(verbose_name='Phone number', max_length=15, blank=True)
     is_past_applicant = models.BooleanField(verbose_name='Past applicant', default=False)
     verified_past_applicant = models.BooleanField(verbose_name='Verified past applicant', default=False)
+    confidential_note = models.TextField(verbose_name='Confidential information', max_length=1000, blank=True)
+    app_team_note = models.TextField(verbose_name='Applications team notes (invisible to applicant)', max_length=1000, blank=True)
     date_applied = models.DateTimeField(verbose_name='Date applied', auto_now=True)
     answers = models.ManyToManyField(ApplicationQuestion, through='ApplicationAnswer', blank=True)
+    vote_count = models.IntegerField(verbose_name='Votes received', default=0)
 
     class Meta:
         ordering = ('session__move_in_date', 'last_name', 'first_name')

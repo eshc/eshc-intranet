@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load index %}
+
+{% block body %}
+    <br>
+    <h2>Voting for {{ session }}</h2>
+
+    {% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
+    {% if succ_message %}<div class="alert alert-success" role="alert">{{ succ_message }}</div>{% endif %}
+
+    {% if not session.is_voting_open %}
+        <div class="alert alert-danger" role="alert">Sorry, but the voting period for this application session has ended.</div>
+    {% else %}
+        <div class="alert alert-info" role="alert">Voting open until {{ session.voting_close_time|date:"jS F Y H:i" }}</div>
+        {% if not applicant %}
+            <div class="alert alert-info" role="alert">Congratulations, you have voted on all the applications submitted so far!</div>
+        {% else %}
+            <div class="row">
+                <div class="col-md-12">
+                    Applicant ID: #{{ applicant.pk }}
+                </div>
+            </div>
+            {% for question in session.questions %}
+            {% with question.pk as qpk %}
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="control-label" for="question_{{ qpk }}">{{ question.question_text }}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                {% with answers|index:qpk as answer %}
+                {% if question.question_type == 'ShortText' %}
+                    <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}" required readonly>
+                {% elif question.question_type == 'LongText' %}
+                    <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000" required readonly>{{ answer }}</textarea>
+                {% elif question.question_type == 'SingleChoice' %}
+                    <select class="form-control custom-select custom-select-lg mb-3" id="question_{{ qpk }}" name="question_{{ qpk }}" disabled>
+                        <div class="radio"><label>
+                        <input type="radio" disabled {% if choice in answer %} checked {% endif %}>
+                            {{ choice }}</label></div>
+                    </select>
+                {% elif question.question_type == 'MultipleChoice' %}
+                    {% for choice in question.options_array %}
+                        <div class="checkbox">
+                        <label>
+                        <input type="checkbox" disabled {% if choice in answer %} checked {% endif %}>
+                        {{ choice }}</label></div>
+                    {% endfor %}
+                    <small id="q{{ qpk }}help" class="form-text text-muted">(This is a multiple choice question)</small>
+                {% else %}
+                    Sorry, system error occurred, this question's answer is unavailable.
+                {% endif  %}
+                {% endwith %}
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+
+            <form method="post">
+                {% csrf_token %}
+                <b>Pick your vote:</b>
+                <input id="applicant" name="applicant" type="hidden" readonly value="{{ applicant.pk }}">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="voteValue" id="voteNotSuitable" value="notSuitable">
+                        Not suitable
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="voteValue" id="voteSuitable" value="suitable" checked>
+                        Suitable
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="voteValue" id="voteExceptional" value="exceptional">
+                        Exceptional
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit vote</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+{% endblock body %}

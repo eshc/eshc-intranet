@@ -289,6 +289,10 @@ LDAP_SERVER_ROOT_DN = 'dc=directory,dc=eshc,dc=coop'
 LDAP_SERVER_AUTH_USER = 'cn=Manager,dc=directory,dc=eshc,dc=coop'
 LDAP_SERVER_AUTH_PASSWORD = ''
 
+from django.utils import timezone
+
+timezone.activate('Europe/London')
+
 try:
     from eshcIntranet.local_settings import *
 except ImportError:

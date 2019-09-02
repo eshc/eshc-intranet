@@ -36,7 +36,7 @@ class ApplicantViewAdmin(admin.ModelAdmin):
         return '%d votes, score: %d (+%d,-%d)' % (count, pos+neg, pos, -neg)
 
     list_display = ('session', '__str__', 'email', 'phone_number',
-                    'is_past_applicant', 'verified_past_applicant', 'vote_stats')
+                    'is_past_applicant', 'verified_past_applicant', 'vote_count', 'vote_stats')
     list_filter = ('session', 'is_past_applicant')
     readonly_fields = ('date_applied',)
     inlines = (ApplicantQuestionsInline,)
