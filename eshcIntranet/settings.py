@@ -246,7 +246,7 @@ WIKI_ANONYMOUS_WRITE = False
 
 def wiki_restrict_edit_access(article, user):
     """restrict editing to users with shares"""
-    if user.profile.share_received or user.is_superuser:
+    if user.profile.current_member or user.is_superuser:
         permission = True
     else:
         permission = False
