@@ -66,6 +66,26 @@
 				</div>
 			{% endif %}
 		{% endfor %}
+    <br>
+    {% if jobless and jobless.count > 0 %}
+        <h3>Unassigned members</h3>
+				<div style="border: 1px solid lightgrey; border-radius: 5px">
+					<table class="table">
+						<tr>
+							<th>
+								Person
+							</th>
+						</tr>
+				{% for person in jobless %}
+						<tr>
+							<td style="white-space: nowrap" class="bg-danger">
+                                {{person.profile.format_name}}  <br/>
+							</td>
+						</tr>
+				{% endfor %}
+					</table>
+				</div>
+    {% endif %}
 		<br>
 	</div>
 </div>

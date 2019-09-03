@@ -633,7 +633,10 @@ def cash(request):
 def wsp(request):
     wgs = Group.objects.all()
     wgs_and_roles = [(wg, Role.objects.filter(group=wg.id).order_by('subgroup')) for wg in wgs]
+    jobless = User.objects.filter(profile__current_member=True, role__assigned_to__isnull=True).order_by('last_name', 'first_name')
+
     context = {'groups': wgs_and_roles,
+               'jobless': jobless
     }
     return render(request, 'home/wsp.html', context)
 
