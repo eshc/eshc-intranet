@@ -66,6 +66,18 @@
 		  {% endif %}
 	  </div>
 	</div>
+    <div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Membership status</h3>
+	  </div>
+	  <div class="panel-body">
+		  {% if user.profile.current_member %}
+				<strong>Confirmed, you have access to all of intranet features!</strong>
+		  {% else %}
+		  	Not yet confirmed. You'll have to wait for an admin to activate your intranet account before you get access to all its features.
+		  {% endif %}
+	  </div>
+	</div>
 	<div class="panel panel-default">
 	  <div class="panel-heading">
 	    <h3 class="panel-title">Deposit</h3>

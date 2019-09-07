@@ -9,14 +9,14 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 
-from users.decorators import has_share
+from users.decorators import current_member_required
 
 from whiteboard.forms import NewNoteForm
 
 # Create your views here.
 
 @login_required
-@has_share
+@current_member_required
 def index(request):
 	notes = Note.objects.all()
 	context = {'notes': notes}

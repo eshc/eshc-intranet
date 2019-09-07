@@ -38,9 +38,9 @@ import os
 import csv
 
 from leases.models import Lease, Inventory
-from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm #WgEditForm
+from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm  # WgEditForm
 
-from users.decorators import has_share, check_grouup
+from users.decorators import has_share, check_grouup, current_member_required
 from home.models import GM, Point, WgUpdate, Minutes, Role
 from whiteboard.models import Note
 from django.core.mail import send_mail
@@ -51,6 +51,7 @@ import eshcIntranet.settings as settings
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters('password', 'password1', 'password2'))
+
 
 class MySignupView(SignupView):
     template_name = "account/signup." + app_settings.TEMPLATE_EXTENSION
@@ -68,9 +69,9 @@ class MySignupView(SignupView):
     def get_success_url(self):
         # Explicitly passed ?next= URL takes precedence
         ret = (
-            get_next_redirect_url(
-                self.request,
-                self.redirect_field_name) or self.success_url)
+                get_next_redirect_url(
+                    self.request,
+                    self.redirect_field_name) or self.success_url)
         return ret
 
     def form_valid(self, form):
@@ -125,14 +126,15 @@ def index(request):
     today = datetime.datetime.today().date()
 
     # delete notes older than 7 days
-    current_notes = [note if note.pub_date+datetime.timedelta(days=7) >= today else note.delete() for note in notes]
+    current_notes = [note if note.pub_date + datetime.timedelta(days=7) >= today else note.delete() for note in notes]
 
     context = {'gm': gm,
-        'test': test,
-        'notes': notes
-        }
+               'test': test,
+               'notes': notes
+               }
 
     return render(request, 'home/index.html', context)
+
 
 def mail_test(request):
     if request.method != 'POST':
@@ -153,18 +155,20 @@ def mail_test(request):
 
     return render(request, 'home/mail_test.html')
 
+
 @login_required
 def profile(request):
     leases, valid_lease = check_leases(request)
     check_info_share(request)
     roles = Role.objects.filter(assigned_to=request.user.id)
 
-    context = {'leases': leases, 
-        'share_received': request.user.profile.share_received, 
-        'valid_lease': valid_lease,
-        'roles': roles,
-        }
+    context = {'leases': leases,
+               'share_received': request.user.profile.share_received,
+               'valid_lease': valid_lease,
+               'roles': roles,
+               }
     return render(request, 'account/account/profile.html', context)
+
 
 @login_required
 def edit_profile(request):
@@ -174,11 +178,11 @@ def edit_profile(request):
 
     if request.method != 'POST':
         # Display form filled with available info
-        user_form = UserEditForm(initial={'first_name': user.first_name, 
-            'last_name': user.last_name, 
-            'email': user.email})
-        profile_form = ProfileEditForm(initial={'phone_number': profile.phone_number, 
-            'perm_address': profile.perm_address})
+        user_form = UserEditForm(initial={'first_name': user.first_name,
+                                          'last_name': user.last_name,
+                                          'email': user.email})
+        profile_form = ProfileEditForm(initial={'phone_number': profile.phone_number,
+                                                'perm_address': profile.perm_address})
     else:
         user_form = UserEditForm(data=request.POST, instance=user)
         profile_form = ProfileEditForm(data=request.POST, instance=profile)
@@ -190,84 +194,110 @@ def edit_profile(request):
     context = {'user_form': user_form, 'profile_form': profile_form}
     return render(request, 'account/account/edit_profile.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def map(request):
     # current leases
     leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
-    leases_28_1 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=1)
-    leases_28_2 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=2)
-    leases_28_3 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=3)
-    leases_28_4 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=4)
-    leases_28_5 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=5)
-    leases_28_6 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=6)
-    leases_28_7 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=28, flat=7)
+    leases_28_1 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=28, flat=1)
+    leases_28_2 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=28, flat=2)
+    leases_28_3 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=28, flat=3)
+    leases_28_4 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=28, flat=4)
+    leases_28_5 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=28, flat=5)
+    leases_28_6 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=28, flat=6)
+    leases_28_7 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=28, flat=7)
 
-    leases_34_1 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=1)
-    leases_34_2 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=2)
-    leases_34_3 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=3)
-    leases_34_4 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=4)
-    leases_34_5 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=5)
-    leases_34_6 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=6)
-    leases_34_7 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=7)
-    leases_34_8 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=8)
-    leases_34_9 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=9)
-    leases_34_10 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=10)
-    leases_34_11 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=11)
-    leases_34_12 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=12)
-    leases_34_13 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=13)
-    leases_34_14 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=14)
-    leases_34_15 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=15)
-    leases_34_16 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=16)
-    leases_34_17 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today()).filter(building=34, flat=17)
+    leases_34_1 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=1)
+    leases_34_2 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=2)
+    leases_34_3 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=3)
+    leases_34_4 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=4)
+    leases_34_5 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=5)
+    leases_34_6 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=6)
+    leases_34_7 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=7)
+    leases_34_8 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=8)
+    leases_34_9 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=9)
+    leases_34_10 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=10)
+    leases_34_11 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=11)
+    leases_34_12 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=12)
+    leases_34_13 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=13)
+    leases_34_14 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=14)
+    leases_34_15 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=15)
+    leases_34_16 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=16)
+    leases_34_17 = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
+        end_date__gte=datetime.date.today()).filter(building=34, flat=17)
 
     context = {'leases': leases,
-        'leases_28_1': leases_28_1,
-        'leases_28_2': leases_28_2,
-        'leases_28_3': leases_28_3,
-        'leases_28_4': leases_28_4,
-        'leases_28_5': leases_28_5,
-        'leases_28_6': leases_28_6,
-        'leases_28_7': leases_28_7,
-        'leases_34_1': leases_34_1,
-        'leases_34_2': leases_34_2,
-        'leases_34_3': leases_34_3,
-        'leases_34_4': leases_34_4,
-        'leases_34_5': leases_34_5,
-        'leases_34_6': leases_34_6,
-        'leases_34_7': leases_34_7,
-        'leases_34_8': leases_34_8,
-        'leases_34_9': leases_34_9,
-        'leases_34_10': leases_34_10,
-        'leases_34_11': leases_34_11,
-        'leases_34_12': leases_34_12,
-        'leases_34_13': leases_34_13,
-        'leases_34_14': leases_34_14,
-        'leases_34_15': leases_34_15,
-        'leases_34_16': leases_34_16,
-        'leases_34_17': leases_34_17,
-    }
+               'leases_28_1': leases_28_1,
+               'leases_28_2': leases_28_2,
+               'leases_28_3': leases_28_3,
+               'leases_28_4': leases_28_4,
+               'leases_28_5': leases_28_5,
+               'leases_28_6': leases_28_6,
+               'leases_28_7': leases_28_7,
+               'leases_34_1': leases_34_1,
+               'leases_34_2': leases_34_2,
+               'leases_34_3': leases_34_3,
+               'leases_34_4': leases_34_4,
+               'leases_34_5': leases_34_5,
+               'leases_34_6': leases_34_6,
+               'leases_34_7': leases_34_7,
+               'leases_34_8': leases_34_8,
+               'leases_34_9': leases_34_9,
+               'leases_34_10': leases_34_10,
+               'leases_34_11': leases_34_11,
+               'leases_34_12': leases_34_12,
+               'leases_34_13': leases_34_13,
+               'leases_34_14': leases_34_14,
+               'leases_34_15': leases_34_15,
+               'leases_34_16': leases_34_16,
+               'leases_34_17': leases_34_17,
+               }
     return render(request, 'home/map.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def gms(request):
     gms = GM.objects.all().order_by('number').reverse()
     context = {'gms': gms}
     return render(request, 'home/gms.html', context)
 
-@login_required
-@has_share
-def archive(request):
 
+@login_required
+@current_member_required
+def archive(request):
     # Create an S3 client
     s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                config=botocore.client.Config(
-                    signature_version='s3v4',
-                    region_name='eu-west-2',
-                    )
-            )
+                      aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                      config=botocore.client.Config(
+                          signature_version='s3v4',
+                          region_name='eu-west-2',
+                      )
+                      )
 
     oldest_archive_keys = [
         'minutes/2013_11_14.pdf',
@@ -366,28 +396,30 @@ def archive(request):
         'minutes/72nd General Meeting Agenda 06_08_17.pdf',
     ]
 
-    oldest_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket',  'Key': x}) for x in oldest_archive_keys]
-    year_1_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket',  'Key': x}) for x in year_1_archive_keys]
-    further_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket', 'Key': x}) for x in further_archive_keys]
+    oldest_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket', 'Key': x}) for x in
+                  oldest_archive_keys]
+    year_1_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket', 'Key': x}) for x in
+                  year_1_archive_keys]
+    further_gms = [s3.generate_presigned_url('get_object', Params={'Bucket': 'eshc-bucket', 'Key': x}) for x in
+                   further_archive_keys]
 
     oldest_gms = zip(oldest_gms, [x[8:] for x in oldest_archive_keys])
 
-    counter = [1,2]+list(range(4,17))+['S']+list(range(17,29))
+    counter = [1, 2] + list(range(4, 17)) + ['S'] + list(range(17, 29))
     year_1_gms = zip(year_1_gms, [x[8:] for x in year_1_archive_keys], counter)
 
-    counter2 = list(range(29,39))+[38]+list(range(39,61))+[60]+list(range(61,73))
+    counter2 = list(range(29, 39)) + [38] + list(range(39, 61)) + [60] + list(range(61, 73))
     further_gms = zip(further_gms, [x[8:] for x in further_archive_keys], counter2)
 
-
     context = {'oldest_gms': oldest_gms,
-        'year_1_gms': year_1_gms,
-        'further_gms': further_gms,
-        }
+               'year_1_gms': year_1_gms,
+               'further_gms': further_gms,
+               }
     return render(request, 'home/archive.html', context)
 
 
 @login_required
-@has_share
+@current_member_required
 def agenda(request, pk):
     gm = get_object_or_404(GM, pk=pk)
     places = Group.objects.get(name='Places WG')
@@ -401,35 +433,36 @@ def agenda(request, pk):
     procedures_updates = WgUpdate.objects.filter(choice=gm, group=procedures)
 
     s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-            config=botocore.client.Config(
-                signature_version='s3v4',
-                region_name='eu-west-2',
-                )
-        )
+                      aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                      config=botocore.client.Config(
+                          signature_version='s3v4',
+                          region_name='eu-west-2',
+                      )
+                      )
 
     if Minutes.objects.filter(gm=gm).exists():
         file = s3.generate_presigned_url('get_object', Params={
-                    'Bucket': 'eshc-bucket',
-                    'Key': Minutes.objects.get(gm=gm).minutes_file.name},
-                    )
+            'Bucket': 'eshc-bucket',
+            'Key': Minutes.objects.get(gm=gm).minutes_file.name},
+                                         )
     else:
         file = '#'
 
     proposals = gm.point_set.filter(proposal=True)
     discussions = gm.point_set.filter(proposal=False)
     context = {'gm': gm, 'proposals': proposals, 'discussions': discussions,
-         'today': datetime.datetime.now(),
-         'places_updates': places_updates, 
-         'people_updates': people_updates, 
-         'participation_updates': participation_updates, 
-         'procedures_updates': procedures_updates,
-         'file': file,
-          }
+               'today': datetime.datetime.now(),
+               'places_updates': places_updates,
+               'people_updates': people_updates,
+               'participation_updates': participation_updates,
+               'procedures_updates': procedures_updates,
+               'file': file,
+               }
     return render(request, 'home/agenda.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def submit(request, id):
     gm = get_object_or_404(GM, pk=id)
 
@@ -443,16 +476,17 @@ def submit(request, id):
             title = point_form.cleaned_data['title']
             description = point_form.cleaned_data['description']
             proposal = point_form.cleaned_data['proposal']
-            point = Point.objects.create(title=title, description=description, proposal=proposal, 
-                        pub_date=datetime.date.today(), submitted_by=request.user, choice=gm)
+            point = Point.objects.create(title=title, description=description, proposal=proposal,
+                                         pub_date=datetime.date.today(), submitted_by=request.user, choice=gm)
 
             return HttpResponseRedirect(reverse('home:agenda', args=(gm.id,)))
 
     context = {'gm': gm, 'form': point_form}
     return render(request, 'home/submit.html', context)
-    
+
+
 @login_required
-@has_share
+@current_member_required
 def submit_update(request, id):
     gm = get_object_or_404(GM, pk=id)
 
@@ -471,13 +505,12 @@ def submit_update(request, id):
         else:
             messages.add_message(request, messages.WARNING, 'Something went wrong?')
 
-
     context = {'gm': gm, 'form': update_form}
     return render(request, 'home/submit_update.html', context)
 
+
 @login_required
-@has_share
-@check_grouup('Procedures WG')
+@current_member_required
 def upload_minutes(request, id):
     gm = get_object_or_404(GM, pk=id)
 
@@ -493,12 +526,12 @@ def upload_minutes(request, id):
         else:
             messages.add_message(request, messages.WARNING, 'Something went wrong?')
 
-
     context = {'gm': gm, 'form': minutes_form}
     return render(request, 'home/upload_minutes.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def delete(request, pk):
     point = get_object_or_404(Point, pk=pk)
     gm = get_object_or_404(GM, pk=point.choice.pk)
@@ -515,8 +548,9 @@ def delete(request, pk):
 
     return render(request, 'home/delete.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def groups(request):
     # groups = Group.objects.all()
 
@@ -527,32 +561,33 @@ def groups(request):
     staff = User.objects.filter(is_staff=True)
 
     context = {'wgs': wgs_with_conv,
-        'supers': supers,
-        'staff': staff,
-        }
+               'supers': supers,
+               'staff': staff,
+               }
     return render(request, 'home/groups.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def cash(request):
     context = {}
 
     s3 = boto3.resource('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                config=botocore.client.Config(
-                    signature_version='s3v4',
-                    region_name='eu-west-2',
-                    )
-            )
+                        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                        config=botocore.client.Config(
+                            signature_version='s3v4',
+                            region_name='eu-west-2',
+                        )
+                        )
 
     s3.meta.client.download_file('eshc-bucket', 'money/year_1.csv', '/tmp/year_1.csv')
     with open('/tmp/year_1.csv', 'r') as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
-        reader = csv.reader(csvfile, delimiter = ',')
+        reader = csv.reader(csvfile, delimiter=',')
         rows = []
         total = 0
         for row in reader:
-            total += float(row[3].replace(',',''))
+            total += float(row[3].replace(',', ''))
             # rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
             date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
             rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
@@ -563,11 +598,11 @@ def cash(request):
     s3.meta.client.download_file('eshc-bucket', 'money/year_2.csv', '/tmp/year_2.csv')
     with open('/tmp/year_2.csv', 'r') as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
-        reader = csv.reader(csvfile, delimiter = ',')
+        reader = csv.reader(csvfile, delimiter=',')
         rows = []
         # total = 0
         for row in reader:
-            total += float(row[3].replace(',',''))
+            total += float(row[3].replace(',', ''))
             # rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
             date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
             rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
@@ -578,11 +613,11 @@ def cash(request):
     s3.meta.client.download_file('eshc-bucket', 'money/year_3.csv', '/tmp/year_3.csv')
     with open('/tmp/year_3.csv', 'r') as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
-        reader = csv.reader(csvfile, delimiter = ',')
+        reader = csv.reader(csvfile, delimiter=',')
         rows = []
         # total = 0
         for row in reader:
-            total += float(row[3].replace(',',''))
+            total += float(row[3].replace(',', ''))
             # rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
             date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
             rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
@@ -593,11 +628,11 @@ def cash(request):
     s3.meta.client.download_file('eshc-bucket', 'money/year_4.csv', '/tmp/year_4.csv')
     with open('/tmp/year_4.csv', 'r') as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
-        reader = csv.reader(csvfile, delimiter = ',')
+        reader = csv.reader(csvfile, delimiter=',')
         rows = []
         # total = 0
         for row in reader:
-            total += float(row[3].replace(',',''))
+            total += float(row[3].replace(',', ''))
             # rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
             date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
             rows.append({'year': date.year, 'month': date.month, 'day': date.day, 'total': total})
@@ -608,11 +643,11 @@ def cash(request):
     s3.meta.client.download_file('eshc-bucket', 'money/year_5.csv', '/tmp/year_5.csv')
     with open('/tmp/year_5.csv', 'r') as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
-        reader = csv.reader(csvfile, delimiter = ',')
+        reader = csv.reader(csvfile, delimiter=',')
         rows = []
         # total = 0
         for row in reader:
-            total += float(row[3].replace(',',''))
+            total += float(row[3].replace(',', ''))
             # rows.append([str(datetime.datetime.strptime(row[0], '%d/%m/%Y').date()), total])
             date = datetime.datetime.strptime(row[0], '%d/%m/%Y').date()
             rows.append({'year': date.year, 'month': date.month,
@@ -628,41 +663,50 @@ def cash(request):
 
     return render(request, 'home/cash_overview.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def wsp(request):
     wgs = Group.objects.all()
     wgs_and_roles = [(wg, Role.objects.filter(group=wg.id).order_by('subgroup')) for wg in wgs]
-    jobless = User.objects.filter(profile__current_member=True, role__assigned_to__isnull=True).order_by('last_name', 'first_name')
+    jobless = User.objects.filter(profile__current_member=True, role__assigned_to__isnull=True).order_by('last_name',
+                                                                                                         'first_name')
 
     context = {'groups': wgs_and_roles,
                'jobless': jobless
-    }
+               }
     return render(request, 'home/wsp.html', context)
 
+
 @login_required
-@has_share
+@current_member_required
 def laundry(request):
     return render(request, 'home/laundry.html')
 
+
 """Helper functions below. Not views."""
+
+
 def check_info_share(request):
     # Check if info is updated and share received
     user = request.user
     if user.is_authenticated:
         if user.first_name == '' or user.last_name == '' or user.profile.phone_number == '' or user.profile.perm_address == '':
-            messages.add_message(request, messages.WARNING, 'Your <a href="/accounts/profile/" class="alert-link">Profile</a> is missing information. <a href="/accounts/edit_profile/" class="alert-link">Click here to fill in extra info!</a>', extra_tags='safe')
+            messages.add_message(request, messages.WARNING,
+                                 'Your <a href="/accounts/profile/" class="alert-link">Profile</a> is missing information. <a href="/accounts/edit_profile/" class="alert-link">Click here to fill in extra info!</a>',
+                                 extra_tags='safe')
         if request.user.profile.share_received == False:
-            messages.add_message(request, messages.WARNING, 
-                'We have not yet received your share. Have you bought one? ')
+            messages.add_message(request, messages.WARNING,
+                                 'We have not yet received your share. Have you bought one? ')
     return
+
 
 def check_leases(request):
     leases = Lease.objects.filter(user_id=request.user.id)
     valid_lease = False
     inventories_made = False
     # now = timezone.localdate()    # django 1.11
-    now = timezone.now().date()     # django 1.10
+    now = timezone.now().date()  # django 1.10
     for lease in leases:
         if lease.start_date <= now <= lease.end_date:
             valid_lease = True
@@ -671,13 +715,14 @@ def check_leases(request):
     for lease in leases:
         if not Inventory.objects.filter(lease=lease).exists():
             messages.add_message(request, messages.WARNING, 'One of your leases is missing an inventory!')
-            break 
+            break
 
     if valid_lease == False:
-        messages.add_message(request, messages.WARNING, 'You do not have a valid lease registered! Have you signed one?')
+        messages.add_message(request, messages.WARNING,
+                             'You do not have a valid lease registered! Have you signed one?')
 
     if not leases:
-        messages.add_message(request, messages.INFO, 'You do not have any leases registered. They will appear here when you do.')
+        messages.add_message(request, messages.INFO,
+                             'You do not have any leases registered. They will appear here when you do.')
 
     return leases, valid_lease
-
