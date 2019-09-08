@@ -15,6 +15,18 @@ def has_share(function):
     return wrap
 
 
+
+def current_member_required(function):
+	def wrap(request, *args, **kwargs):
+		if request.user.profile.current_member:
+			return function(request, *args, **kwargs)
+		else:
+			raise PermissionDenied
+
+	wrap.__doc__ = function.__doc__
+	wrap.__name__ = function.__name__
+	return wrap
+
 def check_grouup(group_name):
     def _check_group(function):
         @wraps(function)
