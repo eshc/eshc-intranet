@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.shortcuts import render
 # from django.core.mail import send_mail
 from django.urls import reverse
@@ -676,6 +677,20 @@ def wsp(request):
                'jobless': jobless
                }
     return render(request, 'home/wsp.html', context)
+
+
+@login_required
+@current_member_required
+def wsp_subgroups(request):
+    subgroups = Role.objects.values('subgroup').annotate(scount=Count('subgroup'))
+    sgs_and_roles = [(sg['subgroup'], Role.objects.filter(subgroup=sg['subgroup']).order_by('group')) for sg in subgroups]
+    jobless = User.objects.filter(profile__current_member=True, role__assigned_to__isnull=True).order_by('last_name',
+                                                                                                         'first_name')
+
+    context = {'groups': sgs_and_roles,
+               'jobless': jobless
+               }
+    return render(request, 'home/wsp_subgroups.html', context)
 
 
 @login_required
