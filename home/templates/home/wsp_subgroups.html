@@ -3,7 +3,7 @@
 {% block body %}
 <div class="row">
     <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
-		<h1>Work Share Plan</h1>
+		<h1>Work Share Plan (sorted by subgroup)</h1>
 		<h4>Roles and Allocations</h4>
 		{% if user.is_superuser %}
 		<h2>Instructions</h2>
@@ -11,15 +11,15 @@
 		<p>Click on the Change link to reassign people to a specific role.</p>
 		{% endif %}
 		<p>Click on the role description to go to the Wiki page and find out more.</p>
-        <p><a href="/wsp_subgroups/">Click here to view this list sorted by subgroup</a></p>
+        <p><a href="/wsp/">Click here to view this list sorted by working group</a></p>
 		{% for group, roles in groups %}
 			{% if roles %}
-			<h3>{{ group.name }}</h3>
+			<h3>{% if group %}{{ group }}{% else %}No subgroup{% endif %}</h3>
 				<div style="border: 1px solid lightgrey; border-radius: 5px">
 					<table class="table">
 						<tr>
 							<th>
-								Subgroup
+								Working group
 							</th>
 							<th>
 								Role
@@ -32,11 +32,10 @@
 							</th>
 						</tr>
 				{% for role in roles %}
-					{% if role.group.name == group.name %}
 						<tr>
 							<td>
-								{% if role.subgroup %}
-									{{role.subgroup}}
+								{% if role.group %}
+									{{role.group.name}}
 								{% else %}
 									-
 								{% endif %}
@@ -61,7 +60,6 @@
 							</td>
 
 						</tr>
-					{% endif %}
 				{% endfor %}
 					</table>
 				</div>

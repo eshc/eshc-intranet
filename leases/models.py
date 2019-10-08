@@ -12,9 +12,9 @@ class Lease(models.Model):
 	flat = models.PositiveIntegerField('flat number')
 	room = models.CharField(max_length=1)
 	date_signed = models.DateField('date signed')
-	emergency_contact_name = models.CharField(verbose_name='emergency contact name', max_length=100, default='')
-	emergency_contact_phone = models.CharField(verbose_name='emergency contact phone', max_length=32, default='')
-	emergency_contact_address = models.TextField(verbose_name='emergency contact address', max_length=256, default='')
+	emergency_contact_name = models.CharField(verbose_name='emergency contact name', max_length=100, default='', blank=True)
+	emergency_contact_phone = models.CharField(verbose_name='emergency contact phone', max_length=32, default='', blank=True)
+	emergency_contact_address = models.TextField(verbose_name='emergency contact address', max_length=256, default='', blank=True)
 
 
 class Inventory(models.Model):
