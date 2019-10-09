@@ -45,6 +45,7 @@ from users.decorators import has_share, check_grouup, current_member_required
 from home.models import GM, Point, WgUpdate, Minutes, Role
 from whiteboard.models import Note
 from django.core.mail import send_mail
+import apply.models
 
 import boto3
 import botocore
@@ -125,13 +126,15 @@ def index(request):
 
     notes = Note.objects.all()
     today = datetime.datetime.today().date()
+    voting_sessions = apply.models.voting_open_sessions()
 
     # delete notes older than 7 days
     current_notes = [note if note.pub_date + datetime.timedelta(days=7) >= today else note.delete() for note in notes]
 
     context = {'gm': gm,
                'test': test,
-               'notes': notes
+               'notes': notes,
+               'voting_sessions': voting_sessions
                }
 
     return render(request, 'home/index.html', context)

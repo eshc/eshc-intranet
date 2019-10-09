@@ -66,6 +66,10 @@ class ApplyView(TemplateView):
             else:
                 data['answers'][q.pk] = request.POST.getlist(qname, [''])[0]
 
+        if models.Applicant.objects.filter(session=app_session, email=data['email']).count() > 0:
+            mistakes.append(
+                'Sorry, but an application with this e-mail address already exists. Please contact us on our main e-mail to change your application details.')
+
         if len(mistakes) == 0:
             # Add application and send e-mail
             try:
@@ -214,7 +218,7 @@ class VoteView(TemplateView):
         elif vote_str == "EXCEPTIONAL":
             vote = 2
         if vote == 0:
-            ctx['error_message'] = "Invalid voting option %s!" % (vote_str)
+            ctx['error_message'] = "Invalid voting option %s!" % (vote_str,)
             return self.render_to_response(ctx)
         # register vote
         models.ApplicationVote.objects.create(

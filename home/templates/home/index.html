@@ -71,6 +71,15 @@
 {% endblock extra_head %}
 
 {% block body %}
+
+{% if user.profile.current_member %}
+    {% for session in voting_sessions %}
+        <div class="alert alert-info" role="alert">
+        Voting now open for the {{ session.move_in_str }} application session! &nbsp;&nbsp;&nbsp;&nbsp; <a href="{{ session.vote_url }}" class="btn btn-primary btn-xs">Vote now!</a>
+        </div>
+    {% endfor %}
+{% endif %}
+
 <div class="row">
 	<div class="col-lg-offset-1">
 		<div class="col-sm-10">

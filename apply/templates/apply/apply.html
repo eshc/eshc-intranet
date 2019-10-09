@@ -1,15 +1,17 @@
 {% extends "apply/base.html" %}
 {% load index %}
+{% load tz %}
 
 {% block body %}
-    <div class="jumbotron">
+    {% localtime on %}
+    <div class="jumbotron bg-info text-white">
         <h1>Edinburgh Student Housing Co-operative Applications</h1>
         <h2>{{ session }}</h2>
         <p class="lead">
             {% if session.is_applying_open %}
-                Welcome and please apply. <br>
-                Applications close at {{ session.close_time|date:"jS F Y H:i" }}. <br>
-                Server time: {% now "jS F Y H:i" %}
+                Applications for this session are now open! <br>
+                Applications close at <b>{{ session.close_time|date:"jS F Y H:i" }}.</b> <br>
+                Server time: <b>{% now "jS F Y H:i" %}</b>
             {% else %}
                 We're sorry, but applications for this session are closed.
                 Please follow our web page and/or social media to stay updated about next intakes.
@@ -66,7 +68,7 @@
             {% with question.pk as qpk %}
             <div class="form-group">
                 <label for="question_{{ qpk }}">{{ question.question_text }}</label>
-                {% with answers|index:qpk as answer %}
+                {% with answers|index:qpk|default_if_none:"" as answer %}
                 {% if question.question_type == 'ShortText' %}
                     <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}" required>
                 {% elif question.question_type == 'LongText' %}
@@ -116,5 +118,7 @@
         })();
         </script>
     {% endif %}
+
+    {% endlocaltime %}
 
 {% endblock body %}

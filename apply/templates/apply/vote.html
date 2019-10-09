@@ -19,9 +19,10 @@
         {% else %}
             <div class="row">
                 <div class="col-md-12">
-                    Applicant ID: #{{ applicant.pk }}
+                    Applicant ID: <b>#{{ applicant.pk }}</b><br><br>
                 </div>
             </div>
+            <h3>Applicant answers</h3>
             {% for question in session.questions %}
             {% with question.pk as qpk %}
             <div class="row">
@@ -37,11 +38,12 @@
                 {% elif question.question_type == 'LongText' %}
                     <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000" required readonly>{{ answer }}</textarea>
                 {% elif question.question_type == 'SingleChoice' %}
-                    <select class="form-control custom-select custom-select-lg mb-3" id="question_{{ qpk }}" name="question_{{ qpk }}" disabled>
+                    {% for choice in question.options_array %}
                         <div class="radio"><label>
-                        <input type="radio" disabled {% if choice in answer %} checked {% endif %}>
-                            {{ choice }}</label></div>
-                    </select>
+                        <input type="radio" name="question_{{ qpk }}" disabled {% if choice in answer %} checked {% endif %}>
+                            {{ choice }}</label>
+                        </div>
+                    {% endfor %}
                 {% elif question.question_type == 'MultipleChoice' %}
                     {% for choice in question.options_array %}
                         <div class="checkbox">
@@ -61,7 +63,7 @@
 
             <form method="post">
                 {% csrf_token %}
-                <b>Pick your vote:</b>
+                <h3>Pick your vote</h3>
                 <input id="applicant" name="applicant" type="hidden" readonly value="{{ applicant.pk }}">
                 <div class="radio">
                     <label>

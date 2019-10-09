@@ -1,17 +1,18 @@
 from django.db import models
+from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.db.models import CASCADE
 from ordered_model.models import OrderedModel
 from enum import Enum
-from datetime import datetime, timezone
+from django.utils import timezone
+from django import urls
 
 
 def now():
-    return datetime.now(timezone.utc)
+    return timezone.now()
 
 
 class ApplicationSession(models.Model):
-
     special_title = models.CharField(verbose_name='Special name, e.g. Summerletter', max_length=30, blank=True)
     move_in_date = models.DateField(verbose_name='Move-in date')
     open_time = models.DateTimeField(verbose_name='Applications form opening time')
@@ -22,6 +23,16 @@ class ApplicationSession(models.Model):
     class Meta:
         ordering = ('-move_in_date',)
 
+    def apply_url(self):
+        surl = urls.reverse('apply:apply-form', kwargs={'session_id': self.id})
+        return 'https://%s%s' % (Site.objects.get_current().domain, surl)
+    apply_url.short_description = 'Application form URL (web address)'
+
+    def vote_url(self):
+        surl = urls.reverse('apply:vote-form', kwargs={'session_id': self.id})
+        return 'https://%s%s' % (Site.objects.get_current().domain, surl)
+    vote_url.short_description = 'Voting URL (web address)'
+
     def move_in_str(self):
         """Converts move-in date to a string like: "September 2014"."""
         return self.move_in_date.strftime('%B %Y')
@@ -31,12 +42,22 @@ class ApplicationSession(models.Model):
 
     def is_applying_open(self):
         return self.open_time <= now() <= self.close_time
+    is_applying_open.boolean = True
 
     def is_voting_open(self):
         return self.voting_open_time <= now() <= self.voting_close_time
+    is_voting_open.boolean = True
 
     def questions(self):
         return ApplicationQuestion.objects.filter(session=self).order_by('order')
+
+
+def voting_open_sessions():
+    t = now()
+    return ApplicationSession.objects.filter(
+        voting_open_time__lte=t,
+        voting_close_time__gte=t
+    )
 
 
 class QuestionType(Enum):
@@ -67,7 +88,6 @@ class ApplicationQuestion(OrderedModel):
 
 
 class Applicant(models.Model):
-
     session = models.ForeignKey(ApplicationSession, on_delete=CASCADE, verbose_name='Application session')
     first_name = models.CharField(verbose_name='First name', max_length=30)
     last_name = models.CharField(verbose_name='Last name', max_length=150)
@@ -77,7 +97,8 @@ class Applicant(models.Model):
     is_past_applicant = models.BooleanField(verbose_name='Past applicant', default=False)
     verified_past_applicant = models.BooleanField(verbose_name='Verified past applicant', default=False)
     confidential_note = models.TextField(verbose_name='Confidential information', max_length=1000, blank=True)
-    app_team_note = models.TextField(verbose_name='Applications team notes (invisible to applicant)', max_length=1000, blank=True)
+    app_team_note = models.TextField(verbose_name='Applications team notes (invisible to applicant)', max_length=1000,
+                                     blank=True)
     date_applied = models.DateTimeField(verbose_name='Date applied', auto_now=True)
     answers = models.ManyToManyField(ApplicationQuestion, through='ApplicationAnswer', blank=True)
     vote_count = models.IntegerField(verbose_name='Votes received', default=0)
@@ -99,7 +120,6 @@ class Applicant(models.Model):
 
 
 class ApplicationAnswer(models.Model):
-
     applicant = models.ForeignKey(Applicant, on_delete=CASCADE)
     question = models.ForeignKey(ApplicationQuestion, on_delete=CASCADE)
     answer = models.TextField(max_length=5000)
@@ -109,7 +129,6 @@ class ApplicationAnswer(models.Model):
 
 
 class ApplicationVote(models.Model):
-
     applicant = models.ForeignKey(Applicant, on_delete=CASCADE)
     voting_member = models.ForeignKey(User, on_delete=CASCADE)
     points = models.IntegerField()
