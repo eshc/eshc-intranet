@@ -1,6 +1,6 @@
 from datetime import date
 from django.db import models
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 
 
 class GM(models.Model):
@@ -71,5 +71,6 @@ class Role(models.Model):
     description = models.TextField(max_length=500)
     assigned_to = models.ManyToManyField(User, blank=True)
     ldap_groups = models.ManyToManyField(LdapGroup, blank=True)
+    permissions = models.ManyToManyField(Permission, blank=True)
 
 
