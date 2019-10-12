@@ -24,13 +24,19 @@ class ApplicationSession(models.Model):
         ordering = ('-move_in_date',)
 
     def apply_url(self):
-        surl = urls.reverse('apply:apply-form', kwargs={'session_id': self.id})
-        return 'https://%s%s' % (Site.objects.get_current().domain, surl)
+        try:
+            surl = urls.reverse('apply:apply-form', kwargs={'session_id': self.id})
+            return 'https://%s%s' % (Site.objects.get_current().domain, surl)
+        except:
+            return 'Save me first'
     apply_url.short_description = 'Application form URL (web address)'
 
     def vote_url(self):
-        surl = urls.reverse('apply:vote-form', kwargs={'session_id': self.id})
-        return 'https://%s%s' % (Site.objects.get_current().domain, surl)
+        try:
+            surl = urls.reverse('apply:vote-form', kwargs={'session_id': self.id})
+            return 'https://%s%s' % (Site.objects.get_current().domain, surl)
+        except:
+            return 'Save me first'
     vote_url.short_description = 'Voting URL (web address)'
 
     def move_in_str(self):
