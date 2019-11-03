@@ -193,7 +193,6 @@ class VoteView(TemplateView):
                 ctx['applicant'] = next_applicant
                 if next_applicant:
                     ctx['answers'] = get_answers(next_applicant)
-                    print(ctx['answers'])
             resp = self.render_to_response(ctx)
             return resp
         except Exception as e:
