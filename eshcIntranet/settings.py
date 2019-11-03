@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'whiteboard.apps.WhiteboardConfig',
     'ldapsync.apps.LdapSyncConfig',
     'apply.apps.ApplyConfig',
+    'finance.apps.FinanceConfig',
 
     # For exporting databse into layman formats
     'import_export'
@@ -288,6 +289,10 @@ LDAP_SERVER_ADDR = '127.0.0.1'
 LDAP_SERVER_ROOT_DN = 'dc=directory,dc=eshc,dc=coop'
 LDAP_SERVER_AUTH_USER = 'cn=Manager,dc=directory,dc=eshc,dc=coop'
 LDAP_SERVER_AUTH_PASSWORD = ''
+
+QBO_CLIENT_ID = ''
+QBO_CLIENT_SECRET = ''
+QBO_ENVIRONMENT = 'sandbox'
 
 from django.utils import timezone
 
