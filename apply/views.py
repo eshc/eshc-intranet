@@ -1,3 +1,4 @@
+import traceback
 from collections import OrderedDict
 from typing import Union
 
@@ -5,7 +6,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render_to_response
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
@@ -183,16 +184,27 @@ class VoteView(TemplateView):
 
     @method_decorator(active_member_required)
     def get(self, request: HttpRequest, *args, **kwargs):
-        ctx = self.get_context_data(**kwargs)
-        session = ctx['session']
-        if session.is_voting_open:
-            member: User = request.user
-            next_applicant: models.Applicant = find_applicant(ctx['session'], member)
-            ctx['applicant'] = next_applicant
-            if next_applicant:
-                ctx['answers'] = get_answers(next_applicant)
-                print(ctx['answers'])
-        return self.render_to_response(ctx)
+        try:
+            ctx = self.get_context_data(**kwargs)
+            session = ctx['session']
+            if session.is_voting_open:
+                member: User = request.user
+                next_applicant: models.Applicant = find_applicant(ctx['session'], member)
+                ctx['applicant'] = next_applicant
+                if next_applicant:
+                    ctx['answers'] = get_answers(next_applicant)
+                    print(ctx['answers'])
+            resp = self.render_to_response(ctx)
+            return resp
+        except Exception as e:
+            msg = traceback.format_exc()
+            mail = EmailMessage(subject='Intranet application voting error traceback',
+                    body=msg,
+                    from_email='intranet@eshc.coop',
+                    to=['intranet-notify@lists.eshc.coop'])
+            mail.send(True)
+            return HttpResponseServerError('Sorry, server error occured')
+
 
     @method_decorator(active_member_required)
     def post(self, request: HttpRequest, *args, **kwargs):
