@@ -2,9 +2,18 @@
 
 {% block extra_head %}
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.1/dist/Chart.min.js" integrity="sha256-RIfYIzpTkKTqDJeeVkrCaZQPOIkE/lferWiNSYXhrLY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes@0.4.0/dist/chartjs-plugin-colorschemes.min.js" integrity="sha256-Ctym065YsaugUvysT5nHayKynbiDGVpgNBqUePRAL+0=" crossorigin="anonymous"></script>
 {% endblock extra_head %}
 
 {% block body %}
+
+<div class="row">
+
+<div class="col-md-6 text-center">
+    <h3>What does your rent go towards?</h3>
+</div>
+
+</div>
 
 <div class="row">
 
@@ -19,10 +28,38 @@ var rentCtx = document.getElementById('rentChart').getContext('2d');
 var rentChart = new Chart(rentCtx, {
     type: 'doughnut',
     data: {
-        labels: ['Ten', 'Twenty', 'Thirty'],
+        labels: [
+            {% for c,v in pay_per_cust.items %}
+                '{{c}}',
+            {% endfor %}
+        ],
         datasets: [{
-            data: [10, 20, 30]
+            data: [
+                {% for c,v in pay_per_cust.items %}
+                {{v}},
+                {% endfor %}
+            ]
         }]
+    },
+    options: {
+        plugins: {
+            colorschemes: {
+                scheme: 'brewer.Spectral10'
+            }
+        },
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    var label = data.labels[tooltipItem.index] || '';
+
+                    if (label) {
+                        label += ': £';
+                    }
+                    label += Math.round(data.datasets[0].data[tooltipItem.index] * 100) / 100;
+                    return label;
+                }
+            }
+        }
     }
 });
 </script>
