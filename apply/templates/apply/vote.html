@@ -19,6 +19,21 @@
         {% else %}
             <div class="row">
                 <div class="col-md-12">
+                    Dear Member,
+
+Below, you will find the individual anonymised responses to application form questions.
+If the applicant indicated for any additional considerations (such as dyslexia, being a non-native English speaker) to be taken into account, this will be included along with their answers.
+
+What to do:
+
+Please read each applicant’s responses carefully and decide whether or not you think they would make a suitable member of our Co-op. If you think you know the applicant, please vote “abstain”. Your votes will be made anonymous.
+Members are encouraged to make their judgement based on their impression of the applicant's potential to contribute to the Co-op. The aim of this  process is to differentiate between “satisfactory/good” and “definitely not”. We only want to reject outright those who have not given thought to what it means to live in a coop and their ability to contribute. In rare cases you can also identify an "exceptional" application, which you think should have a higher weighting in the lottery.
+
+Each application must receive at least 15 reviews to be considered fully reviewed.  An “abstain” vote counts towards the 15 vote minimum.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     Applicant ID: <b>#{{ applicant.pk }}</b><br><br>
                 </div>
             </div>
@@ -65,6 +80,12 @@
                 {% csrf_token %}
                 <h3>Pick your vote</h3>
                 <input id="applicant" name="applicant" type="hidden" readonly value="{{ applicant.pk }}">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="voteValue" id="voteAbstain" value="abstain">
+                        Abstain
+                    </label>
+                </div>
                 <div class="radio">
                     <label>
                         <input type="radio" name="voteValue" id="voteNotSuitable" value="notSuitable">

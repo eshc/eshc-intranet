@@ -49,6 +49,7 @@ class ApplicationAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
                 continue
             header.append(f.verbose_name)
             fnames.append(f.name)
+        header.append("Abstain votes")
         header.append("Not suitable votes") # -2
         header.append("Suitable votes") # 1
         header.append("Very suitable votes") # 2
@@ -60,7 +61,7 @@ class ApplicationAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
             row = []
             for f in fnames:
                 row.append(getattr(ap, f))
-            for vv in [-2, 1, 2]:
+            for vv in [0, -2, 1, 2]:
                 vc = ApplicationVote.objects.filter(applicant=ap, points__exact=vv).count()
                 row.append(vc)
             for q in qs:
@@ -90,8 +91,10 @@ class ApplicantViewAdmin(admin.ModelAdmin):
                   'points__sum'] or 0
         neg = ApplicationVote.objects.filter(applicant=applicant, points__lt=0).aggregate(Sum('points'))[
                   'points__sum'] or 0
+        abstain = ApplicationVote.objects.filter(applicant=applicant, points__eq=0).aggregate(Sum('points'))[
+                  'points__sum'] or 0
 
-        return '%d votes, score: %d (+%d,-%d)' % (count, pos + neg, pos, -neg)
+        return '%d votes, score: %d (+%d,-%d,abs%d)' % (count, pos + neg, pos, -neg, abstain)
 
     list_display = ('session', '__str__', 'email', 'phone_number',
                     'is_past_applicant', 'verified_past_applicant', 'vote_count', 'vote_stats')

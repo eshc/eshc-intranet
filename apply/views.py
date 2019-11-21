@@ -221,14 +221,16 @@ class VoteView(TemplateView):
             ctx['error_message'] = "You have already voted for applicant #%d!" % (applicant.pk,)
             return self.render_to_response(ctx)
         vote_str = str(request.POST.get('voteValue')).upper()
-        vote = 0
+        vote = -999
         if vote_str == "NOTSUITABLE":
             vote = -2
         elif vote_str == "SUITABLE":
             vote = 1
         elif vote_str == "EXCEPTIONAL":
             vote = 2
-        if vote == 0:
+        elif vote_str == "ABSTAIN":
+            vote = 0
+        if vote == -999:
             ctx['error_message'] = "Invalid voting option %s!" % (vote_str,)
             return self.render_to_response(ctx)
         # register vote
