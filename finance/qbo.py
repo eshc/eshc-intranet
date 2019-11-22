@@ -6,6 +6,7 @@ from django.http.response import HttpResponseBadRequest
 
 from .models import FinanceConfig
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 from intuitlib.client import AuthClient
 from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
@@ -139,6 +140,22 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
     return agg
 
 
+def qbo_cached_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
+    key = 'qbo_profit_loss_%s' % (macro,)
+    found = cache.get(key)
+    if found is not None:
+        print('hit')
+        return found
+    print('miss')
+    queried = qbo_profit_loss_report(q, fc, macro)
+    cache.set(key, queried, 60*60*4)
+    return queried
+
+
+def qbo_clean_cache():
+    cache.delete_many(['qbo_profit_loss_%s' % (macro,) for macro in [MACRO_THIS_YEAR, MACRO_LAST_YEAR]])
+
+
 def wg_summary(report):
     agg = dict()
     for cls, data in zip(report['classes'], report['class_totals']):
@@ -167,8 +184,8 @@ def get_qbo_context():
         company_id=fc.qboRealmId,
         minorversion=41,
     )
-    this_report = qbo_profit_loss_report(q, fc, MACRO_THIS_YEAR)
-    # last_report = qbo_profit_loss_report(q, fc, MACRO_LAST_YEAR)
+    this_report = qbo_cached_profit_loss_report(q, fc, MACRO_THIS_YEAR)
+    # last_report = qbo_cached_profit_loss_report(q, fc, MACRO_LAST_YEAR)
 
     return {
         'this_report': this_report,

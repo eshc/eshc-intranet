@@ -41,7 +41,7 @@ MEDIA_FILE_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 SECRET_KEY = 'none'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
  ```
-2. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/staticfiles/` folder for serving.
+2. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`, `python manage.py createcachetable`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/staticfiles/` folder for serving.
 3. Run `python manage.py runserver`.
 4. Go to 127.0.0.1:8000 to access the site or 127.0.0.1:8000/admin/ to view the admin panel.
 5. To use the admin panel run `python manage.py createsuperuser` and follow the instructions to create an admin user.
