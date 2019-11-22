@@ -53,7 +53,7 @@ def qbo_ensure_access_token():
         auth_client.refresh(refresh_token)
         fc.qboRefreshToken = auth_client.refresh_token
         fc.qboAccessToken = auth_client.access_token
-        fc.qboRefreshTimeout = timezone.now() + timedelta(days=179)
+        fc.qboRefreshTimeout = timezone.now() + timedelta(days=100)
         fc.qboAccessTimeout = timezone.now() + timedelta(minutes=59)
         fc.save()
     except AuthClientError:
@@ -61,14 +61,14 @@ def qbo_ensure_access_token():
 
 
 def qbo_callback(request: HttpRequest):
-    realm_id = request.GET['realmId']
-    code = request.GET['code']
+    fc = FinanceConfig.load()
+    realm_id = request.GET.get('realmId', fc.qboRealmId)
+    code = request.GET.get('code', None)
     if realm_id is None or code is None:
-        raise Exception('Invalid response')
+        raise QboNoAccess('Invalid response')
     auth_client.get_bearer_token(code, realm_id)
     access_token = auth_client.access_token
     refresh_token = auth_client.refresh_token
-    fc = FinanceConfig.load()
     FinanceConfig.objects.filter(pk=fc.pk).update(
         qboRealmId=realm_id,
         qboAccessToken=access_token,

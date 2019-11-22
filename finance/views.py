@@ -38,5 +38,8 @@ def qbo_callback_view(request: HttpRequest):
             raise BadSignature()
     except BadSignature:
         return HttpResponseBadRequest('Invalid callback signature')
-    qbo.qbo_callback(request)
+    try:
+        qbo.qbo_callback(request)
+    except qbo.QboNoAccess:
+        return HttpResponseBadRequest('Failed to authenticate with QBO')
     return redirect('fin-overview')

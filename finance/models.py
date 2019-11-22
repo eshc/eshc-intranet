@@ -23,7 +23,7 @@ class FinanceConfig(models.Model):
         if self.qboRefreshTimeout is None or self.qboRefreshTimeout <= timezone.now():
             return None
         else:
-            return self.qboAccessToken
+            return self.qboRefreshToken
 
     def save(self, *args, **kwargs):
         """
