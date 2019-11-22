@@ -6,12 +6,12 @@ class FinanceConfig(models.Model):
     """Singleton config model"""
 
     qboRealmId = models.BigIntegerField(verbose_name='(API) QBO Realm ID', blank=True, null=True)
-    qboAccessToken = models.CharField(verbose_name='(API) QBO Access Toekn', blank=True, null=True, max_length=256)
+    qboAccessToken = models.CharField(verbose_name='(API) QBO Access Toekn', blank=True, null=True, max_length=2048)
     qboAccessTimeout = models.DateTimeField(verbose_name='(API) QBO Access Expiry', blank=True, null=True)
-    qboRefreshToken = models.CharField(verbose_name='(API) QBO Refresh Token', blank=True, null=True, max_length=256)
+    qboRefreshToken = models.CharField(verbose_name='(API) QBO Refresh Token', blank=True, null=True, max_length=1024)
     qboRefreshTimeout = models.DateTimeField(verbose_name='(API) QBO Refresh Expiry', blank=True, null=True)
 
-    monthlyRent = models.DecimalField(verbose_name='Monthly rent', max_digits=8, decimal_places=2, default=300.00)
+    memberCount = models.IntegerField(verbose_name='Number of members', default=106)
 
     def get_access_token(self):
         if self.qboAccessTimeout is None or self.qboAccessTimeout <= timezone.now():

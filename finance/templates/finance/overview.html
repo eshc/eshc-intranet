@@ -9,58 +9,102 @@
 
 <div class="row">
 
-<div class="col-md-6 text-center">
-    <h3>What does your rent go towards?</h3>
+<div class="col-md-12 text-center">
+    <h3>Financial overview</h3>
 </div>
 
 </div>
 
 <div class="row">
-
-<div class="col-md-6">
-    <canvas id="rentChart"></canvas>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">General financial overview</div>
+            <ul class="list-group">
+                <li class="list-group-item">Reporting period start: {{ this_report.start_date }}</li>
+                <li class="list-group-item">Reporting period end: {{ this_report.end_date }}</li>
+                <li class="list-group-item">Total income in this period: £{{ this_report.total_income|floatformat:2 }}</li>
+                <li class="list-group-item">Total expenses in this period: £{{ this_report.total_expenses|floatformat:2 }}</li>
+                <li class="list-group-item">Unused income in this period: £{{ this_report.unused_income|floatformat:2 }}</li>
+                <li class="list-group-item">Average paid rent per member in this period: £{{ this_report.rent_avg_value|floatformat:2 }}</li>
+            </ul>
+        </div>
+    </div>
 </div>
 
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Total spending per WG</div>
+            <canvas id="spendChart" width="200" height="200"></canvas>
+            <br>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Total spending per type</div>
+            <canvas id="typeChart" width="200" height="200"></canvas>
+            <br>
+        </div>
+    </div>
 </div>
+
 
 <script>
-var rentCtx = document.getElementById('rentChart').getContext('2d');
-var rentChart = new Chart(rentCtx, {
+var chartOptions = {
+    plugins: {
+        colorschemes: {
+            scheme: 'brewer.Spectral10'
+        }
+    },
+    legend: {
+        display: true
+    },
+    tooltips: {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                return label = data.labels[tooltipItem.index] || '';
+            }
+        }
+    }
+};
+var spendCtx = document.getElementById('spendChart').getContext('2d');
+var spendChart = new Chart(spendCtx, {
     type: 'doughnut',
     data: {
         labels: [
-            {% for c,v in pay_per_cust.items %}
-                '{{c}}',
+            {% for c,v in this_wg.items %}
+                '{{c|escapejs}}: £{{v.bare|floatformat:2}} (rent equivalent: £{{ v.rent|floatformat:2 }})',
             {% endfor %}
         ],
         datasets: [{
             data: [
-                {% for c,v in pay_per_cust.items %}
-                {{v}},
+                {% for c,v in this_wg.items %}
+                {{v.bare}},
                 {% endfor %}
             ]
         }]
     },
-    options: {
-        plugins: {
-            colorschemes: {
-                scheme: 'brewer.Spectral10'
-            }
-        },
-        tooltips: {
-            callbacks: {
-                label: function(tooltipItem, data) {
-                    var label = data.labels[tooltipItem.index] || '';
-
-                    if (label) {
-                        label += ': £';
-                    }
-                    label += Math.round(data.datasets[0].data[tooltipItem.index] * 100) / 100;
-                    return label;
-                }
-            }
-        }
-    }
+    options: chartOptions
+});
+var typeCtx = document.getElementById('typeChart').getContext('2d');
+var typeChart = new Chart(typeCtx, {
+    type: 'doughnut',
+    data: {
+        labels: [
+            {% for c,v in this_type.items %}
+                '{{c|escapejs}}: £{{v.bare|floatformat:2}} (rent equivalent: £{{ v.rent|floatformat:2 }})',
+            {% endfor %}
+        ],
+        datasets: [{
+            data: [
+                {% for c,v in this_type.items %}
+                {{v.bare}},
+                {% endfor %}
+            ]
+        }]
+    },
+    options: chartOptions
 });
 </script>
 

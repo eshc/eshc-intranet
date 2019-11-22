@@ -12,6 +12,7 @@ from intuitlib.exceptions import AuthClientError
 from quickbooks import QuickBooks
 import quickbooks.objects as qb
 from eshcIntranet.settings import *
+import datetime
 from datetime import timedelta
 
 
@@ -78,6 +79,86 @@ def qbo_callback(request: HttpRequest):
     )
 
 
+MACRO_THIS_YEAR = 'This Fiscal Year-to-date'
+MACRO_LAST_YEAR = 'Last Fiscal Year-to-date'
+
+
+def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
+    pal = q.get_report('ProfitAndLoss', qs={'summarize_column_by': 'Classes', 'date_macro': macro})
+    agg = {
+        # 'raw': pal,
+        'classes': [c['ColTitle'] for c in pal['Columns']['Column'][1:-1]],
+        'start_date': datetime.datetime.strptime(pal['Header']['StartPeriod'], "%Y-%m-%d"),
+        'end_date': datetime.datetime.strptime(pal['Header']['EndPeriod'], "%Y-%m-%d"),
+        'total_income': 0.0,
+        'total_expenses': 0.0,
+        'rent_avg_value': 0.0,
+        'rent_eqv_divider': 1.0,
+        'unused_income': 0.0,
+        'expense_labels': list(),
+        'expense_data': list(),
+        'expense_totals': list(),
+        'class_totals': list(),
+    }
+    # Total income
+    for row in pal['Rows']['Row']:
+        if row.get('group', '') == 'Income':
+            agg['total_income'] = float(row['Summary']['ColData'][-1]['value'])
+            break
+    # Process expense rows
+    erow = False
+    for toprow in pal['Rows']['Row']:
+        if toprow.get('group', '') == 'Expenses':
+            erow = toprow
+            break
+    agg['total_expenses'] = float(row['Summary']['ColData'][-1]['value'])
+
+    def process_row(row):
+        for subrow in row['Rows']['Row']:
+            if subrow.get('type', '') == 'Section':
+                process_row(subrow)
+            elif subrow.get('type', '') == 'Data':
+                cdata = subrow['ColData']
+                agg['expense_labels'].append(str(cdata[0]['value']))
+                agg['expense_totals'].append(float(cdata[-1]['value']))
+                ldata = list()
+                for datum in cdata[1:-1]:
+                    ldata.append(float(datum['value']))
+                agg['expense_data'].append(ldata)
+
+    process_row(erow)
+
+    for i in range(len(agg['classes'])):
+        agg['class_totals'].append(sum([dtr[i] for dtr in agg['expense_data']]))
+
+    agg_days = (agg['end_date'] - agg['start_date']).days
+    agg['rent_avg_value'] = agg['total_income'] * 30.5 / (fc.memberCount * agg_days)
+    agg['rent_eqv_divider'] = 1.0 / agg['rent_avg_value']
+    agg['unused_income'] = agg['total_income'] - agg['total_expenses']
+
+    return agg
+
+
+def wg_summary(report):
+    agg = dict()
+    for cls, data in zip(report['classes'], report['class_totals']):
+        agg[cls] = {'bare': data, 'rent': data * report['rent_eqv_divider']}
+    if report['unused_income'] > 0:
+        agg['Unallocated income'] = {'bare': report['unused_income'],
+                                     'rent': report['unused_income'] * report['rent_eqv_divider']}
+    return agg
+
+
+def type_summary(report):
+    agg = dict()
+    for cls, data in zip(report['expense_labels'], report['expense_totals']):
+        agg[cls] = {'bare': data, 'rent': data * report['rent_eqv_divider']}
+    if report['unused_income'] > 0:
+        agg['Unallocated income'] = {'bare': report['unused_income'],
+                                     'rent': report['unused_income'] * report['rent_eqv_divider']}
+    return agg
+
+
 def get_qbo_context():
     fc = FinanceConfig.load()
     q = QuickBooks(
@@ -86,17 +167,13 @@ def get_qbo_context():
         company_id=fc.qboRealmId,
         minorversion=41,
     )
-    pay_per_cust = dict()
-    total_pay = 0.0
-    lim_date = (timezone.now() - timedelta(days=365)).strftime('%Y-%m-%d')
-    payments = qb.Payment.query("""SELECT * FROM Payment WHERE TxnDate >= '%s'""" % (lim_date, ), qb=q)
-    for p in payments:
-        amt = p.TotalAmt
-        cname = p.CustomerRef.name
-        pay_per_cust[cname] = pay_per_cust.get(cname, 0.0) + amt
-        total_pay += amt
-    for k in pay_per_cust:
-        pay_per_cust[k] = pay_per_cust[k] / total_pay * float(fc.monthlyRent)
+    this_report = qbo_profit_loss_report(q, fc, MACRO_THIS_YEAR)
+    # last_report = qbo_profit_loss_report(q, fc, MACRO_LAST_YEAR)
+
     return {
-        'pay_per_cust': pay_per_cust
+        'this_report': this_report,
+        # 'last_report': last_report,
+        'this_wg': wg_summary(this_report),
+        'this_type': type_summary(this_report),
+        # 'last_wg': wg_summary(last_report)
     }
