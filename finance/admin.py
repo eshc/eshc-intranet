@@ -6,7 +6,7 @@ from .qbo import qbo_clean_cache
 @admin.register(FinanceConfig)
 class FinanceAdmin(admin.ModelAdmin):
     actions = ('clean_cache',)
-    fields = ('monthlyRent',)
+    fields = ('memberCount',)
 
     def has_add_permission(self, _request):
         return False
