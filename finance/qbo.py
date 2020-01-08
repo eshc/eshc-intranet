@@ -165,7 +165,7 @@ def qbo_cached_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
 
 
 def qbo_clean_cache():
-    cache.delete_many(['qbo_profit_loss_%s' % (macro,) for macro in [MACRO_THIS_YEAR, MACRO_LAST_YEAR]])
+    cache.delete_many(['qbo_profit_loss_%s' % (macro.replace(' ', '_'),) for macro in [MACRO_THIS_YEAR, MACRO_LAST_YEAR]])
 
 
 def wg_summary(report):
