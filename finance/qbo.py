@@ -122,7 +122,7 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
         if toprow.get('group', '') == 'Expenses':
             erow = toprow
             break
-    agg['total_expenses'] = try_float(row['Summary']['ColData'][-1]['value'])
+    agg['total_expenses'] = try_float(toprow['Summary']['ColData'][-1]['value'])
 
     def process_row(row):
         for subrow in row['Rows']['Row']:
