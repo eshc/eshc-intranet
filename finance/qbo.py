@@ -85,6 +85,8 @@ MACRO_LAST_YEAR = 'Last Fiscal Year-to-date'
 
 
 def try_float(d):
+    if len(str(d).strip()) == 0:
+        return 0.0
     try:
         return float(d)
     except ValueError:
