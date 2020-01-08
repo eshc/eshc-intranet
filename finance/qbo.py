@@ -144,7 +144,7 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
 
     agg_days = (agg['end_date'] - agg['start_date']).days
     agg['rent_avg_value'] = agg['total_income'] * 30.5 / (fc.memberCount * agg_days)
-    agg['rent_eqv_divider'] = 1.0 / agg['rent_avg_value']
+    agg['rent_eqv_divider'] = agg['rent_avg_value'] / agg['total_expenses']
     agg['unused_income'] = agg['total_income'] - agg['total_expenses']
 
     return agg
