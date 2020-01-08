@@ -84,6 +84,14 @@ MACRO_THIS_YEAR = 'This Fiscal Year-to-date'
 MACRO_LAST_YEAR = 'Last Fiscal Year-to-date'
 
 
+def try_float(d):
+    try:
+        return float(d)
+    except ValueError:
+        print("Invalid float: ", str(d))
+        return 0.0
+
+
 def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
     pal = q.get_report('ProfitAndLoss', qs={'summarize_column_by': 'Classes', 'date_macro': macro})
     agg = {
@@ -104,7 +112,7 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
     # Total income
     for row in pal['Rows']['Row']:
         if row.get('group', '') == 'Income':
-            agg['total_income'] = float(row['Summary']['ColData'][-1]['value'])
+            agg['total_income'] = try_float(row['Summary']['ColData'][-1]['value'])
             break
     # Process expense rows
     erow = False
@@ -112,7 +120,7 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
         if toprow.get('group', '') == 'Expenses':
             erow = toprow
             break
-    agg['total_expenses'] = float(row['Summary']['ColData'][-1]['value'])
+    agg['total_expenses'] = try_float(row['Summary']['ColData'][-1]['value'])
 
     def process_row(row):
         for subrow in row['Rows']['Row']:
@@ -121,10 +129,10 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
             elif subrow.get('type', '') == 'Data':
                 cdata = subrow['ColData']
                 agg['expense_labels'].append(str(cdata[0]['value']))
-                agg['expense_totals'].append(float(cdata[-1]['value']))
+                agg['expense_totals'].append(try_float(cdata[-1]['value']))
                 ldata = list()
                 for datum in cdata[1:-1]:
-                    ldata.append(float(datum['value']))
+                    ldata.append(try_float(datum['value']))
                 agg['expense_data'].append(ldata)
 
     process_row(erow)
@@ -141,7 +149,7 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
 
 
 def qbo_cached_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
-    key = 'qbo_profit_loss_%s' % (macro,)
+    key = 'qbo_profit_loss_%s' % (macro.replace(' ', '_'),)
     found = cache.get(key)
     if found is not None:
         print('hit')
