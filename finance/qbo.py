@@ -82,8 +82,8 @@ def qbo_callback(request: HttpRequest):
     )
 
 
-MACRO_THIS_YEAR = 'This Fiscal Year-to-date'
-MACRO_LAST_YEAR = 'Last Fiscal Year-to-date'
+MACRO_THIS_YEAR = 'This Fiscal Year'
+MACRO_LAST_YEAR = 'Last Fiscal Year'
 
 
 def try_float(d):
