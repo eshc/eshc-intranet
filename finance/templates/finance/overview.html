@@ -25,7 +25,8 @@
                 <li class="list-group-item">Total income in this period: £{{ this_report.total_income|floatformat:2 }}</li>
                 <li class="list-group-item">Total expenses in this period: £{{ this_report.total_expenses|floatformat:2 }}</li>
                 <li class="list-group-item">Unused income in this period: £{{ this_report.unused_income|floatformat:2 }}</li>
-                <li class="list-group-item">Average paid rent per member in this period: £{{ this_report.rent_avg_value|floatformat:2 }}</li>
+                <li class="list-group-item">Average income per member per month (roughly rent) in this period: £{{ this_report.rent_avg_value|floatformat:2 }}</li>
+                <li class="list-group-item">The above figure is used to calculate the "rent equivalent", which should give you an idea of how much of your rent is contributing towards each expense type. This is not a perfect calculation, as rent is not always our only source of income!</li>
             </ul>
         </div>
     </div>

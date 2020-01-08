@@ -45,11 +45,6 @@ def qbo_auth_url(csrf):
 
 def qbo_ensure_access_token():
     fc = FinanceConfig.load()
-    access_token = fc.get_access_token()
-    if access_token is not None and len(access_token) > 0:
-        auth_client.access_token = access_token
-        auth_client.refresh_token = fc.get_refresh_token()
-        return access_token
     refresh_token = fc.get_refresh_token()
     if refresh_token is None or len(refresh_token) == 0:
         raise QboNoAccess
