@@ -158,9 +158,7 @@ def qbo_cached_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
     key = 'qbo_profit_loss_%s' % (macro.replace(' ', '_'),)
     found = cache.get(key)
     if found is not None:
-        print('hit')
         return found
-    print('miss')
     queried = qbo_profit_loss_report(q, fc, macro)
     cache.set(key, queried, 60*60*4)
     return queried

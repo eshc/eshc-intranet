@@ -38,7 +38,7 @@ Each application must receive at least 15 reviews to be considered fully reviewe
                 </div>
             </div>
             <h3>Applicant answers</h3>
-            {% for question in session.questions %}
+            {% for question in session.voting_questions %}
             {% with question.pk as qpk %}
             <div class="row">
                 <div class="col-md-12">

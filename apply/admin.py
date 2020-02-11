@@ -12,7 +12,7 @@ from .models import ApplicationSession, ApplicationQuestion, Applicant, Applicat
 class QuestionsAdmin(OrderedTabularInline):
     model = ApplicationQuestion
     ordering = ('order',)
-    fields = ('question_text', 'question_type', 'question_options', 'order', 'move_up_down_links')
+    fields = ('question_text', 'question_type', 'question_options', 'visible_in_voting', 'order', 'move_up_down_links')
     readonly_fields = ('order', 'move_up_down_links')
     extra = 0
 

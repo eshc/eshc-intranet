@@ -151,7 +151,7 @@ def find_applicant(app_session: models.ApplicationSession, member: User) -> Unio
 
 
 def get_answers(applicant: models.Applicant):
-    qs = applicant.session.questions()
+    qs = applicant.session.questions().filter(visible_in_voting=True)
     ans = dict()
     for q in qs:
         try:
