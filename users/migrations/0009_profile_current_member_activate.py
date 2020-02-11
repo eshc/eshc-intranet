@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 def activate_members(apps, schema_editor):
     Profile = apps.get_model('users', 'Profile')
-    print(Profile.objects.all()[0])
     Profile.objects.all().update(current_member=models.F('share_received'))
     pass
 

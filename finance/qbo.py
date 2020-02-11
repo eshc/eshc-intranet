@@ -25,12 +25,19 @@ def qbo_redirect_uri():
     return '%s://%s/finance/qbo_callback' % (protocol, domain)
 
 
-auth_client = AuthClient(
-    client_id=QBO_CLIENT_ID,
-    client_secret=QBO_CLIENT_SECRET,
-    environment=QBO_ENVIRONMENT,
-    redirect_uri=qbo_redirect_uri()
-)
+global auth_client_obj
+
+
+def auth_client():
+    if auth_client_obj is None:
+        auth_client_obj = AuthClient(
+            client_id=QBO_CLIENT_ID,
+            client_secret=QBO_CLIENT_SECRET,
+            environment=QBO_ENVIRONMENT,
+            redirect_uri=qbo_redirect_uri()
+        )
+    return auth_client_obj
+
 
 scopes = [Scopes.ACCOUNTING]
 
@@ -40,7 +47,7 @@ class QboNoAccess(Exception):
 
 
 def qbo_auth_url(csrf):
-    return auth_client.get_authorization_url(scopes, csrf)
+    return auth_client().get_authorization_url(scopes, csrf)
 
 
 def qbo_ensure_access_token():
@@ -49,9 +56,9 @@ def qbo_ensure_access_token():
     if refresh_token is None or len(refresh_token) == 0:
         raise QboNoAccess
     try:
-        auth_client.refresh(refresh_token)
-        fc.qboRefreshToken = auth_client.refresh_token
-        fc.qboAccessToken = auth_client.access_token
+        auth_client().refresh(refresh_token)
+        fc.qboRefreshToken = auth_client().refresh_token
+        fc.qboAccessToken = auth_client().access_token
         fc.qboRefreshTimeout = timezone.now() + timedelta(days=100)
         fc.qboAccessTimeout = timezone.now() + timedelta(minutes=59)
         fc.save()
@@ -65,9 +72,9 @@ def qbo_callback(request: HttpRequest):
     code = request.GET.get('code', None)
     if realm_id is None or code is None:
         raise QboNoAccess('Invalid response')
-    auth_client.get_bearer_token(code, realm_id)
-    access_token = auth_client.access_token
-    refresh_token = auth_client.refresh_token
+    auth_client().get_bearer_token(code, realm_id)
+    access_token = auth_client().access_token
+    refresh_token = auth_client().refresh_token
     FinanceConfig.objects.filter(pk=fc.pk).update(
         qboRealmId=realm_id,
         qboAccessToken=access_token,
@@ -187,7 +194,7 @@ def get_qbo_context():
     fc = FinanceConfig.load()
     qbo_ensure_access_token()
     q = QuickBooks(
-        auth_client=auth_client,
+        auth_client=auth_client(),
         refresh_token=fc.qboRefreshToken,
         company_id=fc.qboRealmId,
         minorversion=41,
