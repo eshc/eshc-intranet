@@ -15,7 +15,7 @@ from . import models
 import re
 import sys
 
-data_re = re.compile('[ a-zA-Z0-9@.+]*')
+data_re = re.compile('[ a-zA-Z0-9_@.+-]*')
 
 
 def active_member_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
