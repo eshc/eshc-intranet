@@ -96,7 +96,12 @@ class IntranetLdapSync:
         rdn = dn.split(',')[0]
         assert 0 < len(rdn) < len(dn)
         if not self.mock:
-            self.connection.modify_dn(dn, rdn, new_superior=self.exmembers_dn)
+            self.connection.modify_dn(dn, rdn, delete_old_dn=True, new_superior=self.exmembers_dn)
+            if self.connection.result['result'] == 68: # Already exists
+                self.connection.delete('%s,%s'%(rdn,self.exmembers_dn))
+                result = self.connection.modify_dn(dn, rdn, delete_old_dn=True, new_superior=self.exmembers_dn)
+                if not result:
+                    print(self.connection.result)
         else:
             print("Move now-ex user ", dn, " to ", rdn, ",", self.exmembers_dn)
         pass
