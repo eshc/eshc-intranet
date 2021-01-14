@@ -6,10 +6,13 @@ from home.models import LdapGroup
 
 
 def user_to_str(u: User):
+    if u.profile is not None and len(u.profile.preferred_name) > 0:
+        return '%s %s [%s] (%s)' % (u.first_name, u.last_name, u.profile.preferred_name, u.username)
     return '%s %s (%s)' % (u.first_name, u.last_name, u.username)
 
 
 User.__str__ = user_to_str
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -35,6 +38,7 @@ class Profile(models.Model):
         if not self.preferred_name:
             self.preferred_name = self.user.first_name
         super().save(*args, **kwargs)
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

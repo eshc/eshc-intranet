@@ -70,6 +70,7 @@ class Role(models.Model):
     subgroup = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(max_length=500)
     assigned_to = models.ManyToManyField(User, blank=True)
+    past_holders = models.ManyToManyField(User, verbose_name="Past holders", related_name="past_roles", blank=True)
     ldap_groups = models.ManyToManyField(LdapGroup, blank=True)
     permissions = models.ManyToManyField(Permission, blank=True)
 

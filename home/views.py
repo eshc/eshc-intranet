@@ -41,7 +41,7 @@ import csv
 from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm  # WgEditForm
 
-from users.decorators import has_share, check_grouup, current_member_required
+from users.decorators import has_share, check_group, current_member_required
 from home.models import GM, Point, WgUpdate, Minutes, Role
 from whiteboard.models import Note
 from django.core.mail import send_mail

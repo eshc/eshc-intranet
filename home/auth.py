@@ -2,6 +2,8 @@ import django.contrib.admin as admin
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.models import Permission
 from home.models import Role
+from eshcIntranet.settings import DEBUG
+
 
 class GroupAwareAuthenticationBackend(ModelBackend):
     # Modified permission functions from Django's source
@@ -75,5 +77,6 @@ class MyAdminSite(admin.AdminSite):
         Return True if the given HttpRequest has permission to view
         *at least one* page in the admin site.
         """
+        if DEBUG and request.user.is_superuser:
+            return True
         return request.user.is_active and request.user.profile.current_member
-

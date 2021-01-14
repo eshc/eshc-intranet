@@ -42,11 +42,12 @@ class RoleAdmin(admin.ModelAdmin):
 
     fieldsets = [
         (None,
-         {'fields': ['role_name', 'assigned_to', 'group', 'subgroup', 'description', 'permissions', 'ldap_groups']})
+         {'fields': ['role_name', 'assigned_to', 'past_holders', 'group', 'subgroup',
+                     'description', 'permissions', 'ldap_groups']})
     ]
     list_display = ('role_name', 'members', 'group')
     search_fields = ['role_name']
-    autocomplete_fields = ['assigned_to', 'ldap_groups']
+    autocomplete_fields = ['assigned_to', 'past_holders', 'ldap_groups']
 
 
 class LdapAdmin(admin.ModelAdmin):

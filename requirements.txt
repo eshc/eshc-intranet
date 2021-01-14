@@ -22,7 +22,7 @@ django-debug-toolbar==2.0
 django-htmlmin==0.11.0
 django-import-export==1.2.0
 django-js-asset==1.1.0
-django-mptt==0.10.0
+django-mptt==0.9.0
 django-nyt==1.1.3
 django-ordered-model==3.2.0
 django-sekizai==1.0.0
@@ -45,8 +45,8 @@ intuit-oauth==1.2.2
 jdcal==1.4.1
 jmespath==0.9.4
 ldap3==2.6
-lxml==4.3.4
-Markdown==2.6.11
+lxml==4.3.5
+Markdown==3.1.1
 Markups==3.0.0
 micawber==0.5.0
 oauthlib==3.0.2
@@ -96,7 +96,7 @@ watchdog==0.9.0
 webencodings==0.5.1
 whitenoise==4.1.2
 Whoosh==2.7.4
-wiki==0.4.2
+wiki==0.5.0
 xlrd==1.2.0
 xlwt==1.3.0
 zipp==0.5.2

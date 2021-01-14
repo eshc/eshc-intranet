@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
+	<div class="col-lg-offset-1 col-lg-10 col-sm-12 col-md-12">
 		<h1>Work Share Plan</h1>
 		<h4>Roles and Allocations</h4>
 		{% if user.is_superuser %}
@@ -11,7 +11,7 @@
 		<p>Click on the Change link to reassign people to a specific role.</p>
 		{% endif %}
 		<p>Click on the role description to go to the Wiki page and find out more.</p>
-        <p><a href="/wsp_subgroups/">Click here to view this list sorted by subgroup</a></p>
+		<p><a href="/wsp_subgroups/">Click here to view this list sorted by subgroup</a></p>
 		{% for group, roles in groups %}
 			{% if roles %}
 			<h3>{{ group.name }}</h3>
@@ -25,10 +25,10 @@
 								Role
 							</th>
 							<th>
-								Responsible
+								Responsible and past holders
 							</th>
 							<th>
-							 	Job Description
+								Job Description
 							</th>
 						</tr>
 				{% for role in roles %}
@@ -46,15 +46,22 @@
 							</td>
 							<td style="white-space: nowrap" {% if role.assigned_to.all.count == 0 %} class="bg-danger" {% endif %}>
 								{% for person in role.assigned_to.all %}
-                                    {% if not person.profile.current_member %}
-                                        <strong class="text-danger">MOVED OUT: </strong>
-                                    {% endif %}
+									{% if not person.profile.current_member %}
+										<strong class="text-danger">MOVED OUT: </strong>
+									{% endif %}
 									{{person.profile.format_name}}  <br/>
-                                {% endfor %}
-                                {% if role.assigned_to.all.count == 0 %}
-                                    <strong class="text-danger">UNASSIGNED</strong> <br/>
-                                {% endif %}
-                                <strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
+								{% endfor %}
+								{% if role.assigned_to.all.count == 0 %}
+									<strong class="text-danger">UNASSIGNED</strong> <br/>
+								{% endif %}
+								{% for person in role.past_holders.all %}
+									<div class="text-muted">[past]
+									{% if not person.profile.current_member %}
+										[moved out]
+									{% endif %}
+									{{person.profile.format_name}} </div>
+								{% endfor %}
+								<strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
 							</td>
 							<td>
 								<a href="/wiki/work-share-plan/{{ role.role_name|slugify }}">{{role.description}}</a>
@@ -67,9 +74,9 @@
 				</div>
 			{% endif %}
 		{% endfor %}
-    <br>
-    {% if jobless and jobless.count > 0 %}
-        <h3>Unassigned members</h3>
+	<br>
+	{% if jobless and jobless.count > 0 %}
+		<h3>Unassigned members</h3>
 				<div style="border: 1px solid lightgrey; border-radius: 5px">
 					<table class="table">
 						<tr>
@@ -80,13 +87,13 @@
 				{% for person in jobless %}
 						<tr>
 							<td style="white-space: nowrap" class="bg-danger">
-                                {{person.profile.format_name}}  <br/>
+								{{person.profile.format_name}}  <br/>
 							</td>
 						</tr>
 				{% endfor %}
 					</table>
 				</div>
-    {% endif %}
+	{% endif %}
 		<br>
 	</div>
 </div>
