@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.http import HttpRequest, HttpResponseServerError
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
@@ -132,7 +132,7 @@ Here are the answers you provided to our questions provided for your reference:
                 mistakes)
             return self.render_to_response(ctx)
         else:
-            return render_to_response(self.success_template_name, ctx, self.content_type)
+            return render(request, self.success_template_name, ctx, self.content_type)
 
     def get_context_data(self, **kwargs) -> dict:
         app_session: models.ApplicationSession = get_object_or_404(models.ApplicationSession, pk=kwargs['session_id'])
