@@ -39,7 +39,7 @@ import os
 import csv
 
 from leases.models import Lease, Inventory
-from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm  # WgEditForm
+from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm, SignupWithProfileForm  # WgEditForm
 
 from users.decorators import has_share, check_group, current_member_required
 from home.models import GM, Point, WgUpdate, Minutes, Role
@@ -57,7 +57,7 @@ sensitive_post_parameters_m = method_decorator(
 
 class MySignupView(SignupView):
     template_name = "account/signup." + app_settings.TEMPLATE_EXTENSION
-    form_class = SignupForm
+    form_class = SignupWithProfileForm
     redirect_field_name = "next"
     success_url = None
 

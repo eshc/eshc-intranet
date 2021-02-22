@@ -128,6 +128,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'eshcIntranet.wsgi.application'
 
+ACCOUNT_FORMS = {'signup': 'home.forms.SignupWithProfileForm'}
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
