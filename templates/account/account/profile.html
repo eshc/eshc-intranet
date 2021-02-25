@@ -1,150 +1,156 @@
 {% extends "account/base.html" %}
 
 {% block content %}
-<div class="col-lg-offset-1 col-sm-10 col-md-10">
-  <h1>Your ESHC Profile</h1>
+<div class="row">
+    <div class="col-lg-offset-1 col-sm-10 col-md-10">
+        <h1>Your ESHC Profile</h1>
+    </div>
+
+    <div class="col-lg-offset-1 col-lg-5 col-sm-6 col-md-6">
+        <div class="card m-2">
+            <div class="card-header">
+                <b>Personal Information</b>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Username: {{ user.username }}</li>
+                <li class="list-group-item">Name: {{ user.first_name }} {{ user.last_name }}</li>
+                <li class="list-group-item">Email: {{ user.email }}</li>
+                <li class="list-group-item">Preferred name: {{ user.profile.preferred_name }}</li>
+                <li class="list-group-item">Phone number: {{ user.profile.phone_number }}</li>
+                <li class="list-group-item">Permanent address: {{ user.profile.perm_address }}</li>
+            </ul>
+            <div class="card-footer">
+                {% if user.first_name %}
+                <a href="{% url 'home:edit_profile' %}">Edit Profile</a>
+                -
+                <a href="{% url 'account_email' %}">Edit E-mail</a>
+                -
+                <a href="{% url 'account_change_password' %}">Change password</a>
+                {% else %}
+                <a style="font-size: x-large; font-weight: bold; color:red" href="{% url 'home:edit_profile' %}">Fill in
+                    missing profile info (click or tap)</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card card-default m-2">
+            <div class="card-header">
+                <b>Bank Reference Number</b>
+            </div>
+            <div class="card-body">
+                {% if user.profile.ref_number %}
+                <strong>{{ user.profile.ref_number }}</strong>
+                Use it when
+                {% if share_received %}
+                paying <a href="/wiki/procedures-wg/rent/">rent</a>.
+                {% else %}
+                buying a <a href="/wiki/procedures-wg/shares/">share</a> or paying <a href="/wiki/procedures-wg/rent/">rent</a>.
+                {% endif %}
+                {% else %}
+                <p>Not yet assigned.</p>
+                <p>An email has been sent to the finance team and an admin will assign you one shortly.</p>
+                <p>You will need to use this number when buying a <a href="/wiki/procedures-wg/shares/">share</a> or
+                    paying <a href="/wiki/procedures-wg/rent/">rent</a>.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 col-sm-6 col-md-6">
+        <div class="card card-default m-2">
+            <div class="card-header">
+                <b>Share</b>
+            </div>
+            <div class="card-body">
+                {% if share_received %}
+                <strong>Received, thank you!</strong> <a href="/wiki/procedures-wg/shares/">Link to wiki page on
+                shares.</a>
+                {% else %}
+                Not yet received. <strong>You will not be able to access all sections of the site until we receive
+                it.</strong>
+                See <a href="/wiki/procedures-wg/shares/">this page</a> on the wiki for a quick explanation of what a
+                share is.
+                {% endif %}
+            </div>
+        </div>
+        <div class="card card-default m-2">
+            <div class="card-header">
+                <b>Membership status</b>
+            </div>
+            <div class="card-body">
+                {% if user.profile.current_member %}
+                <strong>Confirmed, you have access to all of intranet features!</strong>
+                {% else %}
+                Not yet confirmed. You'll have to wait for an admin to activate your intranet account before you get
+                access to all its features.
+                {% endif %}
+            </div>
+        </div>
+        <div class="card card-default m-2">
+            <div class="card-header">
+                <b>Deposit</b>
+            </div>
+            <div class="card-body">
+                <p>For info on deposits visit <a href="/wiki/procedures-wg/deposits/">this wiki page</a>.</p>
+            </div>
+        </div>
+        <div class="card card-default m-2">
+            <div class="card-header">
+                <b>Your WSP Roles</b>
+            </div>
+            <div class="card-body">
+                {% if roles %}
+                <table class="table">
+                    {% for role in roles %}
+                    <tr>
+                        <td>
+                            <a href="/wiki/work-share-plan/{{ role.role_name|slugify }}">{{role.role_name}}</a>
+                        </td>
+                        <td>
+                            {{ role.description }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <p>You have not been assigned a role yet.</p>
+                <p><a href="wiki/work-share-plan">Work Share Plan Introduction</a></p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="/wsp/">WSP Roles List</a>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-offset-1 col-lg-10 col-sm-12">
+
+        {% if leases %}
+        <h2>Leases</h2>
+        <table class="table">
+            <thead>
+            <th></th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Room</th>
+            <th>Signed on</th>
+            <th>Inventory</th>
+            </thead>
+            <tbody>
+            {% for lease in leases %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ lease.start_date }}</td>
+                <td>{{ lease.end_date }}</td>
+                <td>{{ lease.building }}/{{ lease.flat }} {{ lease.room }}</td>
+                <td>{{ lease.date_signed }}</td>
+                <td><a href="{% url 'leases:inventory' lease.id %}">Inventory</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
 </div>
-<div class="col-lg-offset-1 col-lg-5 col-sm-6 col-md-6">
-  <div class="panel panel-default">
-	  <div class="panel-heading">
-		<h3 class="panel-title">Personal Information</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<p>Username: {{ user.username }}</p>
-		<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
-		<p>Email: {{ user.email }}</p>
-		<p>Preferred name: {{ user.profile.preferred_name }}</p>
-		<p>Phone number: {{ user.profile.phone_number }}</p>
-		<p>Permanent address: {{ user.profile.perm_address }}</p>
-	  </div>
-	  <div class="panel-footer">
-	  <div>
-	  	{% if user.first_name %}
-		<a href="{% url 'home:edit_profile' %}">Edit Profile</a>
-		-
-		<a href="{% url 'account_email' %}">Edit E-mail</a>
-		-
-		<a href="{% url 'account_change_password' %}">Change password</a>
-		{% else %}
-		<a style="font-size: x-large; font-weight: bold; color:red" href="{% url 'home:edit_profile' %}">Fill in missing profile info (click or tap)</a>
-	  	{% endif %}
-	  	</div>
-	  </div>
-	</div>
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Bank Reference Number</h3>
-	  </div>
-	  <div class="panel-body">
-		  {% if user.profile.ref_number %}
-			<strong>{{ user.profile.ref_number }}</strong> 
-			Use it when 
-			  {% if share_received %}
-				paying <a href="/wiki/procedures-wg/rent/">rent</a>.
-			  {% else %}
-			  	buying a <a href="/wiki/procedures-wg/shares/">share</a> or paying <a href="/wiki/procedures-wg/rent/">rent</a>.
-			  {% endif %}
-		  {% else %}
-		  	<p>Not yet assigned.</p>
-		  	<p>An email has been sent to the finance team and an admin will assign you one shortly.</p>
-		  	<p>You will need to use this number when buying a <a href="/wiki/procedures-wg/shares/">share</a> or paying <a href="/wiki/procedures-wg/rent/">rent</a>.</p>
-		  {% endif %}
-	  </div>
-	</div>
-</div>
-<div class="col-lg-5 col-sm-6 col-md-6">
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Share</h3>
-	  </div>
-	  <div class="panel-body">
-		  {% if share_received %}
-				<strong>Received, thank you!</strong> <a href="/wiki/procedures-wg/shares/">Link to wiki page on shares.</a>
-		  {% else %}
-		  	Not yet received. <strong>You will not be able to access all sections of the site until we receive it.</strong>
-		  	See <a href="/wiki/procedures-wg/shares/">this page</a> on the wiki for a quick explanation of what a share is.
-		  {% endif %}
-	  </div>
-	</div>
-    <div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Membership status</h3>
-	  </div>
-	  <div class="panel-body">
-		  {% if user.profile.current_member %}
-				<strong>Confirmed, you have access to all of intranet features!</strong>
-		  {% else %}
-		  	Not yet confirmed. You'll have to wait for an admin to activate your intranet account before you get access to all its features.
-		  {% endif %}
-	  </div>
-	</div>
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Deposit</h3>
-	  </div>
-	  <div class="panel-body">
-		<p>For info on deposits visit <a href="/wiki/procedures-wg/deposits/">this wiki page</a>.</p>
-	  </div>
-	</div> 
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Your WSP Roles</h3>
-	  </div>
-	  <div class="panel-body">
-	  	{% if roles %}
-	  		<table class="table">
-	  		{% for role in roles %}
-	  			<tr>
-					<td>
-						<a href="/wiki/work-share-plan/{{ role.role_name|slugify }}">{{role.role_name}}</a> 
-		  			</td>
-					<td>
-						{{ role.description }}
-					</td>
-	  			</tr>
-	  		{% endfor %}
-	  		</table>
-	  	{% else %}
-	  	<p>You have not been assigned a role yet.</p>
-	  	<p><a href="wiki/work-share-plan">Work Share Plan Introduction</a></p>
-	  	{% endif %}
-		</div>
-		<div class="panel-footer">
-		  	<a href="/wsp/">WSP Roles List</a>
-		</div>
-	</div>
-
-</div>
-
-
-<div class="col-lg-offset-1 col-lg-10 col-sm-12">
-
-	{% if leases %}
-		<h2>Leases</h2>
-			<table class="table">
-				<thead>
-					<th> </th>
-					<th>Start Date</th>
-					<th>End Date</th>
-					<th>Room</th>
-					<th>Signed on</th>
-					<th>Inventory</th>
-				</thead>
-				<tbody>
-				{% for lease in leases %}
-				<tr>
-					<td>{{ forloop.counter }}</td>
-					<td>{{ lease.start_date }}</td>
-					<td>{{ lease.end_date }} </td>
-					<td>{{ lease.building }}/{{ lease.flat }} {{ lease.room }} </td>
-					<td>{{ lease.date_signed }}</td>
-					<td><a href="{% url 'leases:inventory' lease.id %}">Inventory</a></td>
-				</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-	{% endif %}
-</div>
-
 
 {% endblock content %}

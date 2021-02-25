@@ -29,10 +29,13 @@ class Profile(models.Model):
         return self.format_name()
 
     def format_name(self):
+        full_name = self.user.get_full_name()
         if len(self.preferred_name) > 0:
             return self.preferred_name + ' ' + self.user.last_name
-        else:
+        elif len(full_name) > 0:
             return self.user.get_full_name()
+        else:
+            return self.user.username
 
     def save(self, *args, **kwargs):
         if not self.preferred_name:

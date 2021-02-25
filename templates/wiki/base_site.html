@@ -10,6 +10,8 @@
 
     <!-- Le styles -->
     <link href="{% static "wiki/bootstrap/css/wiki-bootstrap.min.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+
 
     {% render_block "css" %}
   </head>
@@ -34,12 +36,7 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
     {% block wiki_header_navlinks %}
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/">{% trans "Home" %}</a>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'wiki:root' %}">Wiki</a></li>
-        <li class="nav-item"><a class="nav-link" target="_blank" href="https://nextcloud.eshc.coop">Nextcloud</a></li>
-        <li class="nav-item"><a class="nav-link" target="_blank" href="https://zulip.eshc.coop">Zulip</a></li>
+        {% include "navbar_links.html" %}
     </ul>
     {% endblock %}
       {% if user.is_authenticated %}
@@ -47,7 +44,7 @@
               <li class="nav-item dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">
                   <span class="badge badge-light">0</span>
-                  {{ user }}
+                  {{ user.profile }}
                   <b class="caret"></b>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">

@@ -1,5 +1,15 @@
-<!-- <li><a href="{% url 'home:index' %}">Home</a></li> -->
-<li><a href="/wiki/">Wiki</a></li>
-<li><a target="_blank" href="https://nextcloud.eshc.coop">Nextcloud</a></li>
-<li><a target="_blank" href="https://zulip.eshc.coop">Zulip</a></li>
-<!-- <li><a href="/polls/">Proposals</a></li> -->
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'home:index' %}"><i class="bi bi-house-fill"></i> Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'wiki:root' %}"><i class="bi bi-globe"></i> Wiki</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'home:wsp' %}"><i class="bi bi-person-lines-fill"></i> WSP Roles</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" target="_blank" href="https://nextcloud.eshc.coop"><i class="bi bi-folder-fill"></i> Nextcloud</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" target="_blank" href="https://zulip.eshc.coop"><i class="bi bi-chat-fill"></i> Zulip</a>
+</li>
