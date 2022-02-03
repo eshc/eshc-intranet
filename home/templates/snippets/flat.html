@@ -1,0 +1,14 @@
+{% for lease in flat %}
+  <div id="tooltip">
+    <p>{{ lease.room }}: {{ lease.user.first_name }} {{ lease.user.last_name }}<span>
+        Start Date: {{ lease.start_date }}
+        End date: {{ lease.end_date }}</span></p>
+  </div>
+  {% if forloop.last %}
+    {% if forloop.counter != size %}
+      <strong>Check!</strong>
+    {% endif %}
+  {% endif %}
+  {% empty %}
+  <div>No leases!</div>
+{% endfor %}
