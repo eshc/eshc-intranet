@@ -17,6 +17,14 @@ class Lease(models.Model):
 	emergency_contact_address = models.TextField(verbose_name='emergency contact address', max_length=256, default='', blank=True)
 
 
+class Covid(models.Model):
+	user = models.ForeignKey(User, on_delete=CASCADE)
+	building = models.PositiveIntegerField('building number')
+	flat = models.PositiveIntegerField('flat number')
+	room = models.CharField(max_length=1)
+	covid_pos_date = models.DateField('Positive COVID-19 Test Date', null=True)
+
+
 class Inventory(models.Model):
 	lease = models.OneToOneField(Lease, unique=True, on_delete=CASCADE)
 	sub_date = models.DateField('submission date')
