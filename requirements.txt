@@ -103,7 +103,7 @@ tablib==3.0.0
 toml==0.10.2
 unicodecsv==0.14.1
 Unidecode==1.2.0
-urllib3==1.26.3
+urllib3==1.26.5
 watchdog==2.0.1
 webencodings==0.5.1
 whitenoise==5.2.0
