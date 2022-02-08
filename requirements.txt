@@ -24,7 +24,7 @@ django-allauth==0.44.0
 django-appconf==1.0.4
 django-classy-tags==2.0.0
 django-crispy-forms==1.11.0
-django-debug-toolbar==3.2
+django-debug-toolbar==3.2.1
 django-htmlmin==0.11.0
 django-import-export==2.5.0
 django-js-asset==1.2.2
