@@ -142,6 +142,15 @@ Here are the answers you provided to our questions provided for your reference:
         return ctx
 
 
+def get_application_numbers(app_session: models.ApplicationSession, member: User) -> (int,int):
+    applicants = models.Applicant.objects.filter(session=app_session)
+    myvotes = 0
+    for a in applicants:
+        if a.applicationvote_set.filter(voting_member=member).count() == 1:
+            myvotes += 1
+
+    return (myvotes,len(applicants))
+
 def find_applicant(app_session: models.ApplicationSession, member: User) -> Union[models.Applicant, None]:
     applicants = models.Applicant.objects.filter(session=app_session).order_by('vote_count')
     for ap in applicants:
@@ -241,7 +250,8 @@ class VoteView(TemplateView):
         )
         applicant.vote_count += 1
         applicant.save()
-        ctx['succ_message'] = "You have voted for applicant #%d!" % (applicant.pk,)
+        my_votes_count, total_votes_count = get_application_numbers(ctx['session'], member)
+        ctx['succ_message'] = "You have voted for applicant #%d! You have already voted on %d out of %d applications for this session" % (applicant.pk,my_votes_count,total_votes_count)
         next_applicant: models.Applicant = find_applicant(ctx['session'], member)
         ctx['applicant'] = next_applicant
         if next_applicant:
