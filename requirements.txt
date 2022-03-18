@@ -1,8 +1,7 @@
-aiohttp==2.3.10
+aiohttp==3.8.1
 appdirs==1.4.4
 argh==0.26.2
 asgiref==3.3.1
-async-timeout==3.0.1
 authclient==1.0
 autopep8==1.5.5
 backports.csv==1.0.7

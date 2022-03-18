@@ -249,7 +249,7 @@ WIKI_ANONYMOUS = False
 WIKI_ANONYMOUS_WRITE = False
 
 
-def wiki_restrict_edit_access(article, user):
+def wiki_restrict_access(article, user):
     """restrict editing to users with shares"""
     if user.profile.current_member or user.is_superuser:
         permission = True
@@ -258,7 +258,8 @@ def wiki_restrict_edit_access(article, user):
     return permission
 
 
-WIKI_CAN_WRITE = wiki_restrict_edit_access
+WIKI_CAN_READ = wiki_restrict_access
+WIKI_CAN_WRITE = wiki_restrict_access
 
 # Email
 # EMAIL_USE_TLS = True
