@@ -27,6 +27,10 @@ class SignupWithProfileForm(SignupForm):
                                         required=False, widget=forms.Textarea(
             attrs={"placeholder": "Permanent address", "autocomplete": "street-address"}
         ))
+    captcha_question = forms.CharField(label="Security Question", max_length=80,
+                                        required=True, widget=forms.TextInput(
+                                            attrs={"placeholder": "What is the capital of Scotland?"}
+                                            ))
 
     field_order = [
         "username",
@@ -39,6 +43,7 @@ class SignupWithProfileForm(SignupForm):
         "password2",  # ignored when not present
         "phone_number",
         "perm_address",
+        "captcha_question",
     ]
 
     def signup(self, request, user: User):
@@ -55,15 +60,17 @@ class SignupWithProfileForm(SignupForm):
         return user
 
     def save(self, request):
+        if request.POST['captcha_question'].lower() != "edinburgh":
+            raise forms.ValidationError('You should study some geography')
+            return None
         # Ensure you call the parent class's save.
         # .save() returns a User object.
         user = super(SignupWithProfileForm, self).save(request)
 
         # Add your own processing here.
-        self.signup(request, user)
-
-        # You must return the original result.
-        return user
+        if self.signup(request, user):
+            # You must return the original result.
+            return user
 
 class UserEditForm(forms.ModelForm):
     """
