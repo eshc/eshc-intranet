@@ -1,6 +1,8 @@
 from datetime import date
 from django.db import models
 from django.contrib.auth.models import User, Group, Permission
+from django.core.validators import MaxValueValidator
+
 
 
 class GM(models.Model):
@@ -75,3 +77,13 @@ class Role(models.Model):
     permissions = models.ManyToManyField(Permission, blank=True)
 
 
+class Room(models.Model):
+   def __str__(self):
+       if self.flat_number <= 7:
+           return "28/" + self.flat_number + room_id
+       else:
+           return "34/" + self.flat_number - 7 + room_id
+
+   flat=models.PositiveIntegerField(validators=[MaxValueValidator(24)],primary_key=True)
+   room_id = models.CharField(max_length=1)
+   current_occupant = models.OneToOneField(User,null=True,on_delete=models.SET_NULL)
