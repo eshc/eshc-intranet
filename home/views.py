@@ -212,8 +212,8 @@ def map(request):
     #            'leases_34': [ {'leases': leases.filter(building=34,flat=i), 'flat': i,'size':sizes_34[i-1]} for i in range(1,18)]}
 
     context = {#'leases': leases,
-               'flats_28': [ {'rooms': rooms.filter(building=28,flat=i), 'flat': i} for i in range(1,8)],
-               'flats_34': [ {'rooms': rooms.filter(building=34,flat=i), 'flat': i-7,'size':sizes_34[i-8]} for i in range(8,25)]}
+               'flats_28': [ {'rooms': rooms.filter(flat=i), 'flat': i} for i in range(1,8)],
+               'flats_34': [ {'rooms': rooms.filter(flat=i), 'flat': i-7,'size':sizes_34[i-8]} for i in range(8,25)]}
 
     return render(request, 'home/map.html', context)
 
