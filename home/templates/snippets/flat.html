@@ -1,6 +1,6 @@
 {% for room in flat %}
   <div id="tooltip">
-    <p>{{ room.room_id }}: {{ room.user.first_name }} {{ room.user.last_name }}<span>
+    <p>{{ room.room_id }}: {{ room.current_occupant.first_name }} {{ room.current_occupant.last_name }}<span>
         <!-- Start Date: {{ lease.start_date }}
         End date: {{ lease.end_date }} --></span></p>
   </div>

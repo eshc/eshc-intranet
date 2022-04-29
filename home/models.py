@@ -79,10 +79,10 @@ class Role(models.Model):
 
 class Room(models.Model):
    def __str__(self):
-       if self.flat_number <= 7:
-           return "28/" + self.flat_number + room_id
+       if self.flat <= 7:
+           return "28/" + str(self.flat_number) + self.room_id
        else:
-           return "34/" + self.flat_number - 7 + room_id
+           return "34/" + str(self.flat_number - 7) + self.room_id
 
    flat=models.PositiveIntegerField(validators=[MaxValueValidator(24)],primary_key=True)
    room_id = models.CharField(max_length=1)
