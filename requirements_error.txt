@@ -1,3 +1,0 @@
-bleach
-pycparser
-psycopg2
