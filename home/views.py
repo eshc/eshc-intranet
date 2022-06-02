@@ -9,7 +9,7 @@ from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 from allauth.account.views import SignupView
 from allauth.account import app_settings
@@ -720,3 +720,6 @@ def check_leases(request):
                              'You do not have any leases registered. They will appear here when you do.')
 
     return leases, valid_lease
+
+def taskforces(request):
+    return redirect('/wiki/work-share-plan/taskforces/')
