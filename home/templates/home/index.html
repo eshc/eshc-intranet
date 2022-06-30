@@ -105,6 +105,8 @@
             </a>
             <a target="_blank" href="https://nextcloud.eshc.coop/f/2802" class="list-group-item list-group-item-action"><span
                     class="bi bi-pencil"></span> GM Agendas and Minutes (on Nextcloud)</a>
+            <!-- <a target="_blank" href="https://nextcloud.eshc.coop/apps/calendar" class="list-group-item list-group-item-action"><span -->
+            <!--         class="bi bi-calendar-event"></span> Nextcloud Calendar</a> -->
             <a href="{% url 'home:wsp' %}" class="list-group-item list-group-item-action"><span
                     class="bi bi-wrench"></span> Work Share Plan</a>
             <a href="{% url 'home:laundry' %}" class="list-group-item list-group-item-action"><span
@@ -117,6 +119,7 @@
                     class="bi bi-clipboard"></span> The Whiteboard</a>
             <a href="{% url 'wiki:root' %}" class="list-group-item list-group-item-action"><span
                     class="bi bi-book"></span> Wiki</a>
+
             <a href="{% url 'home:taskforces' %}" class="list-group-item list-group-item-action"><span
                     class="bi bi-tools"></span> Taskforces</a>
         </div>
@@ -166,9 +169,14 @@
             <a href="https://www.eshc.coop/" class="list-group-item list-group-item-action"><span
                     class="bi bi-globe"></span> Main Website</a>
         </div>
-    </div>
-    <div class="col-xs-6 col-lg-5">
 
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-10">
+        <div class="embed responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://nextcloud.eshc.coop/index.php/apps/calendar/embed/Zt5CzmZHXi6d6zSA"></iframe>
+        </div>
     </div>
 </div>
 {% if user.profile.current_member %}
