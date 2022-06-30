@@ -9,7 +9,7 @@ from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 from allauth.account.views import SignupView
 from allauth.account import app_settings
@@ -200,62 +200,15 @@ def edit_profile(request):
 
 
 @login_required
-@current_member_required
 def map(request):
     # current leases
     leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
-    leases_28_1 = leases.filter(building=28, flat=1)
-    leases_28_2 = leases.filter(building=28, flat=2)
-    leases_28_3 = leases.filter(building=28, flat=3)
-    leases_28_4 = leases.filter(building=28, flat=4)
-    leases_28_5 = leases.filter(building=28, flat=5)
-    leases_28_6 = leases.filter(building=28, flat=6)
-    leases_28_7 = leases.filter(building=28, flat=7)
 
-    leases_34_1 = leases.filter(building=34, flat=1)
-    leases_34_2 = leases.filter(building=34, flat=2)
-    leases_34_3 = leases.filter(building=34, flat=3)
-    leases_34_4 = leases.filter(building=34, flat=4)
-    leases_34_5 = leases.filter(building=34, flat=5)
-    leases_34_6 = leases.filter(building=34, flat=6)
-    leases_34_7 = leases.filter(building=34, flat=7)
-    leases_34_8 = leases.filter(building=34, flat=8)
-    leases_34_9 = leases.filter(building=34, flat=9)
-    leases_34_10 = leases.filter(building=34, flat=10)
-    leases_34_11 = leases.filter(building=34, flat=11)
-    leases_34_12 = leases.filter(building=34, flat=12)
-    leases_34_13 = leases.filter(building=34, flat=13)
-    leases_34_14 = leases.filter(building=34, flat=14)
-    leases_34_15 = leases.filter(building=34, flat=15)
-    leases_34_16 = leases.filter(building=34, flat=16)
-    leases_34_17 = leases.filter(building=34, flat=17)
+    sizes_34 = [5,3,5,5,3,4,5,5,3,4,5,5,3,4,5,5,3]
 
     context = {'leases': leases,
-               'leases_28_1': leases_28_1,
-               'leases_28_2': leases_28_2,
-               'leases_28_3': leases_28_3,
-               'leases_28_4': leases_28_4,
-               'leases_28_5': leases_28_5,
-               'leases_28_6': leases_28_6,
-               'leases_28_7': leases_28_7,
-               'leases_34_1': leases_34_1,
-               'leases_34_2': leases_34_2,
-               'leases_34_3': leases_34_3,
-               'leases_34_4': leases_34_4,
-               'leases_34_5': leases_34_5,
-               'leases_34_6': leases_34_6,
-               'leases_34_7': leases_34_7,
-               'leases_34_8': leases_34_8,
-               'leases_34_9': leases_34_9,
-               'leases_34_10': leases_34_10,
-               'leases_34_11': leases_34_11,
-               'leases_34_12': leases_34_12,
-               'leases_34_13': leases_34_13,
-               'leases_34_14': leases_34_14,
-               'leases_34_15': leases_34_15,
-               'leases_34_16': leases_34_16,
-               'leases_34_17': leases_34_17,
-               }
+               'leases_28': [ {'leases': leases.filter(building=28,flat=i), 'flat': i} for i in range(1,8)],
+               'leases_34': [ {'leases': leases.filter(building=34,flat=i), 'flat': i,'size':sizes_34[i-1]} for i in range(1,18)]}
     return render(request, 'home/map.html', context)
 
 
@@ -720,3 +673,6 @@ def check_leases(request):
                              'You do not have any leases registered. They will appear here when you do.')
 
     return leases, valid_lease
+
+def taskforces(request):
+    return redirect('/wiki/work-share-plan/taskforces/')

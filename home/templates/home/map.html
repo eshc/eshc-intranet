@@ -128,106 +128,22 @@
 		<h1>Map</h1>
 		<div class="wrapper">
 		  <div class="building28">
-		    <h4>28</h4>
-		    <div class="f7">
-		      <strong>7</strong>
-          {% include "snippets/flat.html" with flat=leases_28_7 size=5 %}
+		  <h4>28</h4>
+        {% for f in leases_28  %}
+		    <div class=f{{f.flat}}>
+		      <strong>{{f.flat}}</strong>
+          {% include "snippets/flat.html" with flat=f.leases size=5 %}
 		    </div>
-		    <div class="f6">
-		      <strong>6</strong>
-          {% include "snippets/flat.html" with flat=leases_28_6 size=5 %}
-		    </div>
-		    <div class="f5">
-		      <strong>5</strong>
-          {% include "snippets/flat.html" with flat=leases_28_5 size=5 %}
-		    </div>
-		    <div class="f4">
-		      <strong>4</strong>
-          {% include "snippets/flat.html" with flat=leases_28_4 size=5 %}
-		    </div>
-		    <div class="f3">
-		      <strong>3</strong>
-          {% include "snippets/flat.html" with flat=leases_28_3 size=5 %}
-		    </div>
-		    <div class="f2">
-		      <strong>2</strong>
-          {% include "snippets/flat.html" with flat=leases_28_2 size=4 %}
-		    </div>
-		    <div class="f1">
-		      <strong>1</strong>
-          {% include "snippets/flat.html" with flat=leases_28_1 size=5 %}
-		    </div>
-		  </div>
+        {% endfor %}
+	    </div>
 		  <div class="building34">
 		  <h4>34</h4>
-		    <div class="b17">
-		      <strong>17</strong>
-          {% include "snippets/flat.html" with flat=leases_34_17 size=3 %}
+        {% for f in leases_34  %}
+		    <div class=b{{f.flat}}>
+		      <strong>{{f.flat}}</strong>
+          {% include "snippets/flat.html" with flat=f.leases size=f.size %}
 		    </div>
-		    <div class="b16">
-		      <strong>16</strong>
-          {% include "snippets/flat.html" with flat=leases_34_16 size=5 %}
-		    </div>
-		    <div class="b15">
-		      <strong>15</strong>
-          {% include "snippets/flat.html" with flat=leases_34_15 size=5 %}
-		    </div>
-		    <div class="b14">
-		      <strong>14</strong>
-          {% include "snippets/flat.html" with flat=leases_34_14 size=4 %}
-		    </div>
-		    <div class="b13">
-		      <strong>13</strong>
-          {% include "snippets/flat.html" with flat=leases_34_13 size=3 %}
-		    </div>
-		    <div class="b12">
-		      <strong>12</strong>
-          {% include "snippets/flat.html" with flat=leases_34_12 size=5 %}
-		    </div>
-		    <div class="b11">
-		      <strong>11</strong>
-          {% include "snippets/flat.html" with flat=leases_34_11 size=5 %}
-		    </div>
-		    <div class="b10">
-		      <strong>10</strong>
-          {% include "snippets/flat.html" with flat=leases_34_10 size=4 %}
-		    </div>
-		    <div class="b9">
-		      <strong>9</strong>
-          {% include "snippets/flat.html" with flat=leases_34_9 size=3 %}
-		    </div>
-		    <div class="b8">
-		      <strong>8</strong>
-          {% include "snippets/flat.html" with flat=leases_34_8 size=5 %}
-		    </div>
-		    <div class="b7">
-		      <strong>7</strong>
-          {% include "snippets/flat.html" with flat=leases_34_7 size=5 %}
-		    </div>
-		    <div class="b6">
-		      <strong>6</strong>
-          {% include "snippets/flat.html" with flat=leases_34_6 size=4 %}
-		    </div>
-		    <div class="b5">
-		      <strong>5</strong>
-          {% include "snippets/flat.html" with flat=leases_34_5 size=3 %}
-		    </div>
-		    <div class="b4">
-		      <strong>4</strong>
-          {% include "snippets/flat.html" with flat=leases_34_4 size=5 %}
-		    </div>
-		    <div class="b3">
-		      <strong>3</strong>
-          {% include "snippets/flat.html" with flat=leases_34_3 size=5 %}
-		    </div>
-		    <div class="b2">
-		      <strong>2</strong>
-          {% include "snippets/flat.html" with flat=leases_34_2 size=3 %}
-		    </div>
-		    <div class="b1">
-	          <strong>1</strong>
-            {% include "snippets/flat.html" with flat=leases_34_1 size=5 %}
-		    </div>
+        {% endfor %}
 	    </div>
 	</div>
 
