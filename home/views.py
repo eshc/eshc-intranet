@@ -42,7 +42,7 @@ from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm, SignupWithProfileForm  # WgEditForm
 
 from users.decorators import has_share, check_group, current_member_required
-from home.models import GM, Point, WgUpdate, Minutes, Role, Room
+from home.models import GM, Point, WgUpdate, Minutes, Role, Room, Flat
 from whiteboard.models import Note
 from django.core.mail import send_mail
 import apply.models
@@ -204,6 +204,7 @@ def map(request):
     # current leases
     leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
     rooms = Room.objects.all()
+    flats = Flat.objects.all()
 
     sizes_34 = [5,3,5,5,3,4,5,5,3,4,5,5,3,4,5,5,3]
 
@@ -212,8 +213,9 @@ def map(request):
     #            'leases_34': [ {'leases': leases.filter(building=34,flat=i), 'flat': i,'size':sizes_34[i-1]} for i in range(1,18)]}
 
     context = {#'leases': leases,
-               'flats_28': [ {'rooms': rooms.filter(flat=i), 'flat': i} for i in range(1,8)],
-               'flats_34': [ {'rooms': rooms.filter(flat=i), 'flat': i-7,'size':sizes_34[i-8]} for i in range(8,25)]}
+        'flats_28': [{'flat': f, 'rooms': rooms.filter(flat=f)} for f in flats.filter(building=28)],
+        'flats_34': [{'flat': f, 'rooms': rooms.filter(flat=f)} for f in flats.filter(building=34)]
+        }
 
     return render(request, 'home/map.html', context)
 

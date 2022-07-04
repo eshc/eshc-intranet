@@ -132,7 +132,7 @@
         {% for f in flats_28  %}
 		    <div class=f{{f.flat}}>
 		      <strong>{{f.flat}}</strong>
-          {% include "snippets/flat.html" with flat=f.rooms size=5 %}
+          {% include "snippets/flat.html" with obj=f %}
 		    </div>
         {% endfor %}
 	    </div>
@@ -141,7 +141,7 @@
         {% for f in flats_34  %}
 		    <div class=b{{f.flat}}>
 		      <strong>{{f.flat}}</strong>
-          {% include "snippets/flat.html" with flat=f.rooms size=f.size %}
+          {% include "snippets/flat.html" with obj=f %}
 		    </div>
         {% endfor %}
 	    </div>

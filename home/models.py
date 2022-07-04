@@ -77,13 +77,29 @@ class Role(models.Model):
     permissions = models.ManyToManyField(Permission, blank=True)
 
 
-class Room(models.Model):
-   def __str__(self):
-       if self.flat <= 7:
-           return "28/" + str(self.flat_number) + self.room_id
-       else:
-           return "34/" + str(self.flat_number - 7) + self.room_id
 
-   flat=models.PositiveIntegerField(validators=[MaxValueValidator(24)],primary_key=True)
-   room_id = models.CharField(max_length=1)
-   current_occupant = models.OneToOneField(User,null=True,on_delete=models.SET_NULL)
+class Flat(models.Model):
+   def __str__(self):
+       return "{}/{}".format(self.building,self.flatno)
+   flatno = models.PositiveIntegerField()
+   size = models.PositiveIntegerField()
+   building = models.PositiveIntegerField()  # make enum
+
+   # ensure flat exists in building using validation
+class Room(models.Model):
+    def __str__(self):
+        return "{}{}".format(self.flat,chr(ord('@')+self.roomno))
+
+    readonly_fields = ('flat', 'roomno')
+    current_occupant = models.OneToOneField(User,null=True,on_delete=models.SET_NULL,unique=True)
+    flat = models.ForeignKey(Flat,on_delete=models.CASCADE)
+    roomno = models.IntegerField(choices=[(1,'A'),(2,'B'),(3,'C'),(4,'D'),(5,'E')]) # enum A to E
+
+   # ensure room exists in flat using validation
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['roomno','flat'],
+                name='no_duplicate_rooms_in_flat'
+            )
+        ]

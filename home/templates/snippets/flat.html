@@ -1,14 +1,7 @@
-{% for room in flat %}
+{% for room in obj.rooms %}
   <div id="tooltip">
-    <p>{{ room.room_id }}: {{ room.current_occupant.first_name }} {{ room.current_occupant.last_name }}<span>
+    <p>{{ room.get_roomno_display }}: {{ room.current_occupant.get_full_name|default:"<i>empty</i>" }} <span>
         <!-- Start Date: {{ lease.start_date }}
         End date: {{ lease.end_date }} --></span></p>
   </div>
-  {% if forloop.last %}
-    {% if forloop.counter != size %}
-      <strong>Check!</strong>
-    {% endif %}
-  {% endif %}
-  {% empty %}
-  <div>Empty flat!</div>
 {% endfor %}
