@@ -51,7 +51,7 @@ intuit-oauth==1.2.3
 jdcal==1.4.1
 jmespath==0.10.0
 ldap3==2.9
-lxml==4.6.5
+lxml==4.9.1
 Markdown==3.1.1
 MarkupPy==1.14
 Markups==3.1.0
