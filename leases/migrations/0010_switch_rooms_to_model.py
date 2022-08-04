@@ -46,12 +46,12 @@ class Migration(migrations.Migration):
             name='room',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='home.room'),
         ),
-        migrations.RemoveField(
-            model_name='lease',
-            name='building',
-        ),
-        migrations.RemoveField(
-            model_name='lease',
-            name='flat',
-        ),
+        # migrations.RemoveField(
+        #     model_name='lease',
+        #     name='building',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='lease',
+        #     name='flat',
+        # ),
     ]
