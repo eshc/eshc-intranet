@@ -9,7 +9,7 @@ class Lease(models.Model):
 	lease_type = models.CharField(max_length=10)
 	start_date = models.DateField('start date')
 	end_date = models.DateField('end date')
-	room = models.ForeignKey(Room,on_delete=CASCADE)
+	room = models.ForeignKey(Room,on_delete=CASCADE,null=True)
 	date_signed = models.DateField('date signed')
 	emergency_contact_name = models.CharField(verbose_name='emergency contact name', max_length=100, default='', blank=True)
 	emergency_contact_phone = models.CharField(verbose_name='emergency contact phone', max_length=32, default='', blank=True)

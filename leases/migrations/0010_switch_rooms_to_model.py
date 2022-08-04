@@ -11,14 +11,15 @@ def add_rooms_to_leases(apps,schema_editor):
     Flat = apps.get_model('home','Flat')
 
     for l in leases:
-        roomid = ord(l.room_old)-64
+        roomid = ord(l.room_old.upper())-64  # converts room string to int number (A to 1, B to 2 etc)
         f = Flat.objects.get(flatno=l.flat,building=l.building)
         l.room = Room.objects.get(flat=f,roomno=roomid)
         l.save()
         if l.end_date > date.today():
             r = Room.objects.get(id=l.room.id)
-            r.current_occupant = l.user
-            r.save()
+            if not r.current_occupant:
+                r.current_occupant = l.user
+                r.save()
 
 
 class Migration(migrations.Migration):
@@ -41,17 +42,9 @@ class Migration(migrations.Migration):
             preserve_default=False
         ),
         migrations.RunPython(add_rooms_to_leases),
-        migrations.AlterField(
-            model_name='lease',
-            name='room',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='home.room'),
-        ),
-        # migrations.RemoveField(
+        # migrations.AlterField(
         #     model_name='lease',
-        #     name='building',
-        # ),
-        # migrations.RemoveField(
-        #     model_name='lease',
-        #     name='flat',
+        #     name='room',
+        #     field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='home.room'),
         # ),
     ]
