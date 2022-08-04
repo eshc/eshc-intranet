@@ -129,19 +129,19 @@
 		<div class="wrapper">
 		  <div class="building28">
 		  <h4>28</h4>
-        {% for f in leases_28  %}
+        {% for f in flats_28  %}
 		    <div class=f{{f.flat}}>
 		      <strong>{{f.flat}}</strong>
-          {% include "snippets/flat.html" with flat=f.leases size=5 %}
+          {% include "snippets/flat.html" with obj=f %}
 		    </div>
         {% endfor %}
 	    </div>
 		  <div class="building34">
 		  <h4>34</h4>
-        {% for f in leases_34  %}
+        {% for f in flats_34  %}
 		    <div class=b{{f.flat}}>
 		      <strong>{{f.flat}}</strong>
-          {% include "snippets/flat.html" with flat=f.leases size=f.size %}
+          {% include "snippets/flat.html" with obj=f %}
 		    </div>
         {% endfor %}
 	    </div>

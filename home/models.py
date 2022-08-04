@@ -1,6 +1,8 @@
 from datetime import date
 from django.db import models
 from django.contrib.auth.models import User, Group, Permission
+from django.core.validators import MaxValueValidator
+
 
 
 class GM(models.Model):
@@ -75,3 +77,29 @@ class Role(models.Model):
     permissions = models.ManyToManyField(Permission, blank=True)
 
 
+
+class Flat(models.Model):
+   def __str__(self):
+       return "{}/{}".format(self.building,self.flatno)
+   flatno = models.PositiveIntegerField()
+   size = models.PositiveIntegerField()
+   building = models.PositiveIntegerField()  # make enum
+
+   # ensure flat exists in building using validation
+class Room(models.Model):
+    def __str__(self):
+        return "{}{}".format(self.flat,chr(ord('@')+self.roomno))
+
+    readonly_fields = ('flat', 'roomno')
+    current_occupant = models.OneToOneField(User,null=True,on_delete=models.SET_NULL,unique=True)
+    flat = models.ForeignKey(Flat,on_delete=models.CASCADE)
+    roomno = models.IntegerField(choices=[(1,'A'),(2,'B'),(3,'C'),(4,'D'),(5,'E')]) # enum A to E
+
+   # ensure room exists in flat using validation
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['roomno','flat'],
+                name='no_duplicate_rooms_in_flat'
+            )
+        ]

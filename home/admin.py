@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import GM, Point, WgUpdate, LdapGroup, Role
+from .models import GM, Point, WgUpdate, LdapGroup, Role, Room
 
 
 class PointInline(admin.TabularInline):
@@ -53,7 +53,10 @@ class RoleAdmin(admin.ModelAdmin):
 class LdapAdmin(admin.ModelAdmin):
     search_fields = ['ldap_cn']
 
+class MapAdmin(admin.ModelAdmin):
+    fields = ['current_occupant']
 
 admin.site.register(GM, GMAdmin)
 admin.site.register(LdapGroup, LdapAdmin)
 admin.site.register(Role, RoleAdmin)
+admin.site.register(Room, MapAdmin)
