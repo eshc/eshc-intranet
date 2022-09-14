@@ -55,6 +55,7 @@ class LdapAdmin(admin.ModelAdmin):
 
 class MapAdmin(admin.ModelAdmin):
     fields = ['current_occupant']
+    ordering = ['flat','roomno']
 
 admin.site.register(GM, GMAdmin)
 admin.site.register(LdapGroup, LdapAdmin)
