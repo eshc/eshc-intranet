@@ -1,4 +1,6 @@
+from django import forms
 from django.contrib import admin
+from users.models import Profile
 from .models import GM, Point, WgUpdate, LdapGroup, Role, Room
 
 
@@ -53,8 +55,16 @@ class RoleAdmin(admin.ModelAdmin):
 class LdapAdmin(admin.ModelAdmin):
     search_fields = ['ldap_cn']
 
-class MapAdmin(admin.ModelAdmin):
+class MapSelectionForm(forms.ModelForm):
     fields = ['current_occupant']
+    def __init__(self, *args, **kwargs):
+        super(MapSelectionForm, self).__init__(*args, **kwargs)
+        self.fields['current_occupant'].queryset = Profile.objects.filter(current_member=True)
+
+class MapAdmin(admin.ModelAdmin):
+    form = MapSelectionForm
+
+
 
 admin.site.register(GM, GMAdmin)
 admin.site.register(LdapGroup, LdapAdmin)
