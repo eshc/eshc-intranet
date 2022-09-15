@@ -42,6 +42,9 @@ class Migration(migrations.Migration):
             preserve_default=False
         ),
         migrations.RunPython(add_rooms_to_leases),
+        migrations.RemoveField(model_name='lease',name='building'),
+        migrations.RemoveField(model_name='lease',name='flat'),
+        migrations.RemoveField(model_name='lease',name='room_old')
         # migrations.AlterField(
         #     model_name='lease',
         #     name='room',

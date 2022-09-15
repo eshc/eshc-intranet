@@ -57,13 +57,13 @@ class LdapAdmin(admin.ModelAdmin):
 
 class MapSelectionForm(forms.ModelForm):
     fields = ['current_occupant']
+    
     def __init__(self, *args, **kwargs):
         super(MapSelectionForm, self).__init__(*args, **kwargs)
         self.fields['current_occupant'].queryset = Profile.objects.filter(current_member=True)
 
 class MapAdmin(admin.ModelAdmin):
     form = MapSelectionForm
-
 
 
 admin.site.register(GM, GMAdmin)

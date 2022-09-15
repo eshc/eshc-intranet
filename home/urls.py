@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^wsp/$', views.wsp, name='wsp'),
     url(r'^wsp_subgroups/$', views.wsp_subgroups, name='wsp_subgroups'),
     url(r'^laundry/$', views.laundry, name='laundry'),
+    url(r'^taskforces/$',views.taskforces,name='taskforces')
 ]

@@ -109,7 +109,7 @@ class Applicant(models.Model):
     confidential_note = models.TextField(verbose_name='Confidential information', max_length=1000, blank=True)
     app_team_note = models.TextField(verbose_name='Applications team notes (invisible to applicant)', max_length=1000,
                                      blank=True)
-    date_applied = models.DateTimeField(verbose_name='Date applied', auto_now=True)
+    date_applied = models.DateTimeField(verbose_name='Date applied', auto_now_add=True)
     answers = models.ManyToManyField(ApplicationQuestion, through='ApplicationAnswer', blank=True)
     vote_count = models.IntegerField(verbose_name='Votes received', default=0)
 

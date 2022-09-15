@@ -103,3 +103,5 @@ class Room(models.Model):
                 name='no_duplicate_rooms_in_flat'
             )
         ]
+
+        ordering = ('flat','roomno')
