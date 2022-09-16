@@ -9,3 +9,6 @@ class MyAdminConfig(AdminConfig):
 class HomeConfig(AppConfig):
     name = 'home'
     verbose_name = 'Misc co-op things'
+
+    def ready(self):
+        import home.signals
