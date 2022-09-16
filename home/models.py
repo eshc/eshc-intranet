@@ -91,7 +91,7 @@ class Room(models.Model):
         return "{}{}".format(self.flat,chr(ord('@')+self.roomno))
 
     readonly_fields = ('flat', 'roomno')
-    current_occupant = models.OneToOneField(User,null=True,on_delete=models.SET_NULL,unique=True)
+    current_occupant = models.OneToOneField(User,null=True,on_delete=models.SET_NULL,unique=True,blank=True)
     flat = models.ForeignKey(Flat,on_delete=models.CASCADE)
     roomno = models.IntegerField(choices=[(1,'A'),(2,'B'),(3,'C'),(4,'D'),(5,'E')]) # enum A to E
 

@@ -55,15 +55,9 @@ class RoleAdmin(admin.ModelAdmin):
 class LdapAdmin(admin.ModelAdmin):
     search_fields = ['ldap_cn']
 
-class MapSelectionForm(forms.ModelForm):
-    fields = ['current_occupant']
-    
-    def __init__(self, *args, **kwargs):
-        super(MapSelectionForm, self).__init__(*args, **kwargs)
-        self.fields['current_occupant'].queryset = Profile.objects.filter(current_member=True)
 
 class MapAdmin(admin.ModelAdmin):
-    form = MapSelectionForm
+    autocomplete_fields = ['current_occupant']
 
 
 admin.site.register(GM, GMAdmin)
