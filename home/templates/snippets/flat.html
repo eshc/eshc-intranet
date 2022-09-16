@@ -1,6 +1,6 @@
 {% for room in obj.rooms %}
   <div id="tooltip">
-    <p>{{ room.get_roomno_display }}: {{ room.current_occupant.get_full_name|default:"<i>empty</i>" }} <span>
+    <p>{{ room.get_roomno_display }}: {{ room.current_occupant.profile.format_name|default:"<i>empty</i>" }} <span>
         <!-- Start Date: {{ lease.start_date }}
         End date: {{ lease.end_date }} --></span></p>
   </div>
