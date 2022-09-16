@@ -57,6 +57,7 @@ class LdapAdmin(admin.ModelAdmin):
 
 
 class MapAdmin(admin.ModelAdmin):
+    list_display = admin.ModelAdmin.list_display + ('current_occupant',)
     fields = ['current_occupant']
     autocomplete_fields = ['current_occupant']
 
