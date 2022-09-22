@@ -24,7 +24,7 @@ def active_member_required(function=None, redirect_field_name=REDIRECT_FIELD_NAM
     to the log-in page if necessary.
     """
     actual_decorator = user_passes_test(
-        lambda u: u.is_authenticated and u.profile.current_member,
+        lambda u: u.is_authenticated and u.profile.current_member(),
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )

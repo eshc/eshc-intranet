@@ -140,11 +140,11 @@ class IntranetLdapSync:
         # User+Profile basic data synchronization
         profile = user.profile
         assert profile
-        if not profile.current_member:
+        if not profile.current_member():
             self.__unsync_intranet_user(user)
             return
 
-        assert profile.current_member
+        assert profile.current_member()
         uid = user.pk
         u_query = '(&%s(|(uid=%s)(employeeNumber=%d)))' % (self.filter_member, user.username, uid)
         self.connection.search(self.members_dn, u_query)
@@ -267,10 +267,10 @@ class IntranetLdapSync:
 
     def sync_intranet_ldap_group(self, group: LdapGroup):
         uids = set()
-        for p in Profile.objects.filter(extra_ldap_groups=group, current_member=True):
+        for p in Profile.objects.filter(extra_ldap_groups=group, member_status=Profile.MEMBER_CURRENT):
             uids.add(p.user.username)
         for r in Role.objects.filter(ldap_groups=group):
-            for u in r.assigned_to.filter(profile__current_member=True):
+            for u in r.assigned_to.filter(profile__member_status=Profile.MEMBER_CURRENT):
                 if u.username not in uids:
                     uids.add(u.username)
         self.__fill_ldap_group(group.ldap_cn, uids)
@@ -279,6 +279,6 @@ class IntranetLdapSync:
         for g in LdapGroup.objects.all():
             self.sync_intranet_ldap_group(g)
         uids = set()
-        for u in User.objects.filter(profile__current_member=True):
+        for u in User.objects.filter(profile__member_status=Profile.MEMBER_CURRENT):
             uids.add(u.username)
         self.__fill_ldap_group(self.members_group, uids)

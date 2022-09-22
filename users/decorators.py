@@ -5,7 +5,7 @@ from functools import wraps
 
 def has_share(function):
     def wrap(request, *args, **kwargs):
-        if request.user.profile.current_member:
+        if request.user.profile.current_member():
             return function(request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -17,7 +17,7 @@ def has_share(function):
 
 def current_member_required(function):
     def wrap(request, *args, **kwargs):
-        if request.user.profile.current_member:
+        if request.user.profile.current_member():
             return function(request, *args, **kwargs)
         else:
             raise PermissionDenied

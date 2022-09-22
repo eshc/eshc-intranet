@@ -13,7 +13,7 @@
 	<a href="{% url 'users:edit_profile' %}">Edit info</a>
 
 	<p>Share received: {% if share_received %} Yes {% else %} No {% endif %}</p>
-    <p>Current member: {% if user.profile.current_member %} Yes {% else %} No {% endif %}</p>
+    <p>Current member: {% if user.profile.current_member() %} Yes {% else %} No {% endif %}</p>
 
 	<h2>Leases</h2>
 	{% if valid_lease %}

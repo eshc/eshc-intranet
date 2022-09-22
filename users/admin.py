@@ -27,7 +27,7 @@ class UserResource(resources.ModelResource):
     class Meta:
         model = User
         fields = (
-        'first_name', 'last_name', 'email', 'profile__ref_number', 'profile__current_member', 'profile__share_received',
+        'first_name', 'last_name', 'email', 'profile__ref_number', 'profile__member_status', 'profile__share_received',
         'username')
 
 
@@ -60,23 +60,23 @@ class UserAdmin(ImportExportModelAdmin):
         except Profile.DoesNotExist:
             return ''
 
-    def current_member(self, obj):
+    def member_status(self, obj):
         try:
-            return obj.profile.current_member
+            return obj.profile.member_status
         except Profile.DoesNotExist:
             return ''
 
     share_received.boolean = True
-    current_member.boolean = True
-    list_display = BaseUserAdmin.list_display + ('ref_number', 'current_member', 'share_received', 'is_active')
-    list_filter = ('profile__current_member', 'profile__share_received')
+    #current_member.boolean = True
+    list_display = BaseUserAdmin.list_display + ('ref_number', 'member_status', 'share_received', 'is_active')
+    list_filter = ('profile__member_status', 'profile__share_received')
     search_fields = ['username', 'email', 'first_name', 'last_name']
 
     def action_mark_members_current(self, request, queryset):
         rows_updated = 0
         for usr in queryset.select_related('profile'):
             rows_updated += 1
-            usr.profile.current_member = True
+            usr.profile.member_status = usr.profile.MEMBER_CURRENT
             usr.profile.save()
             usr.is_active = True
             usr.save()
@@ -87,7 +87,7 @@ class UserAdmin(ImportExportModelAdmin):
         rows_updated = 0
         for usr in queryset.select_related('profile'):
             rows_updated += 1
-            usr.profile.current_member = False
+            usr.profile.member_status = usr.profile.MEMBER_ALUMNI
             usr.profile.save()
             usr.is_active = False
             usr.save()
@@ -121,12 +121,13 @@ class UserAdmin(ImportExportModelAdmin):
         for usr in queryset.select_related('profile'):
             scanned += 1
             valid_lease = (Lease.objects.filter(user=usr, start_date__lte=now, end_date__gte=now).count() > 0)
-            if valid_lease != usr.profile.current_member:
+            if valid_lease != usr.profile.current_member():
                 if valid_lease:
                     new_current += 1
+                    usr.profile.member_status = usr.profile.MEMBER_CURRENT
                 else:
                     new_ex += 1
-                usr.profile.current_member = valid_lease
+                    usr.profile.member_status = usr.profile.MEMBER_ALUMNI
                 usr.profile.save()
         self.message_user(request, '%s (out of %s) members updated: %s new members, %s members deactivated' % (new_current+new_ex, scanned, new_current, new_ex))
     action_mark_current_read_lease.short_description = "Update selected members' active status based on signed lease"

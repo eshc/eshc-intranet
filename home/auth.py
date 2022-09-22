@@ -79,4 +79,4 @@ class MyAdminSite(admin.AdminSite):
         """
         if DEBUG and request.user.is_superuser:
             return True
-        return request.user.is_active and request.user.profile.current_member
+        return request.user.is_active and request.user.profile.current_member()

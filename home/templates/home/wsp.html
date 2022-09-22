@@ -46,7 +46,7 @@
 							</td>
 							<td style="white-space: nowrap" {% if role.assigned_to.all.count == 0 %} class="bg-danger" {% endif %}>
 								{% for person in role.assigned_to.all %}
-									{% if not person.profile.current_member %}
+									{% if not person.profile.current_member() %}
 										<strong class="text-danger">MOVED OUT: </strong>
 									{% endif %}
 									{{person.profile.format_name}}  <br/>
@@ -56,7 +56,7 @@
 								{% endif %}
 								{% for person in role.past_holders.all %}
 									<div class="text-muted">[past]
-									{% if not person.profile.current_member %}
+									{% if not person.profile.current_member() %}
 										[moved out]
 									{% endif %}
 									{{person.profile.format_name}} </div>

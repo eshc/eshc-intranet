@@ -22,7 +22,19 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=15, blank=True)
     perm_address = models.TextField(max_length=500, blank=True)
     share_received = models.BooleanField(default=False)
-    current_member = models.BooleanField(default=False)
+    MEMBER_UNREGISTERED='URG'
+    MEMBER_CURRENT='CRT'
+    MEMBER_ALUMNI='ALM'
+    MEMBER_CHOICES=[
+        (MEMBER_UNREGISTERED,'Unregistered'),
+        (MEMBER_CURRENT,'Current'),
+        (MEMBER_ALUMNI,'Alumni')
+        #TODO: (MEMBER_SUBLETTER, 'Subletter')
+    ]
+    member_status = models.CharField(default=MEMBER_UNREGISTERED, max_length=3,choices=MEMBER_CHOICES)
+    def current_member(self):
+        return self.member_status == MEMBER_CURRENT
+
     extra_ldap_groups = models.ManyToManyField(LdapGroup, blank=True)
 
     def __str__(self):

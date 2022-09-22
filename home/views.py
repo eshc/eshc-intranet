@@ -42,6 +42,7 @@ from leases.models import Lease, Inventory
 from .forms import UserEditForm, ProfileEditForm, PointAddForm, UpdateForm, MinutesForm, SignupWithProfileForm  # WgEditForm
 
 from users.decorators import has_share, check_group, current_member_required
+from users.models import Profile
 from home.models import GM, Point, WgUpdate, Minutes, Role, Room, Flat
 from whiteboard.models import Note
 from django.core.mail import send_mail
@@ -610,7 +611,7 @@ def cash(request):
 def wsp(request):
     wgs = Group.objects.all()
     wgs_and_roles = [(wg, Role.objects.filter(group=wg.id).order_by('subgroup')) for wg in wgs]
-    jobless = User.objects.filter(profile__current_member=True, role__assigned_to__isnull=True).order_by('last_name',
+    jobless = User.objects.filter(profile__member_status=Profile.MEMBER_CURRENT, role__assigned_to__isnull=True).order_by('last_name',
                                                                                                          'first_name')
 
     context = {'groups': wgs_and_roles,
@@ -624,7 +625,7 @@ def wsp(request):
 def wsp_subgroups(request):
     subgroups = Role.objects.values('subgroup').annotate(scount=Count('subgroup'))
     sgs_and_roles = [(sg['subgroup'], Role.objects.filter(subgroup=sg['subgroup']).order_by('group')) for sg in subgroups]
-    jobless = User.objects.filter(profile__current_member=True, role__assigned_to__isnull=True).order_by('last_name',
+    jobless = User.objects.filter(profile__member_status=Profile.MEMBER_CURRENT, role__assigned_to__isnull=True).order_by('last_name',
                                                                                                          'first_name')
 
     context = {'groups': sgs_and_roles,

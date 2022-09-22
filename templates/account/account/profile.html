@@ -76,7 +76,7 @@
                 <b>Membership status</b>
             </div>
             <div class="card-body">
-                {% if user.profile.current_member %}
+                {% if user.profile.current_member() %}
                 <strong>Confirmed, you have access to all of intranet features!</strong>
                 {% else %}
                 Not yet confirmed. You'll have to wait for an admin to activate your intranet account before you get
