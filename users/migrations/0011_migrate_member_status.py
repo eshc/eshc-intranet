@@ -2,6 +2,11 @@
 
 from django.db import migrations, models
 
+def mark_current_members(apps, schema_editor):
+    Profile = apps.get_model('users','Profile')
+    for p in Profile.objects.filter(current_member=True):
+        p.member_status = 'CRT'
+        p.save()
 
 class Migration(migrations.Migration):
 
@@ -10,13 +15,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='profile',
-            name='current_member',
-        ),
         migrations.AddField(
             model_name='profile',
             name='member_status',
             field=models.CharField(choices=[('URG', 'Unregistered'), ('CRT', 'Current'), ('ALM', 'Alumni')], default='URG', max_length=3),
+        ),
+        migrations.RunPython(mark_current_members),
+        migrations.RemoveField(
+            model_name='profile',
+            name='current_member',
         ),
     ]
