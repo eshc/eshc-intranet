@@ -20,7 +20,7 @@ def lease_to_room_number(l: Lease) -> str:
     if l is None:
         return '0/0Z'
     else:
-        return '%s/%s%s' % (l.building, l.flat, l.room)
+        return '%d/%d%s' % (l.room.flat.building, l.room.flat.flatno, l.room.get_roomno_display())
 
 
 def intranet_to_ldap_password(p: str) -> str:
