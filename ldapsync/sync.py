@@ -54,7 +54,8 @@ LDAP_ATTR_MAP: Dict[str, Callable[[Profile], str]] = {
     'postalAddress': lambda u: u.perm_address,
     'userPassword': lambda u: intranet_to_ldap_password(u.user.password),
     'employeeNumber': lambda u: str(u.user.pk),
-    'description': lambda u: user_roles_string(u.user)
+    'description': lambda u: user_roles_string(u.user),
+    'alumni': lambda u: u.member_status == Profile.MEMBER_ALUMNI
 }
 
 
