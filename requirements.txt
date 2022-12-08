@@ -9,7 +9,7 @@ beautifulsoup4==4.9.3
 bleach==3.3.0
 boto3==1.17.9
 botocore==1.20.9
-certifi==2020.12.5
+certifi==2022.12.7
 cffi==1.14.5
 chardet==4.0.0
 cryptography==3.4.6
