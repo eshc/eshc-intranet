@@ -84,7 +84,7 @@ class ApplicationQuestion(OrderedModel):
 
     session = models.ForeignKey(ApplicationSession, on_delete=CASCADE)
     visible_in_voting = models.BooleanField(verbose_name='Visible for voters', default=True)
-    question_text = models.CharField(verbose_name='Question text', max_length=300)
+    question_text = models.CharField(verbose_name='Question text', max_length=500)
     question_type = models.CharField(verbose_name='Type', max_length=20,
                                      choices=[(tag.name, tag.value) for tag in QuestionType],
                                      default=QuestionType.LongText)
