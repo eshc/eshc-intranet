@@ -11,6 +11,7 @@ class Lease(models.Model):
 	end_date = models.DateField('end date')
 	room = models.ForeignKey(Room,on_delete=CASCADE,null=True)
 	date_signed = models.DateField('date signed')
+	expected_graduation = models.DateField('expected graduation date',null=True,blank=True)
 	emergency_contact_name = models.CharField(verbose_name='emergency contact name', max_length=100, default='', blank=True)
 	emergency_contact_phone = models.CharField(verbose_name='emergency contact phone', max_length=32, default='', blank=True)
 	emergency_contact_address = models.TextField(verbose_name='emergency contact address', max_length=256, default='', blank=True)

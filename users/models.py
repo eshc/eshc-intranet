@@ -18,10 +18,15 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     ref_number = models.CharField(
         'Bank Reference Number', max_length=8, blank=True)
+    sds_ref_number = models.CharField(
+        'SDS Reference Number', max_length=8, blank=True)
     preferred_name = models.CharField(max_length=40, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
     perm_address = models.TextField(max_length=500, blank=True)
     share_received = models.BooleanField(default=False)
+    share_amount = models.DecimalField(max_digits=6,decimal_places=2,blank=True,default=1)
+    deposit_received = models.BooleanField(default=False)
+    deposit_amount = models.DecimalField(max_digits=6,decimal_places=2,blank=True,default=100)
     current_member = models.BooleanField(default=False)
     extra_ldap_groups = models.ManyToManyField(LdapGroup, blank=True)
 
