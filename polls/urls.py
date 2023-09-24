@@ -1,11 +1,11 @@
-from django.conf.urls import url
 from . import views
+from django.urls import path
 
 app_name = 'polls'
 
 urlpatterns = [
-		url(r'^$', views.index, name='index'),
-		url(r'^submit/$', views.submit, name='submit'),
-	    url(r'^(?P<pk>[0-9]+)/delete/$', views.delete, name='delete'),
-	    url(r'^(?P<pk>[0-9]+)/$', views.detail, name='detail'),
+		path('', views.index, name='index'),
+		path('submit/', views.submit, name='submit'),
+	    path('<int:pk>/delete/', views.delete, name='delete'),
+	    path('<int:pk>/', views.detail, name='detail'),
 	]

@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import include
 from django.contrib import admin
 from allauth.account import urls
 from django.urls import path
@@ -21,19 +21,19 @@ from django.urls import path
 import home
 
 urlpatterns = [
-    url(r'', include('home.urls')),
-    url(r'^admin/', admin.site.urls),
+    path('', include('home.urls')),
+    path('admin/', admin.site.urls),
     # url(r'^users/', include('users.urls', namespace='users')),
-    url(r'^leases/', include('leases.urls')),
-    url(r'^polls/', include('polls.urls')),
-    url(r'^hours/', include('hours.urls')),
-    url(r'^whiteboard/', include('whiteboard.urls')),
+    path('leases/', include('leases.urls')),
+    path('polls/', include('polls.urls')),
+    path('hours/', include('hours.urls')),
+    path('whiteboard/', include('whiteboard.urls')),
     path('apply/', include('apply.urls')),
     path('finance/', include('finance.urls')),
 
     # allauth
-    url(r'^accounts/', include('allauth.urls')),
-    url(r'^accounts/profile/', home.views.profile, name='profile'),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/profile/', home.views.profile, name='profile'),
 
     path('notifications/', include('django_nyt.urls')),
     path('wiki/', include('wiki.urls')),

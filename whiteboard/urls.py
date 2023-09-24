@@ -1,12 +1,11 @@
 """Defines URL patterns for whiteboard"""
 
-from django.conf.urls import url
-
 from . import views
+from django.urls import path
 
 app_name = 'whiteboard'
 
 urlpatterns = [
-	url(r'^$', views.index, name='index'),
-	url(r'^new/$', views.add_note, name='add_note'),
+	path('', views.index, name='index'),
+	path('new/', views.add_note, name='add_note'),
 ]
