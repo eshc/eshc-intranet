@@ -239,19 +239,22 @@ lxml = ["lxml"]
 
 [[package]]
 name = "bleach"
-version = "4.1.0"
+version = "6.0.0"
 description = "An easy safelist-based HTML-sanitizing tool."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "bleach-4.1.0-py2.py3-none-any.whl", hash = "sha256:4d2651ab93271d1129ac9cbc679f524565cc8a1b791909c4a51eac4446a15994"},
-    {file = "bleach-4.1.0.tar.gz", hash = "sha256:0900d8b37eba61a802ee40ac0061f8c2b5dee29c1927dd1d233e075ebf5a71da"},
+    {file = "bleach-6.0.0-py3-none-any.whl", hash = "sha256:33c16e3353dbd13028ab4799a0f89a83f113405c766e9c122df8a06f5b85b3f4"},
+    {file = "bleach-6.0.0.tar.gz", hash = "sha256:1a1a85c1595e07d8db14c5f09f09e6433502c51c595970edc090551f0db99414"},
 ]
 
 [package.dependencies]
-packaging = "*"
 six = ">=1.9.0"
+tinycss2 = {version = ">=1.1.0,<1.2", optional = true, markers = "extra == \"css\""}
 webencodings = "*"
+
+[package.extras]
+css = ["tinycss2 (>=1.1.0,<1.2)"]
 
 [[package]]
 name = "boto3"
@@ -580,18 +583,18 @@ static3 = "*"
 
 [[package]]
 name = "django"
-version = "4.0.10"
+version = "4.2.5"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Django-4.0.10-py3-none-any.whl", hash = "sha256:4496eb4f65071578b703fdc6e6f29302553c7440e3f77baf4cefa4a4e091fc3d"},
-    {file = "Django-4.0.10.tar.gz", hash = "sha256:2c2f73c16b11cb272c6d5e3b063f0d1be06f378d8dc6005fbe8542565db659cc"},
+    {file = "Django-4.2.5-py3-none-any.whl", hash = "sha256:b6b2b5cae821077f137dc4dade696a1c2aa292f892eca28fa8d7bfdf2608ddd4"},
+    {file = "Django-4.2.5.tar.gz", hash = "sha256:5e5c1c9548ffb7796b4a8a4782e9a2e5a3df3615259fc1bfd3ebc73b646146c1"},
 ]
 
 [package.dependencies]
-asgiref = ">=3.4.1,<4"
-sqlparse = ">=0.2.2"
+asgiref = ">=3.6.0,<4"
+sqlparse = ">=0.3.1"
 tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 
 [package.extras]
@@ -735,17 +738,17 @@ tests = ["coverage", "mock-django"]
 
 [[package]]
 name = "django-nyt"
-version = "1.2.4"
+version = "1.3"
 description = "A pluggable notification system written for the Django framework."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "django-nyt-1.2.4.tar.gz", hash = "sha256:7e54b06edab779c35f8b636e0cb847c70f17bcdf7a11ad466228ce403e9f856e"},
-    {file = "django_nyt-1.2.4-py3-none-any.whl", hash = "sha256:49b500047b041dbbac403fe72b8fc1f597f68db7522d0c04011bc76bad79b959"},
+    {file = "django_nyt-1.3-py3-none-any.whl", hash = "sha256:aba75df76ec565f0d6a839f5765b41c06b3d4471f5bd5c95718397e11a33050b"},
+    {file = "django_nyt-1.3.tar.gz", hash = "sha256:a92b019281b5b993be567fe25072a83c6c00bd53753e2613b374ac1efa08c383"},
 ]
 
 [package.dependencies]
-django = ">=2.2,<4.2"
+django = ">=2.2,<4.3"
 
 [[package]]
 name = "django-ordered-model"
@@ -1440,17 +1443,6 @@ files = [
 
 [package.dependencies]
 et-xmlfile = "*"
-
-[[package]]
-name = "packaging"
-version = "23.1"
-description = "Core utilities for Python packages"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "packaging-23.1-py3-none-any.whl", hash = "sha256:994793af429502c4ea2ebf6bf664629d07c1a9fe974af92966e4b8d2df7edc61"},
-    {file = "packaging-23.1.tar.gz", hash = "sha256:a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"},
-]
 
 [[package]]
 name = "path"
@@ -2208,6 +2200,24 @@ xlsx = ["openpyxl (>=2.6.0)"]
 yaml = ["pyyaml"]
 
 [[package]]
+name = "tinycss2"
+version = "1.1.1"
+description = "A tiny CSS parser"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "tinycss2-1.1.1-py3-none-any.whl", hash = "sha256:fe794ceaadfe3cf3e686b22155d0da5780dd0e273471a51846d0a02bc204fec8"},
+    {file = "tinycss2-1.1.1.tar.gz", hash = "sha256:b2e44dd8883c360c35dd0d1b5aad0b610e5156c2cb3b33434634e539ead9d8bf"},
+]
+
+[package.dependencies]
+webencodings = ">=0.4"
+
+[package.extras]
+doc = ["sphinx", "sphinx_rtd_theme"]
+test = ["coverage[toml]", "pytest", "pytest-cov", "pytest-flake8", "pytest-isort"]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -2355,30 +2365,27 @@ files = [
 
 [[package]]
 name = "wiki"
-version = "0.8.2"
+version = "0.10"
 description = "A wiki system written for the Django framework."
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "wiki-0.8.2-py3-none-any.whl", hash = "sha256:e2f319f60cebe25b48a9b1f32a8dc5f6434fcbc335daca02bd7f6eff4b4c227e"},
-    {file = "wiki-0.8.2.tar.gz", hash = "sha256:2a9ffadec86374c0aca8200e0e6fab9708daa41368133c3299d812efccaea7e8"},
+    {file = "wiki-0.10-py3-none-any.whl", hash = "sha256:68602143d208877c1e7012a60dee32da853847ccb517e5187a7dda08d020d3a6"},
+    {file = "wiki-0.10.tar.gz", hash = "sha256:67020e57067be4a3d7fb3b2f587b56490741e44e7de01e320b3c7bc4853638f7"},
 ]
 
 [package.dependencies]
-bleach = ">=3.3.0,<4.2"
-Django = ">=2.1,<4.1"
-django-mptt = ">=0.13,<0.14"
-django-nyt = ">=1.2.2,<1.3"
+bleach = {version = ">=6,<7", extras = ["css"]}
+django = ">=2.2,<4.3"
+django-mptt = ">=0.13,<0.15"
+django-nyt = ">=1.2.2"
 django-sekizai = ">=0.10"
-Markdown = ">=3.3,<3.4"
-Pillow = "*"
+markdown = ">=3.3,<3.4"
+pillow = "*"
 sorl-thumbnail = ">=12.8,<13"
 
 [package.extras]
-devel = ["black (>=22.3.0,<22.4)", "codecov", "coverage", "ddt", "django-functest (>=1.2,<1.4)", "flake8 (>=3.7,<4.1)", "pre-commit", "pytest (>=6.2.5,<7.2)", "pytest-cov", "pytest-django", "pytest-pythonpath"]
-test = ["codecov", "coverage", "ddt", "django-functest (>=1.2,<1.4)", "pytest (>=6.2.5,<7.2)", "pytest-cov", "pytest-django", "pytest-pythonpath"]
-testlint = ["black (>=22.3.0,<22.4)", "flake8 (>=3.7,<4.1)", "pre-commit"]
-transifex = ["transifex-client"]
+docs = ["bleach (>=6,<7)", "django (>=3.1.13)", "sphinx (>=6,<8)", "sphinx-rtd-theme (==1.2.0)"]
 
 [[package]]
 name = "xlrd"
@@ -2512,4 +2519,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "c8883a0c951eed78468d728cdb0e4522eec9d9a276c78d0cbd0eaeab4990d3a2"
+content-hash = "bc2f71a656b967095254a75a995156c0a8eb9ea4e7a5cda542daa328555b567e"
