@@ -2,7 +2,7 @@ import csv
 from typing import List
 
 from django.contrib import admin, messages
-from django.db.models import Sum, QuerySet, Field
+from django.db.models import Field, QuerySet, Sum
 from django.http import HttpRequest, HttpResponse
 from ordered_model.admin import OrderedTabularInline, OrderedInlineModelAdminMixin
 
