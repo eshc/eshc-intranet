@@ -157,6 +157,7 @@ ACCOUNT_FORMS = {'signup': 'home.forms.SignupWithProfileForm'}
 
 DATABASES = {}
 DATABASES['default'] =  dj_database_url.config()
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
