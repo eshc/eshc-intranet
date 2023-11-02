@@ -6,7 +6,7 @@ authors = ["eshc"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Django = "^3.1.14"
+Django = "^3.2.23"
 boto3 = "^1.23.4"
 Markdown = "^3.3.7"
 autopep8 = "^1.6.0"
