@@ -8,7 +8,7 @@
 Make usable intranet.
 
 ## Setup Instructions
-1. Install a relatively modern version of Python 3 (3.10 is recommended but other versions might also work)
+1. Install a relatively modern version of Python 3 (3.9 is recommended but other versions might also work)
 2. Install poetry
 3. `git clone <repo_url>` and `cd` into the directory  
 5. Run `poetry install` (if you do not have postgres installed on your local machine, you might have to edit the `pyproject.toml` file to replace `psycopg` with `psycopg-binary`
