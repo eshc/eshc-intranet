@@ -238,7 +238,7 @@ class IntranetLdapSync:
         self.connection.search(group_cn, '(cn=*)', BASE, attributes=['member'])
         # If group does not exist, create it with an empty member
         if len(self.connection.response) == 0:
-            self.connection.add(group_cn,"groupOfNames",{'member': emptygroupmember})
+            self.connection.add(group_cn,"groupOfNames",{'member': self.empty_group_member})
             self.connection.search(group_cn, '(cn=*)', BASE, attributes=['member'])
             # TODO: sync description
 
