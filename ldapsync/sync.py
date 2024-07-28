@@ -6,6 +6,7 @@ from users.models import User, Profile
 from home.models import Role, LdapGroup
 from typing import Callable, Dict, Union, Set
 from datetime import date
+import logging
 
 
 def find_lease_for_profile(u: Profile) -> Union[None, Lease]:
@@ -60,6 +61,7 @@ LDAP_ATTR_MAP: Dict[str, Callable[[Profile], str]] = {
 
 class IntranetLdapSync:
     connection = None
+    logger = logging.getLogger(__name__)
     members_group = 'cn=AllMembers,ou=Groups,%s' % (LDAP_SERVER_ROOT_DN,)
     members_dn = 'ou=Members,%s' % (LDAP_SERVER_ROOT_DN,)
     exmembers_dn = 'ou=DeactivatedMembers,%s' % (LDAP_SERVER_ROOT_DN,)
@@ -69,6 +71,7 @@ class IntranetLdapSync:
     filter_member = '(objectclass=inetOrgPerson)'
 
     def __init__(self):
+        self.logger.debug("Begin logging")
         self.connection = Connection(LDAP_SERVER_ADDR, user=LDAP_SERVER_AUTH_USER,
                                      password=LDAP_SERVER_AUTH_PASSWORD, auto_bind=True)
 
@@ -232,33 +235,38 @@ class IntranetLdapSync:
                 print("Changing %d fields for dn %s" % (num_changes, user_dn))
 
     def __fill_ldap_group(self, group_cn: str, uids: Set[str]):
+        '''
+        This function adds all users in uids to the group in group_cn,
+        while making sure to remove all former users from group
+        '''
         if self.mock:
             print(" * Mocking group update:", group_cn)
         ldap_uids = set()
+        to_remove_ex = set()
+        has_empty = False
         self.connection.search(group_cn, '(cn=*)', BASE, attributes=['member'])
         # If group does not exist, create it with an empty member
         if len(self.connection.response) == 0:
-            self.connection.add(group_cn,"groupOfNames",{'member': self.empty_group_member})
-            self.connection.search(group_cn, '(cn=*)', BASE, attributes=['member'])
-            # TODO: sync description
-
-        try:
-            response = self.connection.response[0]
-        except IndexError:
-            print(self.connection.result)
-            return
-        has_empty = False
-        to_remove_ex = set()
-        for ldn in response['attributes']['member']:
-            if ldn != self.empty_group_member:
-                if ldn.endswith(self.exmembers_dn):
-                    to_remove_ex.add(ldn)
-                else:
-                    ldap_uids.add(ldn.split(',')[0][4:])
+            if self.mock:
+                print("Insert missing group")
             else:
-                has_empty = True
-        to_remove = ldap_uids - uids
-        to_add = uids - ldap_uids
+                self.connection.add(group_cn,"groupOfNames",{'member': self.empty_group_member})
+                # TODO: sync description
+                if self.response.result != 0:
+                    self.logger.error("Could not create new LDAP group" % group_cn)
+
+        else:
+            response = self.connection.response[0]
+            for ldn in response['attributes']['member']:
+                if ldn != self.empty_group_member:
+                    if ldn.endswith(self.exmembers_dn):
+                        to_remove_ex.add(ldn)
+                    else:
+                        ldap_uids.add(ldn.split(',')[0][4:])
+                else:
+                    has_empty = True
+        to_remove = ldap_uids - uids # list of current members who used to be in group but no longer are
+        to_add = uids - ldap_uids    # list of new members that are being added to group
         modifications = []
         for uid in to_add:
             modifications.append((MODIFY_ADD, 'uid=%s,%s' % (uid, self.members_dn)))
@@ -273,6 +281,9 @@ class IntranetLdapSync:
         else:
             if len(modifications) > 0:
                 self.connection.modify(group_cn, {'member': modifications})
+                if self.response.result != 0:
+                    self.logger.error("Could not append the following LDAP modifications for " % group_cn)
+                    self.logger.error(modifications)
         pass
 
     def sync_intranet_ldap_group(self, group: LdapGroup):
