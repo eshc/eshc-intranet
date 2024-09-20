@@ -54,13 +54,18 @@
 								{% if role.assigned_to.all.count == 0 %}
 									<strong class="text-danger">UNASSIGNED</strong> <br/>
 								{% endif %}
+                                {% if role.past_holders.all.count > 0 %}
+                                <details class="text-muted">
+                                <summary>Past Holders</summary>
 								{% for person in role.past_holders.all %}
-									<div class="text-muted">[past]
+									<div class="text-muted">
 									{% if not person.profile.current_member %}
 										[moved out]
 									{% endif %}
 									{{person.profile.format_name}} </div>
 								{% endfor %}
+                                </details>
+								{% endif %}
 								<strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
 							</td>
 							<td>
