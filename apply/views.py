@@ -18,7 +18,7 @@ import sys
 data_re = re.compile('[ a-zA-Z0-9_@.+-]*')
 
 def validate_uoe_mail(value):
-    if "@ed.ac.uk" in value or "@sms.ed.ac.uk" in value:
+    if "ac.uk" in value:
         return False
     else:
         return True
