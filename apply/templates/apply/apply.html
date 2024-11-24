@@ -67,7 +67,7 @@
             {% for question in session.questions %}
             {% with question.pk as qpk %}
             <div class="form-group">
-                <label for="question_{{ qpk }}">{{ question.question_text }}</label>
+                <label for="question_{{ qpk }}">{{ question.question_text | urlize }}</label>
                 {% with answers|index:qpk|default_if_none:"" as answer %}
                 {% if question.question_type == 'ShortText' %}
                     <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}" required>

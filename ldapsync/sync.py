@@ -237,7 +237,17 @@ class IntranetLdapSync:
             print(" * Mocking group update:", group_cn)
         ldap_uids = set()
         self.connection.search(group_cn, '(cn=*)', BASE, attributes=['member'])
-        response = self.connection.response[0]
+        # If group does not exist, create it with an empty member
+        if len(self.connection.response) == 0:
+            self.connection.add(group_cn,"groupOfNames",{'member': self.empty_group_member})
+            self.connection.search(group_cn, '(cn=*)', BASE, attributes=['member'])
+            # TODO: sync description
+
+        try:
+            response = self.connection.response[0]
+        except IndexError:
+            print(self.connection.result)
+            return
         has_empty = False
         to_remove_ex = set()
         for ldn in response['attributes']['member']:

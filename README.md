@@ -8,13 +8,11 @@
 Make usable intranet.
 
 ## Setup Instructions
-1. Install Python 3. Developed using version 3.5.2.
-2. Instaill virtual env `pip install virtualenv`. You may have to use `pip3`.
-3. Make a new directory in which you will work.
-4. `cd` into the directory and `git clone <repo_url>`
-5. Make new virtual environment `virtualenv venv `
-6. Activate virtualenv `source ./venv/bin/activate` on linux
-7. Install python dependencies `pip install -r ./eshc-intranet/requirements.txt`
+1. Install a relatively modern version of Python 3 (3.9 is recommended but other versions might also work)
+2. Install poetry
+3. `git clone <repo_url>` and `cd` into the directory  
+5. Run `poetry install` (if you do not have postgres installed on your local machine, you might have to edit the `pyproject.toml` file to replace `psycopg` with `psycopg-binary`
+6. Run `poetry shell`
 
 Follow the instructions on setting up a [postgres database](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04) if you want to set up the database in the same way it is set up on Heroku. Set it up using the settings in `settings.py`.
 

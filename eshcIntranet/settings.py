@@ -67,9 +67,14 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'wiki.apps.WikiConfig',
     'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.editsection.apps.EditSectionConfig',
+    'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
     'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.links.apps.LinksConfig',
+    'wiki.plugins.help.apps.HelpConfig',
     'wiki.plugins.images.apps.ImagesConfig',
     'wiki.plugins.macros.apps.MacrosConfig',
+    'wiki.plugins.pymdown.apps.PyMdownConfig',
 
     # Custom apps
     'home.apps.HomeConfig',
