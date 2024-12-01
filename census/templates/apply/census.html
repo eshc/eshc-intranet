@@ -1,0 +1,124 @@
+{% extends "apply/base.html" %}
+{% load index %}
+{% load tz %}
+
+{% block body %}
+    {% localtime on %}
+    <div class="jumbotron bg-info text-white">
+        <h1>Edinburgh Student Housing Co-operative Applications</h1>
+        <h2>{{ session }}</h2>
+        <p class="lead">
+            {% if session.is_applying_open %}
+                Applications for this session are now open! <br>
+                Applications close at <b>{{ session.close_time|date:"jS F Y H:i" }}.</b> <br>
+                Server time: <b>{% now "jS F Y H:i" %}</b>
+            {% else %}
+                We're sorry, but applications for this session are closed.
+                Please follow our web page and/or social media to stay updated about next intakes.
+            {% endif %}
+        </p>
+    </div>
+
+    {% if session.is_applying_open %}
+        {% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
+
+        <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="first_name">First name(s)</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name" maxlength="30" value="{{ first_name }}" required>
+                    <div class="invalid-feedback">You must provide your first name!</div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="last_name">Last name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name" maxlength="150" value="{{ last_name }}" required>
+                    <div class="invalid-feedback">You must provide your last name!</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="preferred_name">Preferred name (optional)</label>
+                <input type="text" class="form-control" id="preferred_name" name="preferred_name" placeholder="Preferred name" maxlength="30" value="{{ preferred_name }}">
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" maxlength="254" required value="{{ email }}">
+                <div class="invalid-feedback">Wrong e-mail format</div>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone number (optional)</label>
+                <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number" maxlength="15" value="{{ phone_number }}">
+                <div class="invalid-feedback">Wrong telephone number format</div>
+            </div>
+            <div class="form-group custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="is_past_applicant" name="is_past_applicant" {{ is_past_applicant|yesno:"checked,," }}>
+                <label class="custom-control-label" for="is_past_applicant" aria-describedby="pastHelp">I have applied to the co-op before</label>
+                <small id="pastHelp" class="form-text text-muted">
+                    Past applicants get a higher chance in the applications lottery, if you check this your status will be validated with our records by the applications team.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="confidential_note">Confidential note</label>
+                <textarea class="form-control" id="confidential_note" name="confidential_note" placeholder="Confidential note" rows="10" maxlength="1000" aria-describedby="confHelp">{{ confidential_note }}</textarea>
+                <small id="confHelp" class="form-text text-muted">
+                    Confidential note/request for the applications team that won't be visible to the wider ESHC membership
+                </small>
+            </div>
+            {% for question in session.questions %}
+            {% with question.pk as qpk %}
+            <div class="form-group">
+                <label for="question_{{ qpk }}">{{ question.question_text | urlize }}</label>
+                {% with answers|index:qpk|default_if_none:"" as answer %}
+                {% if question.question_type == 'ShortText' %}
+                    <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}" required>
+                {% elif question.question_type == 'LongText' %}
+                    <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000" required>{{ answer }}</textarea>
+                {% elif question.question_type == 'SingleChoice' %}
+                    <select class="custom-select custom-select-lg mb-3" id="question_{{ qpk }}" name="question_{{ qpk }}">
+                        {% for choice in question.options_array %}
+                            <option value="{{ choice }}" {% if choice == answer %} selected {% endif %}>{{ choice }}</option>
+                        {% endfor %}
+                    </select>
+                {% elif question.question_type == 'MultipleChoice' %}
+                    <select class="custom-select custom-select-lg mb-3"
+                            id="question_{{ qpk }}" name="question_{{ qpk }}" aria-describedby="q{{ qpk }}help" multiple>
+                        {% for choice in question.options_array %}
+                            <option value="{{ choice }}" {% if choice in answer %} selected {% endif %}>{{ choice }}</option>
+                        {% endfor %}
+                    </select>
+                    <small id="q{{ qpk }}help" class="form-text text-muted">Hold Control/Command to select multiple</small>
+                {% else %}
+                    Sorry, form error occurred, this field is unavailable.
+                {% endif  %}
+                {% endwith %}
+                <div class="invalid-feedback">Answer to this question is required</div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit my application</button>
+        </form>
+
+        <script>
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+        </script>
+    {% endif %}
+
+    {% endlocaltime %}
+
+{% endblock body %}
