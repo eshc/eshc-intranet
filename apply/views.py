@@ -17,12 +17,6 @@ import sys
 
 data_re = re.compile('[ a-zA-Z0-9_@.+-]*')
 
-def validate_uoe_mail(value):
-    if "ac.uk" in value:
-        return False
-    else:
-        return True
-
 def active_member_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
     """
     Decorator for views that checks that the user is logged in, redirecting
@@ -64,9 +58,6 @@ class ApplyView(TemplateView):
                 data[f] = ''
                 mistakes.append(f)
                 continue
-            if f == 'email':
-                if not validate_uoe_mail(rqdata):
-                    mistakes.append('Please do not use your university e-mail address, as doing so will lead to issues getting your deposit back.')
             data[f] = rqdata
         for q in questions:
             qname = 'question_%d' % (q.pk,)

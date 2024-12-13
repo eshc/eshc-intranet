@@ -5,6 +5,12 @@ from django.contrib.auth.models import User
 from home.models import Point, WgUpdate, Minutes
 from users.models import Profile
 
+def validate_uoe_mail(value):
+    if "ac.uk" in value:
+        return False
+    else:
+        return True
+
 
 class SignupWithProfileForm(SignupForm):
     first_name = forms.CharField(label="First name(s)", min_length=2, max_length=150,
@@ -45,6 +51,12 @@ class SignupWithProfileForm(SignupForm):
         "perm_address",
         "captcha_question",
     ]
+
+    def clean_email(self):
+        if not validate_uoe_mail(self.cleaned_data['email']):
+            self.add_error('email', 'Please do NOT use your university email address as this will lead to problems getting your deposit back when you leave the co-op.')
+            return False
+        return super(SignupWithProfileForm, self).clean_email()
 
     def signup(self, request, user: User):
         p, _ = Profile.objects.get_or_create(user=user)
