@@ -1,6 +1,7 @@
 {% extends "census/base.html" %}
 {% load index %}
 {% load tz %}
+{% load shuffle %}
 
 {% block body %}
     {% localtime on %}
@@ -26,9 +27,9 @@
             {% with question.pk as qpk %}
             <div class="form-group">
                 <h2 for="question_{{ qpk }}">{{ question }}</h2>
-                {% if question.question_type == 'LongText' %}
+                {% if question.question_type == 'LongText' or question.question_type == 'ShortText' %}
                     <!-- Get all responses with the corresponding question and session and display them in random order underneath eachtoher -->
-                    {% for response in question.responses.all %}
+                    {% for response in question.responses.all|shuffle %}
                         <div type="text" class="form-text"> {{ response.answer_text }}</div>
                     {% endfor %}
                     <!-- <div type="text" class="form-text" id="response_{{ qpk }}" name="response_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}"></div> -->
