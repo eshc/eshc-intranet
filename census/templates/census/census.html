@@ -1,0 +1,90 @@
+{% extends "census/base.html" %}
+{% load index %}
+{% load tz %}
+
+{% block body %}
+    {% localtime on %}
+    <div class="jumbotron bg-info text-white">
+        <h1>Edinburgh Student Housing Co-operative Census</h1>
+        <h2>{{ session }}</h2>
+        <p class="lead">
+            {% if session.is_census_open %}
+                Census closes at <b>{{ session.close_time|date:"jS F Y H:i" }}.</b> <br>
+                Server time: <b>{% now "jS F Y H:i" %}</b>
+            {% else %}
+                We're sorry, but this census is closed.
+            {% endif %}
+        </p>
+    </div>
+
+    {% if session.is_census_open %}
+        {% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
+
+        <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+            {% for question in session.questions %}
+            {% with question.pk as qpk %}
+            <div class="form-group">
+                <label for="question_{{ qpk }}">{{ question.question_text | urlize }}</label>
+                {% with answers|index:qpk|default_if_none:"" as answer %}
+                {% if question.question_type == 'ShortText' %}
+                    {% if question.required %}
+                        <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}" required>
+                    {% else %}
+                        <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}">
+                    {% endif %}
+                {% elif question.question_type == 'LongText' %}
+                    {% if question.required %}
+                        <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000" required>{{ answer }}</textarea>
+                    {% else %}
+                        <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000">{{ answer }}</textarea>
+                    {% endif %}
+                {% elif question.question_type == 'SingleChoice' %}
+                    <select class="custom-select custom-select-lg mb-3" id="question_{{ qpk }}" name="question_{{ qpk }}">
+                        {% for choice in question.options_array %}
+                            <option value="{{ choice }}" {% if choice == answer %} selected {% endif %}>{{ choice }}</option>
+                        {% endfor %}
+                    </select>
+                {% elif question.question_type == 'MultipleChoice' %}
+                    <select class="custom-select custom-select-lg mb-3"
+                            id="question_{{ qpk }}" name="question_{{ qpk }}" aria-describedby="q{{ qpk }}help" multiple>
+                        {% for choice in question.options_array %}
+                            <option value="{{ choice }}" {% if choice in answer %} selected {% endif %}>{{ choice }}</option>
+                        {% endfor %}
+                    </select>
+                    <small id="q{{ qpk }}help" class="form-text text-muted">Hold Control/Command to select multiple</small>
+                {% else %}
+                    Sorry, form error occurred, this field is unavailable.
+                {% endif  %}
+                {% endwith %}
+                <div class="invalid-feedback">Answer to this question is required</div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit my census responses</button>
+        </form>
+
+        <script>
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+        </script>
+    {% endif %}
+
+    {% endlocaltime %}
+
+{% endblock body %}

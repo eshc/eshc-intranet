@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^hours/', include('hours.urls')),
     url(r'^whiteboard/', include('whiteboard.urls')),
     path('apply/', include('apply.urls')),
+    path('census/', include('census.urls')),
     path('finance/', include('finance.urls')),
 
     # allauth
