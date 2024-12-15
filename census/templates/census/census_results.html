@@ -23,27 +23,35 @@
 
         <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
-            {% for question in session.questions %}
-            {% with question.pk as qpk %}
-            <div class="form-group">
-                <h2 for="question_{{ qpk }}">{{ question }}</h2>
-                {% if question.question_type == 'LongText' or question.question_type == 'ShortText' %}
-                    <!-- Get all responses with the corresponding question and session and display them in random order underneath eachtoher -->
-                    {% for response in question.responses.all|shuffle %}
-                        <div type="text" class="form-text"> {{ response.answer_text }}</div>
-                    {% endfor %}
-                    <!-- <div type="text" class="form-text" id="response_{{ qpk }}" name="response_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}"></div> -->
-                {% elif question.question_type == 'SingleChoice' or question.question_type == 'MultipleChoice'%}
-                    {% for response in question.get_aggregated_responses %}
-                        <h3 type="text" class="form-text"> {{ response.0 }}</h3>
-                        <div type="text" class="form-text"> {{ response.1 }}</div>
-                    {% endfor %}
-                {% else %}
-                    Sorry, form error occurred, this field is unavailable.
-                {% endif  %}
-            </div>
-            {% endwith %}
-            {% endfor %}
+            {% if session.response_count < 10 %}
+
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading"></h4>
+                    <p>There are not enough responses to display results. More than 10 responses are needed before results are displayed. Currently there are {{ session.response_count }} responses. Please check back later.</p>
+                </div>
+            {% else %}
+                {% for question in session.questions %}
+                {% with question.pk as qpk %}
+                <div class="form-group">
+                    <h2 for="question_{{ qpk }}">{{ question }}</h2>
+                    {% if question.question_type == 'LongText' or question.question_type == 'ShortText' %}
+                        <!-- Get all responses with the corresponding question and session and display them in random order underneath eachtoher -->
+                        {% for response in question.responses.all|shuffle %}
+                            <div type="text" class="form-text"> {{ response.answer_text }}</div>
+                        {% endfor %}
+                        <!-- <div type="text" class="form-text" id="response_{{ qpk }}" name="response_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}"></div> -->
+                    {% elif question.question_type == 'SingleChoice' or question.question_type == 'MultipleChoice'%}
+                        {% for response in question.get_aggregated_responses %}
+                            <h3 type="text" class="form-text"> {{ response.0 }}</h3>
+                            <div type="text" class="form-text"> {{ response.1 }}</div>
+                        {% endfor %}
+                    {% else %}
+                        Sorry, form error occurred, this field is unavailable.
+                    {% endif  %}
+                </div>
+                {% endwith %}
+                {% endfor %}
+            {% endif %}
 
     {% endlocaltime %}
 

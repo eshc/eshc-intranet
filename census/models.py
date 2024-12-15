@@ -6,11 +6,7 @@ from ordered_model.models import OrderedModel
 from enum import Enum
 from django.utils import timezone
 from django import urls
-
-
-def now():
-    return timezone.now()
-
+import uuid
 
 class CensusSession(models.Model):
     census_name = models.TextField(verbose_name='Census name (e.g. 2024 Semester 1)')
@@ -40,7 +36,7 @@ class CensusSession(models.Model):
         return ('Census %s' % (self.census_name)).strip()
 
     def is_census_open(self):
-        return self.open_time <= now() <= self.close_time
+        return self.open_time <= timezone.now() <= self.close_time
     is_census_open.boolean = True
 
     def questions(self):
@@ -66,7 +62,7 @@ class CensusQuestion(OrderedModel):
     question_type = models.CharField(verbose_name='Type', max_length=20,
                                      choices=[(tag.name, tag.value) for tag in QuestionType],
                                      default=QuestionType.LongText)
-    question_options = models.TextField(verbose_name='Question options (optional)', max_length=300, blank=True)
+    question_options = models.TextField(verbose_name='Question options for \n single and multiple choice questions \n (separated by newlines)', max_length=300, blank=True)
     required = models.BooleanField(verbose_name='Required', default=True)
 
     def __str__(self):
@@ -78,7 +74,6 @@ class CensusQuestion(OrderedModel):
     def responses(self):
         return CensusResponse.objects.filter(session=self.session, question=self)
     
-    # @staticmethod
     def get_aggregated_responses(self):
         answers = []
         for key in range(len(self.options_array())):
@@ -87,6 +82,7 @@ class CensusQuestion(OrderedModel):
 
 
 class CensusResponse(models.Model):
+    uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     session = models.ForeignKey(CensusSession, on_delete=CASCADE, verbose_name='Census session')
     question = models.ForeignKey(CensusQuestion, on_delete=CASCADE)
 

@@ -1,39 +1,14 @@
-import traceback
 from collections import OrderedDict
-from typing import Union
 
-from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
-from django.core.mail import EmailMessage
-from django.http import HttpRequest, HttpResponseServerError
+from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, render
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-
-from users.decorators import current_member_required
 
 from . import models
 import re
 import sys
 
 data_re = re.compile('[ a-zA-Z0-9_@.+-]*')
-
-
-def active_member_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
-    """
-    Decorator for views that checks that the user is logged in, redirecting
-    to the log-in page if necessary.
-    """
-    actual_decorator = user_passes_test(
-        lambda u: u.is_authenticated and u.profile.current_member,
-        login_url=login_url,
-        redirect_field_name=redirect_field_name
-    )
-    if function:
-        return actual_decorator(function)
-    return actual_decorator
-
 
 class CensusResultsView(TemplateView):
     template_name = 'census/census_results.html'
@@ -127,41 +102,3 @@ class CensusView(TemplateView):
             'session': app_session
         }
         return ctx
-
-
-# def get_application_numbers(app_session: models.ApplicationSession, member: User) -> (int,int):
-#     applicants = models.Applicant.objects.filter(session=app_session)
-#     myvotes = 0
-#     for a in applicants:
-#         if a.applicationvote_set.filter(voting_member=member).count() == 1:
-#             myvotes += 1
-
-#     return (myvotes,len(applicants))
-
-# def find_applicant(app_session: models.ApplicationSession, member: User) -> Union[models.Applicant, None]:
-#     applicants = models.Applicant.objects.filter(session=app_session).order_by('vote_count')
-#     for ap in applicants:
-#         if ap.applicationvote_set.filter(voting_member=member).count() == 0:
-#             return ap
-#     return None
-
-
-# def get_answers(applicant: models.Applicant):
-#     qs = applicant.session.questions().filter(visible_in_voting=True)
-#     ans = dict()
-#     for q in qs:
-#         try:
-#             a: models.ApplicationAnswer = models.ApplicationAnswer.objects.get(applicant=applicant, question=q)
-#             if q.question_type == models.QuestionType.ShortText.name:
-#                 ans[q.pk] = a.answer
-#             elif q.question_type == models.QuestionType.LongText.name:
-#                 ans[q.pk] = a.answer
-#             elif q.question_type == models.QuestionType.SingleChoice.name:
-#                 ans[q.pk] = a.answer
-#             elif q.question_type == models.QuestionType.MultipleChoice.name:
-#                 ans[q.pk] = [s.strip() for s in a.answer.split(', ')]
-#             else:
-#                 ans[q.pk] = 'system error'
-#         except models.ApplicationAnswer.DoesNotExist:
-#             ans[q.pk] = 'Applicant did not provide an answer to this question.'
-#     return ans

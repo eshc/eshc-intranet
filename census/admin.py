@@ -16,14 +16,6 @@ class CensusQuestionsAdmin(OrderedTabularInline):
     readonly_fields = ('order', 'move_up_down_links')
     extra = 0
 
-class CensusResponsesAdmin(OrderedTabularInline):
-    model = CensusResponse
-    # ordering = ('order',)
-    fields = ('question', )
-    readonly_fields = ('question', 'answer_text', 'answer_choice')
-    extra = 0
-
-
 @admin.register(CensusSession)
 class CensusAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
     list_display = ('__str__', 'census_name',
@@ -39,6 +31,9 @@ class CensusAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
             self.message_user(request, "Please select only one session for export", messages.ERROR)
             return
         session: CensusSession = queryset.get()
+        if session.response_count < 10:
+            self.message_user(request, "Less than 10 responses. Please check back later", messages.ERROR)
+            return
         csv_resp = HttpResponse(content_type='text/csv')
         csv_resp['Content-Disposition'] = 'attachment; filename="%s.csv"' % (session,)
         wr = csv.writer(csv_resp)
@@ -61,26 +56,3 @@ class CensusAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
         return csv_resp
 
     export_responses.short_description = "Export census data to a spreadsheet file"
-
-
-# TODO
-# @admin.register(Applicant)
-# class ApplicantViewAdmin(admin.ModelAdmin):
-
-#     def vote_stats(self, applicant: Applicant) -> str:
-#         count = ApplicationVote.objects.filter(applicant=applicant).count()
-#         pos = ApplicationVote.objects.filter(applicant=applicant, points__gte=0).aggregate(Sum('points'))[
-#                   'points__sum'] or 0
-#         neg = ApplicationVote.objects.filter(applicant=applicant, points__lt=0).aggregate(Sum('points'))[
-#                   'points__sum'] or 0
-#         abstain = ApplicationVote.objects.filter(applicant=applicant, points__exact=0).aggregate(Sum('points'))[
-#                   'points__sum'] or 0
-
-#         return '%d votes, score: %d (+%d,-%d,abs%d)' % (count, pos + neg, pos, -neg, abstain)
-#     vote_stats.short_description = 'Vote stats'
-
-#     list_display = ('session', '__str__', 'email', 'phone_number',
-#                     'is_past_applicant', 'verified_past_applicant', 'vote_count', 'vote_stats')
-#     list_filter = ('session', 'is_past_applicant')
-#     readonly_fields = ('date_applied', )
-#     inlines = (ApplicantQuestionsInline,)
