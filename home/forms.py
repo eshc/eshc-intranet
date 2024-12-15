@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from home.models import Point, WgUpdate, Minutes
 from users.models import Profile
 
-def validate_uoe_mail(value):
-    if "ac.uk" in value:
+def is_university_email(value):
+    if value.endswith("ac.uk"):
         return False
     else:
         return True
@@ -53,7 +53,7 @@ class SignupWithProfileForm(SignupForm):
     ]
 
     def clean_email(self):
-        if not validate_uoe_mail(self.cleaned_data['email']):
+        if not is_university_email(self.cleaned_data['email']):
             self.add_error('email', 'Please do NOT use your university email address as this will lead to problems getting your deposit back when you leave the co-op.')
             return False
         return super(SignupWithProfileForm, self).clean_email()
