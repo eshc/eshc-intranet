@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'whiteboard.apps.WhiteboardConfig',
     'ldapsync.apps.LdapSyncConfig',
     'apply.apps.ApplyConfig',
+    'census.apps.CensusConfig',
     'finance.apps.FinanceConfig',
 
     # For exporting databse into layman formats
