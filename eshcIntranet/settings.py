@@ -267,6 +267,37 @@ def wiki_restrict_access(article, user):
 WIKI_CAN_READ = wiki_restrict_access
 WIKI_CAN_WRITE = wiki_restrict_access
 
+LOGGING = {
+    "version": 1,  # the dictConfig format version
+    "disable_existing_loggers": False,  # retain the default loggers,
+    "formatters": {
+        "verbose": {
+            "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file_debug": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "debug.log",
+            "level": "DEBUG",
+            'formatter': 'verbose',
+            "maxBytes": 1024 * 1024 * 10,   # 10 MB
+            "backupCount": 5,
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["file_debug"],
+            "level": "DEBUG"
+        },
+    }
+}
+
 # Email
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = 'smtp.gmail.com'
