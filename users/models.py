@@ -19,7 +19,7 @@ class Profile(models.Model):
     ref_number = models.CharField(
         'Bank Reference Number', max_length=8, blank=True)
     sds_ref_number = models.CharField(
-        'SDS Reference Number', max_length=8, blank=True)
+        'SDS Reference Number', max_length=20, blank=True)
     preferred_name = models.CharField(max_length=40, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
     perm_address = models.TextField(max_length=500, blank=True)
