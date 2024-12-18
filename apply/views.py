@@ -11,6 +11,8 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
+from utils.utils import is_university_email
+
 from . import models
 import re
 import sys
@@ -70,6 +72,12 @@ class ApplyView(TemplateView):
         if models.Applicant.objects.filter(session=app_session, email=data['email']).count() > 0:
             mistakes.append(
                 'Sorry, but an application with this e-mail address already exists. Please contact us on our main e-mail to change your application details.')
+
+        print(data['email'])
+        print(is_university_email(data['email']))
+        if is_university_email(data['email']):
+            mistakes.append(
+                'Please do NOT use your university email address as this will lead to problems getting your deposit back when you leave the co-op.')
 
         if len(mistakes) == 0:
             # Add application and send e-mail
