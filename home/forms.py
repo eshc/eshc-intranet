@@ -5,12 +5,7 @@ from django.contrib.auth.models import User
 from home.models import Point, WgUpdate, Minutes
 from users.models import Profile
 
-def is_university_email(value):
-    if value.endswith("ac.uk"):
-        return False
-    else:
-        return True
-
+from utils.utils import is_university_email
 
 class SignupWithProfileForm(SignupForm):
     first_name = forms.CharField(label="First name(s)", min_length=2, max_length=150,
@@ -53,7 +48,7 @@ class SignupWithProfileForm(SignupForm):
     ]
 
     def clean_email(self):
-        if not is_university_email(self.cleaned_data['email']):
+        if is_university_email(self.cleaned_data['email']):
             self.add_error('email', 'Please do NOT use your university email address as this will lead to problems getting your deposit back when you leave the co-op.')
             return False
         return super(SignupWithProfileForm, self).clean_email()
