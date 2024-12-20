@@ -7,6 +7,7 @@
     <div class="jumbotron bg-info text-white">
         <h1>Edinburgh Student Housing Co-operative Census</h1>
         <h2>{{ session }}</h2>
+        <p class="lead">{{ session.census_description }}</p>
         <p class="lead">
             {% if session.is_census_open %}
                 Census closes at <b>{{ session.close_time|date:"jS F Y H:i" }}.</b> <br>

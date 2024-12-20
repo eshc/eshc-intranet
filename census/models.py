@@ -10,6 +10,7 @@ import uuid
 
 class CensusSession(models.Model):
     census_name = models.TextField(verbose_name='Census name (e.g. 2024 Semester 1)')
+    census_description = models.TextField(verbose_name='Census Description', default='', blank=True)
     open_time = models.DateTimeField(verbose_name='Census form opening time')
     close_time = models.DateTimeField(verbose_name='Census form closing time')
     response_count = models.IntegerField(verbose_name='Number of responses', default=0)

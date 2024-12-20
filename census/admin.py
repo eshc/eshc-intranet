@@ -18,7 +18,7 @@ class CensusQuestionsAdmin(OrderedTabularInline):
 
 @admin.register(CensusSession)
 class CensusAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
-    list_display = ('__str__', 'census_name',
+    list_display = ('__str__', 'census_name', 'census_description',
                     'is_census_open',
                     'open_time', 'close_time')
     save_as = True
