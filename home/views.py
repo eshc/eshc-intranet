@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.shortcuts import get_object_or_404, redirect
+import logging
 
 from allauth.account.views import SignupView
 from allauth.account import app_settings
@@ -612,7 +613,7 @@ def wsp(request):
     wgs_and_roles = [(wg, Role.objects.filter(group=wg.id).order_by('subgroup')) for wg in wgs]
     jobless = User.objects.filter(profile__current_member=True, role__assigned_to__isnull=True).order_by('last_name',
                                                                                                          'first_name')
-
+    wgs
     context = {'groups': wgs_and_roles,
                'jobless': jobless
                }
@@ -684,3 +685,4 @@ def check_leases(request):
 
 def taskforces(request):
     return redirect('/wiki/work-share-plan/taskforces/')
+

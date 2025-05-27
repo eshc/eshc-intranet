@@ -11,10 +11,15 @@
 		<p>Click on the Change link to reassign people to a specific role.</p>
 		{% endif %}
 		<p>Click on the role description to go to the Wiki page and find out more.</p>
-		<p><a href="/wsp_subgroups/">Click here to view this list sorted by subgroup</a></p>
+		<!-- <p><a href="/wsp_subgroups/">Click here to view this list sorted by subgroup</a></p> -->
 		{% for group, roles in groups %}
 			{% if roles %}
-			<h3>{{ group.name }}</h3>
+			<h3>{{ group.name }} </h3>
+				<div class="custom-control custom-switch">
+					<input type="checkbox" class="custom-control-input" onclick="toggleEmptyWG(this)" value="{{ group.name }}" id="{{ group.name }}_toggle">
+					<label class="custom-control-label" for="{{ group.name }}_toggle">Show empty roles</label>
+			  	</div>
+			
 				<div style="border: 1px solid lightgrey; border-radius: 5px">
 					<table class="table">
 						<tr>
@@ -33,41 +38,89 @@
 						</tr>
 				{% for role in roles %}
 					{% if role.group.name == group.name %}
-						<tr>
-							<td>
-								{% if role.subgroup %}
-									{{role.subgroup}}
-								{% else %}
-									-
-								{% endif %}
-							</td>
-							<td>
-								{{role.role_name}}
-							</td>
-							<td style="white-space: nowrap" {% if role.assigned_to.all.count == 0 %} class="bg-danger" {% endif %}>
-								{% for person in role.assigned_to.all %}
-									{% if not person.profile.current_member %}
-										<strong class="text-danger">MOVED OUT: </strong>
+						{% if role.assigned_to.all.count > 0 %}
+							<tr>
+								<td>
+									{% if role.subgroup %}
+										{{role.subgroup}}
+									{% else %}
+										-
 									{% endif %}
-									{{person.profile.format_name}}  <br/>
-								{% endfor %}
-								{% if role.assigned_to.all.count == 0 %}
-									<strong class="text-danger">UNASSIGNED</strong> <br/>
-								{% endif %}
-								{% for person in role.past_holders.all %}
-									<div class="text-muted">[past]
-									{% if not person.profile.current_member %}
-										[moved out]
+								</td>
+								<td>
+									{{role.role_name}}
+								</td>
+								<td style="white-space: nowrap" {% if role.assigned_to.all.count == 0 %} class="bg-danger" {% endif %}>
+									{% for person in role.assigned_to.all %}
+										{% if not person.profile.current_member %}
+											<strong class="text-danger">MOVED OUT: </strong>
+										{% endif %}
+										{{person.profile.format_name}}  <br/>
+									{% endfor %}
+									{% if role.assigned_to.all.count == 0 %}
+										<strong class="text-danger">UNASSIGNED</strong> <br/>
 									{% endif %}
-									{{person.profile.format_name}} </div>
-								{% endfor %}
-								<strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
-							</td>
-							<td>
-								<a href="/wiki/work-share-plan/{{ role.role_name|slugify }}">{{role.description}}</a>
-							</td>
+									{% if role.past_holders.all.count > 0 %}
+									<details class="text-muted">
+									<summary>Past Holders</summary>
+									{% for person in role.past_holders.all %}
+										<div class="text-muted">
+										{% if not person.profile.current_member %}
+											[moved out]
+										{% endif %}
+										{{person.profile.format_name}} </div>
+									{% endfor %}
+									</details>
+									{% endif %}
+									<strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
+								</td>
+								<td>
+									<a href="/wiki/work-share-plan/{{ role.role_name|slugify }}">{{role.description}}</a>
+								</td>
 
-						</tr>
+							</tr>
+						{% else %}
+							<tr class="{{ group.name }}" style="display: none;">
+								<td>
+									{% if role.subgroup %}
+										{{role.subgroup}}
+									{% else %}
+										-
+									{% endif %}
+								</td>
+								<td>
+									{{role.role_name}}
+								</td>
+								<td style="white-space: nowrap" {% if role.assigned_to.all.count == 0 %} {% endif %}>
+									{% for person in role.assigned_to.all %}
+										{% if not person.profile.current_member %}
+											<strong class="text-danger">MOVED OUT: </strong>
+										{% endif %}
+										{{person.profile.format_name}}  <br/>
+									{% endfor %}
+									{% if role.assigned_to.all.count == 0 %}
+										<strong class="text-danger">UNASSIGNED</strong> <br/>
+									{% endif %}
+									{% if role.past_holders.all.count > 0 %}
+									<details class="text-muted">
+									<summary>Past Holders</summary>
+									{% for person in role.past_holders.all %}
+										<div class="text-muted">
+										{% if not person.profile.current_member %}
+											[moved out]
+										{% endif %}
+										{{person.profile.format_name}} </div>
+									{% endfor %}
+									</details>
+									{% endif %}
+									<strong><a href="/admin/home/role/{{role.id}}/change/">Change</a></strong>
+								</td>
+								<td>
+									<a href="/wiki/work-share-plan/{{ role.role_name|slugify }}">{{role.description}}</a>
+								</td>
+
+							</tr>
+						{% endif %}
 					{% endif %}
 				{% endfor %}
 					</table>
@@ -97,4 +150,30 @@
 		<br>
 	</div>
 </div>
+<script>
+	document.onload = checkEmptyWGStatus();
+
+	function toggleEmptyWG(cb) {
+		className = cb.value;
+		var x = document.getElementsByClassName(className);
+		if (cb.checked) {
+			for (i = 0; i < x.length; i++) {
+				x[i].style.display = "table-row";
+			}
+		} else {
+			for (i = 0; i < x.length; i++) {
+				x[i].style.display = "none";
+			}
+		}
+	}
+	
+	function checkEmptyWGStatus() {
+		var cbs = document.getElementsByClassName("custom-control-input");
+		console.log(cbs.length);
+		for (j = 0; j < cbs.length; j++) { // NB, WHY ARE ITERATORS IN JAVASCRIPT NOT LOCAL TO THE LOOP? WHAT IS THIS MADNESS?
+			console.log(j);
+			toggleEmptyWG(cbs[j]);
+		}
+	}
+</script> 
 {% endblock body %}
