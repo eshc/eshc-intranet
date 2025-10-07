@@ -31,6 +31,7 @@ urlpatterns = [
     path('apply/', include('apply.urls')),
     path('census/', include('census.urls')),
     path('finance/', include('finance.urls')),
+    path('basement/', include('basement_booking_form.urls')),
 
     # allauth
     url(r'^accounts/', include('allauth.urls')),

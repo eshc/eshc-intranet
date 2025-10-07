@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Doesn't use base template, because it will be embedded in the main webpage, not inside the main intranet UI -->
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Use Bootstrap 4 -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+
+	<title>ESHC Basement Booking Form</title>
+</head>
+<body>
+{% load index %}
+{% load tz %}
+<div class="container">
+    {% localtime on %}
+    <div class="jumbotron bg-info text-white">
+        <h1>ESHC 34 Basement Booking Form</h1>
+        <h2>{{ session }}</h2>
+        <p class="lead">
+            Currently, you can only make a one-off booking for the basment via this form.<br>
+            If you wish to make a recurring booking, please contact the ESHC directly.
+        </p>
+    </div>
+
+
+    {% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
+
+    
+    <div>
+        <div class="row">
+            <div class="col-sm-12" >
+                <div class="embed-responsive embed-responsive-16by9" >
+                    <iframe class="embed-responsive-item" src="https://nextcloud.eshc.coop/index.php/apps/calendar/embed/Zt5CzmZHXi6d6zSA-a4DioSMHXiqfo7iZ"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+        <div>
+            <h3>Contact Details</h3>
+        </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Your name" maxlength="30" value="{{ name }}" required>
+            <div class="invalid-feedback">You must provide your name!</div>
+        </div>
+        <div class="form-group">
+            <label for="group_name">Group name (if applicable)</label>
+            <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Your group name" maxlength="150" value="{{ group_name }}">
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" maxlength="254" required value="{{ email }}">
+            <div class="invalid-feedback">Wrong e-mail format</div>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Phone number (optional)</label>
+            <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number" maxlength="15" value="{{ phone_number }}">
+            <div class="invalid-feedback">Wrong telephone number format</div>
+        </div>
+        <div>
+            <label >Are you a current member of ESHC?</label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="is_current_member_true" name="is_current_member" value="1" required>
+            <label class="form-check-label" for="is_current_member_true"> Yes, I am a current member (have a currently valid signed lease) </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="is_current_member_false" name="is_current_member" value="0" required>
+            <label class="form-check-label" for="is_current_member_false"> No, I am not a current member (do not have a currently valid signed lease) </label>
+            </div>
+            <div class="invalid-feedback">You must select if you are an ESHC member!</div>
+        </div>
+        <div>
+            <h3>Event Details</h3>
+        </div>
+        <div class="form-group">
+            <label for="event_name">Event Title</label>
+            <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Event Title" maxlength="30" value="{{ event_name }}" required>
+            <div class="invalid-feedback">You must provide your name!</div>
+        </div>
+        <div class="form-group">
+            <label for="event_description">Event Description</label>
+            <textarea class="form-control" id="event_description" name="event_description" placeholder="Event Description" rows="5" maxlength="1000" aria-describedby="confHelp">{{ event_description }} required</textarea>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="booking_start_time">Booking Start Time (including set-up)</label>
+                <input type="datetime-local" class="form-control" id="booking_start_time" name="booking_start_time" value="{{ booking_start_time }}" required>
+                <div class="invalid-feedback">You must provide a booking date</div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="booking_end_time">Booking End Time</label>
+                <input type="datetime-local" class="form-control" id="booking_end_time" name="booking_end_time" value="{{ booking_end_time }}" required>
+                <div class="invalid-feedback">You must provide a booking date</div>
+            </div>
+        </div>
+        <div>
+            <label >Is this event open to the public?</label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_public_0" name="is_event_public" value="0" required>
+                <label class="form-check-label" for="is_event_public_0"> Yes - we will advertise it </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_public_1" name="is_event_public" value="1" required>
+                <label class="form-check-label" for="is_event_public_1"> Yes - everyone is welcome, but it's a word-of-mouth event </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_public_2" name="is_event_public" value="2" required>
+                <label class="form-check-label" for="is_event_public_2"> No - private party by invitation/group membership only </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_public_3" name="is_event_public" value="3" required>
+                <label class="form-check-label" for="is_event_public_3"> No - but it's open to all ESHC members </label>
+            </div>
+            <div class="form-check d-flex align-items-center">
+                <input class="form-check-input" type="radio" id="is_event_public_4" name="is_event_public" value="4" required>
+                <label class="form-check-label mr-2" for="is_event_public_4"> Other: </label>
+                <input class="form-control ml-2" type="text" id="is_event_public_other" name="is_event_public_other" placeholder="Please specify" style="width: 100%;">
+            </div>
+        </div>
+        <div>
+            <label >Will there be ticket charges or donations taken?</label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_ticketed_0" name="is_event_ticketed" value="0" required>
+                <label class="form-check-label" for="is_event_ticketed_0"> Tickets will have a mandatory price (not including volunteers/staff/guestlist) </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_ticketed_1" name="is_event_ticketed" value="1" required>
+                <label class="form-check-label" for="is_event_ticketed_1"> Tickets are available on a sliding scale </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_ticketed_2" name="is_event_ticketed" value="2" required>
+                <label class="form-check-label" for="is_event_ticketed_2"> Tickets cost money, but free tickets are openly available to those in financial need </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_ticketed_3" name="is_event_ticketed" value="3" required>
+                <label class="form-check-label" for="is_event_ticketed_3"> We will accept donations but any tickets will not be priced </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="is_event_ticketed_3" name="is_event_ticketed" value="3" required>
+                <label class="form-check-label" for="is_event_ticketed_3"> We will not take any money for this event, it is self-funded </label>
+            </div>
+        </div>
+
+        <div>
+            <h3>Support Requirements</h3>
+        </div>
+        <div>
+            <label >Do you plan to use any of the following:</label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="equipment_0" name="equipment" value="0">
+                <label class="form-check-label" for="equipment_0"> Sound system </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="equipment_1" name="equipment" value="1">
+                <label class="form-check-label" for="equipment_1"> Projector </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="equipment_2" name="equipment" value="2">
+                <label class="form-check-label" for="equipment_2"> Mic </label>
+            </div>
+            <div class="form-check d-flex align-items-center">
+                <input class="form-check-input" type="checkbox" id="equipment_3" name="equipment" value="4">
+                <label class="form-check-label mr-2" for="equipment_3"> Other: </label>
+                <input class="form-control ml-2" type="text" id="equipment_other" name="equipment_other" placeholder="Please specify" style="width: 100%;">
+            </div>
+        </div>
+        <div>
+            <label >If you would like to use our sound system, have you been inducted on it already?</label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="sound_system_induction_0" name="sound_system_induction" value="0" required>
+            <label class="form-check-label" for="sound_system_induction_0"> Yes, I have been shown how to use it </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="sound_system_induction_1" name="sound_system_induction" value="1" required>
+            <label class="form-check-label" for="sound_system_induction_1"> No, I have not used it before and would like to be shown how to. </label>
+            </div>
+            <div class="invalid-feedback">You must select an option regarding sound system induction!</div>
+        </div>
+        <div>
+            <h3>Disclaimers and Finances</h3>
+            <p >
+                For some events (especially parties, large public events, anything that may be particularly messy) we will ask for a £20 deposit.
+The coop doesn't have loads of money to go around, especially since the energy price crisis began. Housing is expensive! So we ask for a small fee to cover the PRS music licencing for the space as a venue when music is a part of events. This is rarely higher than £20 for most events featuring music, we will use your deposit to pay the fee then return the remainder to you. Please let us know if you feel unable to pay the fee, as we can lift it to support organisations in need.
+            </p>
+        </div>
+        <div>
+            <label >Are you in financial hardship or other difficulties that leave you unable to pay our small booking fee to help cover music licensing?</label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="licencing_0" name="licencing" value="0" required>
+            <label class="form-check-label" for="licencing_0"> Yes </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="licencing_1" name="licencing" value="1" required>
+            <label class="form-check-label" for="licencing_1"> No </label>
+            </div>
+            <div class="invalid-feedback">You must select an option regarding booking fee!</div>
+        </div>
+
+        <div>
+            <label >I understand that my deposit is non-refundable in the case of any damages, significant and unusual wear and tear to the appliances, furnishings, and all other facets and structures of the basement of 34 Wright's Houses during the course of my booking. </label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="deposit_agreement" name="deposit_agreement" value="1" required>
+            <label class="form-check-label" for="deposit_agreement"> Yes, I take responsibility for ensuring the space and materials are looked after </label>
+            </div>
+            <div class="invalid-feedback">You must select an option regarding deposit agreement!</div>
+        </div>
+
+        <div>
+            <label >I understand that I and all others using the 34 Basement space are responsible for following and preserving the upkeep of ESHC's Safer Spaces Policy: <a href="https://www.eshc.coop/about/safer-spaces-policy/">https://www.eshc.coop/about/safer-spaces-policy/</a>
+
+                (note: this is mandatory for ESHC members under the terms of the coop lease) </label>
+        </div>
+        <div class="form-group p-3 border rounded bg-light">
+            <div class="form-check">
+            <input class="form-check-input" type="radio" id="safer_spaces_agreement" name="safer_spaces_agreement" value="1" required>
+            <label class="form-check-label" for="safer_spaces_agreement"> Yes </label>
+            </div>
+            <div class="invalid-feedback">You must select an option regarding our safer spaces policy!</div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Submit my Booking</button>
+    </form>
+
+    <script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+            }, false);
+        });
+        }, false);
+    })();
+    </script>
+
+    {% endlocaltime %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

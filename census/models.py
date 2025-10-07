@@ -53,7 +53,7 @@ class QuestionType(Enum):
 
 class CensusQuestion(OrderedModel):
     order_with_respect_to = 'session'
-
+    
     class Meta(OrderedModel.Meta):
         pass
 

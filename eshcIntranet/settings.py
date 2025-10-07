@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'apply.apps.ApplyConfig',
     'census.apps.CensusConfig',
     'finance.apps.FinanceConfig',
+    'basement_booking_form.apps.BasementBookingFormConfig',
 
     # For exporting databse into layman formats
     'import_export'
@@ -209,6 +210,19 @@ AWS_S3_REGION_NAME = 'eu-west-2'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# This seems the new way of defining storage backends in Django 3.0+, why 
+# it caused problems now but not before despite the same Django version being
+# used is a mystery.
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+}
+
 
 AWS_S3_SIGNATURE_VERSION='s3v4'
 
