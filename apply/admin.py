@@ -62,11 +62,11 @@ class ApplicationAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
             return
         session: ApplicationSession = queryset.get()
         csv_resp = HttpResponse(content_type="text/csv")
-        csv_resp["Content-Disposition"] = 'attachment; filename="Applicants %s.csv"' % (
+        csv_resp["Content-Disposition"] = 'attachment; filename="Applicants {}.csv"'.format(
             session.move_in_str(),
         )
         wr = csv.writer(csv_resp)
-        fields: List[Field] = Applicant._meta.get_fields(
+        fields: list[Field] = Applicant._meta.get_fields(
             include_parents=False, include_hidden=False
         )
         header = []

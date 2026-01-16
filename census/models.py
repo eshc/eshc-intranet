@@ -24,7 +24,7 @@ class CensusSession(models.Model):
     def census_url(self):
         try:
             surl = urls.reverse("census:census-form", kwargs={"session_id": self.id})
-            return "https://%s%s" % (Site.objects.get_current().domain, surl)
+            return "https://{}{}".format(Site.objects.get_current().domain, surl)
         except:
             return "Save me first"
 
@@ -33,7 +33,7 @@ class CensusSession(models.Model):
     def census_response_url(self):
         try:
             surl = urls.reverse("census:census-results", kwargs={"session_id": self.id})
-            return "https://%s%s" % (Site.objects.get_current().domain, surl)
+            return "https://{}{}".format(Site.objects.get_current().domain, surl)
         except:
             return "Save me first"
 
@@ -118,7 +118,7 @@ class CensusResponse(models.Model):
     answer_choice = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s: %s" % (self.question.question_text[:15], self.get_answer_display())
+        return "{}: {}".format(self.question.question_text[:15], self.get_answer_display())
 
     def get_answer_display(self):
         if (

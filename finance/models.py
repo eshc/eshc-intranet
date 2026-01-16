@@ -41,7 +41,7 @@ class FinanceConfig(models.Model):
         are any.
         """
         self.__class__.objects.exclude(id=self.id).delete()
-        super(FinanceConfig, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     @classmethod
     def load(cls):

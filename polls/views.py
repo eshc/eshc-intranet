@@ -96,7 +96,7 @@ def detail(request, pk):
         messages.add_message(
             request,
             messages.INFO,
-            "You have already voted {}".format(v.choice.choice_text),
+            f"You have already voted {v.choice.choice_text}",
         )
         # voted = 'You have already voted ' + v.choice.choice_text
 

@@ -7,13 +7,13 @@ from home.models import LdapGroup
 
 def user_to_str(u: User):
     if u.profile is not None and len(u.profile.preferred_name) > 0:
-        return "%s %s [%s] (%s)" % (
+        return "{} {} [{}] ({})".format(
             u.first_name,
             u.last_name,
             u.profile.preferred_name,
             u.username,
         )
-    return "%s %s (%s)" % (u.first_name, u.last_name, u.username)
+    return "{} {} ({})".format(u.first_name, u.last_name, u.username)
 
 
 User.__str__ = user_to_str

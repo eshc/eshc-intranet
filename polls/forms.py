@@ -27,7 +27,7 @@ class QuestionSubmitForm(forms.ModelForm):
         return date
 
     def save(self, commit=True):
-        question = super(QuestionSubmitForm, self).save(commit=False)
+        question = super().save(commit=False)
 
         question.question_title = self.cleaned_data["question_title"]
         question.question_text = self.cleaned_data["question_text"]

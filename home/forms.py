@@ -81,7 +81,7 @@ class SignupWithProfileForm(SignupForm):
                 "Please do NOT use your university email address as this will lead to problems getting your deposit back when you leave the co-op.",
             )
             return False
-        return super(SignupWithProfileForm, self).clean_email()
+        return super().clean_email()
 
     def signup(self, request, user: User):
         p, _ = Profile.objects.get_or_create(user=user)
@@ -102,7 +102,7 @@ class SignupWithProfileForm(SignupForm):
             return None
         # Ensure you call the parent class's save.
         # .save() returns a User object.
-        user = super(SignupWithProfileForm, self).save(request)
+        user = super().save(request)
 
         # Add your own processing here.
         if self.signup(request, user):
@@ -122,12 +122,12 @@ class UserEditForm(forms.ModelForm):
     # fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-        super(UserEditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["first_name"].required = True
         self.fields["last_name"].required = True
 
     def save(self, commit=True):
-        user = super(UserEditForm, self).save(commit=False)
+        user = super().save(commit=False)
         # user.set_password(self.cleaned_data["password1"])
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]

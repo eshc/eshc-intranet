@@ -28,7 +28,7 @@ class ApplicationSession(models.Model):
     def apply_url(self):
         try:
             surl = urls.reverse("apply:apply-form", kwargs={"session_id": self.id})
-            return "https://%s%s" % (Site.objects.get_current().domain, surl)
+            return "https://{}{}".format(Site.objects.get_current().domain, surl)
         except:
             return "Save me first"
 
@@ -37,7 +37,7 @@ class ApplicationSession(models.Model):
     def vote_url(self):
         try:
             surl = urls.reverse("apply:vote-form", kwargs={"session_id": self.id})
-            return "https://%s%s" % (Site.objects.get_current().domain, surl)
+            return "https://{}{}".format(Site.objects.get_current().domain, surl)
         except:
             return "Save me first"
 
@@ -48,7 +48,7 @@ class ApplicationSession(models.Model):
         return self.move_in_date.strftime("%B %Y")
 
     def __str__(self):
-        return ("%s %s move-in" % (self.special_title, self.move_in_str())).strip()
+        return ("{} {} move-in".format(self.special_title, self.move_in_str())).strip()
 
     def is_applying_open(self):
         return self.open_time <= now() <= self.close_time
@@ -147,9 +147,9 @@ class Applicant(models.Model):
 
     def __str__(self):
         if self.preferred_name:
-            return "%s (%s %s)" % (self.preferred_name, self.first_name, self.last_name)
+            return "{} ({} {})".format(self.preferred_name, self.first_name, self.last_name)
         else:
-            return "%s %s" % (self.first_name, self.last_name)
+            return "{} {}".format(self.first_name, self.last_name)
 
     def get_introduction_name(self):
         if self.preferred_name:
@@ -164,7 +164,7 @@ class ApplicationAnswer(models.Model):
     answer = models.TextField(max_length=5000)
 
     def __str__(self):
-        return "%s: %s" % (self.question.question_text[:15], self.answer[:50])
+        return "{}: {}".format(self.question.question_text[:15], self.answer[:50])
 
 
 class ApplicationVote(models.Model):

@@ -4,11 +4,12 @@ from eshcIntranet.settings import *
 from leases.models import Lease
 from users.models import User, Profile
 from home.models import Role, LdapGroup
-from typing import Callable, Dict, Union, Set
+from typing import Dict, Union, Set
+from collections.abc import Callable
 from datetime import date
 
 
-def find_lease_for_profile(u: Profile) -> Union[None, Lease]:
+def find_lease_for_profile(u: Profile) -> None | Lease:
     now = date.today()
     try:
         return Lease.objects.filter(
@@ -37,7 +38,7 @@ def intranet_to_ldap_password(p: str) -> str:
     salt = parts[2]
     bdk = parts[3].replace("+", ".").rstrip("=")
     b64salt = b64encode(salt.encode("utf-8")).decode("utf-8").rstrip("=")
-    return "{PBKDF2-SHA256}%s$%s$%s" % (iters, b64salt, bdk)
+    return f"{{PBKDF2-SHA256}}{iters}${b64salt}${bdk}"
 
 
 def user_roles_string(u: User) -> str:
@@ -49,7 +50,7 @@ def user_roles_string(u: User) -> str:
         return roles
 
 
-LDAP_ATTR_MAP: Dict[str, Callable[[Profile], str]] = {
+LDAP_ATTR_MAP: dict[str, Callable[[Profile], str]] = {
     # LDAP Name : lambda (Profile)->value
     "cn": lambda u: u.user.get_full_name(),
     "givenName": lambda u: u.user.first_name,
@@ -66,10 +67,10 @@ LDAP_ATTR_MAP: Dict[str, Callable[[Profile], str]] = {
 
 class IntranetLdapSync:
     connection = None
-    members_group = "cn=AllMembers,ou=Groups,%s" % (LDAP_SERVER_ROOT_DN,)
-    members_dn = "ou=Members,%s" % (LDAP_SERVER_ROOT_DN,)
-    exmembers_dn = "ou=DeactivatedMembers,%s" % (LDAP_SERVER_ROOT_DN,)
-    empty_group_member = "uid=groupfiller,%s" % (LDAP_SERVER_ROOT_DN,)
+    members_group = f"cn=AllMembers,ou=Groups,{LDAP_SERVER_ROOT_DN}"
+    members_dn = f"ou=Members,{LDAP_SERVER_ROOT_DN}"
+    exmembers_dn = f"ou=DeactivatedMembers,{LDAP_SERVER_ROOT_DN}"
+    empty_group_member = f"uid=groupfiller,{LDAP_SERVER_ROOT_DN}"
     mock = False
 
     filter_member = "(objectclass=inetOrgPerson)"
@@ -105,7 +106,7 @@ class IntranetLdapSync:
             if not self.mock:
                 self.connection.delete(invalid["dn"])
             else:
-                print("Deleting extra (ex)member %s" % (invalid["dn"],))
+                print("Deleting extra (ex)member {}".format(invalid["dn"]))
         dn = response[0]["dn"]
         rdn = dn.split(",")[0]
         assert 0 < len(rdn) < len(dn)
@@ -114,7 +115,7 @@ class IntranetLdapSync:
                 dn, rdn, delete_old_dn=True, new_superior=self.exmembers_dn
             )
             if self.connection.result["result"] == 68:  # Already exists
-                self.connection.delete("%s,%s" % (rdn, self.exmembers_dn))
+                self.connection.delete(f"{rdn},{self.exmembers_dn}")
                 result = self.connection.modify_dn(
                     dn, rdn, delete_old_dn=True, new_superior=self.exmembers_dn
                 )
@@ -138,13 +139,13 @@ class IntranetLdapSync:
             if len(real_value) > 0:
                 new_attrs[ldap_attr] = real_value
                 if self.mock:
-                    print("Adding field %s: '%s'" % (ldap_attr, real_value))
-        dn = "uid=%s,%s" % (user.username, self.members_dn)
+                    print(f"Adding field {ldap_attr}: '{real_value}'")
+        dn = f"uid={user.username},{self.members_dn}"
         if not self.mock:
             succ = self.connection.add(dn, obj_classes, new_attrs)
             assert succ
         else:
-            print("Adding DN: %s" % (dn,))
+            print(f"Adding DN: {dn}")
 
     def sync_intranet_user(self, user: User):
         """
@@ -242,7 +243,7 @@ class IntranetLdapSync:
             if len(response) < 1:
                 response = [
                     {
-                        "dn": "uid=%s,%s" % (user.username, self.members_dn),
+                        "dn": f"uid={user.username},{self.members_dn}",
                         "attributes": {},
                     }
                 ]
@@ -273,7 +274,7 @@ class IntranetLdapSync:
             else:
                 print("Changing %d fields for dn %s" % (num_changes, user_dn))
 
-    def __fill_ldap_group(self, group_cn: str, uids: Set[str]):
+    def __fill_ldap_group(self, group_cn: str, uids: set[str]):
         if self.mock:
             print(" * Mocking group update:", group_cn)
         ldap_uids = set()
@@ -305,11 +306,11 @@ class IntranetLdapSync:
         to_add = uids - ldap_uids
         modifications = []
         for uid in to_add:
-            modifications.append((MODIFY_ADD, "uid=%s,%s" % (uid, self.members_dn)))
+            modifications.append((MODIFY_ADD, f"uid={uid},{self.members_dn}"))
         if not has_empty:
             modifications.append((MODIFY_ADD, self.empty_group_member))
         for uid in to_remove:
-            modifications.append((MODIFY_DELETE, "uid=%s,%s" % (uid, self.members_dn)))
+            modifications.append((MODIFY_DELETE, f"uid={uid},{self.members_dn}"))
         for dn in to_remove_ex:
             modifications.append((MODIFY_DELETE, dn))
         if self.mock:

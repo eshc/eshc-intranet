@@ -23,7 +23,7 @@ def qbo_redirect_uri():
     protocol = "https"
     if domain == "localhost:8000":
         protocol = "http"
-    return "%s://%s/finance/qbo_callback" % (protocol, domain)
+    return "{}://{}/finance/qbo_callback".format(protocol, domain)
 
 
 global auth_client_obj
@@ -160,7 +160,7 @@ def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
 
 
 def qbo_cached_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
-    key = "qbo_profit_loss_%s" % (macro.replace(" ", "_"),)
+    key = "qbo_profit_loss_{}".format(macro.replace(" ", "_"))
     found = cache.get(key)
     if found is not None:
         return found
@@ -172,7 +172,7 @@ def qbo_cached_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
 def qbo_clean_cache():
     cache.delete_many(
         [
-            "qbo_profit_loss_%s" % (macro.replace(" ", "_"),)
+            "qbo_profit_loss_{}".format(macro.replace(" ", "_"))
             for macro in [MACRO_THIS_YEAR, MACRO_LAST_YEAR]
         ]
     )

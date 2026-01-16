@@ -54,7 +54,7 @@ class CensusAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
             )
             return
         csv_resp = HttpResponse(content_type="text/csv")
-        csv_resp["Content-Disposition"] = 'attachment; filename="%s.csv"' % (session,)
+        csv_resp["Content-Disposition"] = 'attachment; filename="{}.csv"'.format(session)
         wr = csv.writer(csv_resp)
         for q in session.questions():
             wr.writerow([q.question_text])

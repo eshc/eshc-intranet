@@ -30,7 +30,7 @@ class GroupAwareAuthenticationBackend(ModelBackend):
                 perms = getattr(self, "_get_%s_permissions" % from_name)(user_obj)
             perms = perms.values_list("content_type__app_label", "codename").order_by()
             setattr(
-                user_obj, perm_cache_name, {"%s.%s" % (ct, name) for ct, name in perms}
+                user_obj, perm_cache_name, {"{}.{}".format(ct, name) for ct, name in perms}
             )
         return getattr(user_obj, perm_cache_name)
 

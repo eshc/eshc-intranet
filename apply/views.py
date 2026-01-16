@@ -122,11 +122,11 @@ class ApplyView(TemplateView):
                     "Could not put application in the database: " + sys.exc_info()[0]
                 )
             else:
-                msg = """Dear %s,
+                msg = """Dear {},
 
 Your application to the Edinburgh Student Housing Co-operative has been received and will soon be reviewed.
 Here are the answers you provided to our questions provided for your reference:
-""" % (ap.get_introduction_name(),)
+""".format(ap.get_introduction_name())
                 for field in models.Applicant._meta.get_fields():
                     fn = field.name
                     vn = getattr(field, "verbose_name", "")
@@ -137,12 +137,12 @@ Here are the answers you provided to our questions provided for your reference:
                         and fn != "answers"
                         and fn != "app_team_note"
                     ):
-                        msg += "\n%s: %s" % (vn, str(getattr(ap, fn, "")))
+                        msg += "\n{}: {}".format(vn, str(getattr(ap, fn, "")))
                 for q in questions:
                     ans = models.ApplicationAnswer.objects.get(
                         applicant=ap, question=q
                     ).answer
-                    msg += "\n\n%s: %s" % (q.question_text, ans)
+                    msg += "\n\n{}: {}".format(q.question_text, ans)
 
                 msg += "\n\nKind regards,\nEdinburgh Student Housing Co-operative Applications Team"
                 mail = EmailMessage(
@@ -188,7 +188,7 @@ def get_application_numbers(
 
 def find_applicant(
     app_session: models.ApplicationSession, member: User
-) -> Union[models.Applicant, None]:
+) -> models.Applicant | None:
     applicants = models.Applicant.objects.filter(session=app_session).order_by(
         "vote_count"
     )
@@ -293,7 +293,7 @@ class VoteView(TemplateView):
         elif vote_str == "ABSTAIN":
             vote = 0
         if vote == -999:
-            ctx["error_message"] = "Invalid voting option %s!" % (vote_str,)
+            ctx["error_message"] = "Invalid voting option {}!".format(vote_str)
             return self.render_to_response(ctx)
         # register vote
         models.ApplicationVote.objects.create(

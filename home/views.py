@@ -603,7 +603,7 @@ def cash(request):
     )
 
     s3.meta.client.download_file("eshc-bucket", "money/year_1.csv", "/tmp/year_1.csv")
-    with open("/tmp/year_1.csv", "r") as csvfile:
+    with open("/tmp/year_1.csv") as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
         reader = csv.reader(csvfile, delimiter=",")
         rows = []
@@ -625,7 +625,7 @@ def cash(request):
         context["y1_data"] = rows
 
     s3.meta.client.download_file("eshc-bucket", "money/year_2.csv", "/tmp/year_2.csv")
-    with open("/tmp/year_2.csv", "r") as csvfile:
+    with open("/tmp/year_2.csv") as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
         reader = csv.reader(csvfile, delimiter=",")
         rows = []
@@ -647,7 +647,7 @@ def cash(request):
         context["y2_data"] = rows
 
     s3.meta.client.download_file("eshc-bucket", "money/year_3.csv", "/tmp/year_3.csv")
-    with open("/tmp/year_3.csv", "r") as csvfile:
+    with open("/tmp/year_3.csv") as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
         reader = csv.reader(csvfile, delimiter=",")
         rows = []
@@ -669,7 +669,7 @@ def cash(request):
         context["y3_data"] = rows
 
     s3.meta.client.download_file("eshc-bucket", "money/year_4.csv", "/tmp/year_4.csv")
-    with open("/tmp/year_4.csv", "r") as csvfile:
+    with open("/tmp/year_4.csv") as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
         reader = csv.reader(csvfile, delimiter=",")
         rows = []
@@ -691,7 +691,7 @@ def cash(request):
         context["y4_data"] = rows
 
     s3.meta.client.download_file("eshc-bucket", "money/year_5.csv", "/tmp/year_5.csv")
-    with open("/tmp/year_5.csv", "r") as csvfile:
+    with open("/tmp/year_5.csv") as csvfile:
         # context['y1_data'] = str(data.read(), "utf-8")
         reader = csv.reader(csvfile, delimiter=",")
         rows = []
@@ -714,7 +714,7 @@ def cash(request):
 
         context["y5_data"] = rows
 
-    with open("/tmp/year_5.csv", "r") as csvfile:
+    with open("/tmp/year_5.csv") as csvfile:
         context["last_30"] = rows[-30:][::-1]
 
     return render(request, "home/cash_overview.html", context)

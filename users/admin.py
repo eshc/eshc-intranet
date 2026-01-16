@@ -96,7 +96,7 @@ class UserAdmin(ImportExportModelAdmin):
             usr.save()
         self.message_user(
             request,
-            "%s member(s) marked as currently residing and active" % (rows_updated,),
+            "{} member(s) marked as currently residing and active".format(rows_updated),
         )
 
     action_mark_members_current.short_description = (
@@ -128,7 +128,7 @@ class UserAdmin(ImportExportModelAdmin):
             usr.profile.share_received = True
             usr.profile.save()
         self.message_user(
-            request, "%s member(s) marked as having paid the share" % (rows_updated,)
+            request, "{} member(s) marked as having paid the share".format(rows_updated)
         )
 
     action_give_share.short_description = (
@@ -141,7 +141,7 @@ class UserAdmin(ImportExportModelAdmin):
             rows_updated += 1
             usr.profile.share_received = False
             usr.profile.save()
-        self.message_user(request, "%s members' share removed" % (rows_updated,))
+        self.message_user(request, "{} members' share removed".format(rows_updated))
 
     action_remove_share.short_description = "Remove selected members' share paid status"
 

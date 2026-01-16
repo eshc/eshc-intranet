@@ -9,7 +9,7 @@ class InventoryForm(forms.ModelForm):
         fields = ["inventory_notes"]
 
     def save(self, lease_id, commit=True):
-        inventory = super(InventoryForm, self).save(commit=False)
+        inventory = super().save(commit=False)
         inventory.inventory_notes = self.cleaned_data["inventory_notes"]
         # inventory.sub_date = timezone.localdate()		# django 1.11
         inventory.sub_date = timezone.now().date()  # django 1.10

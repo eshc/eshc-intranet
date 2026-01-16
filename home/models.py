@@ -82,7 +82,7 @@ class Role(models.Model):
 
 class Flat(models.Model):
     def __str__(self):
-        return "{}/{}".format(self.building, self.flatno)
+        return f"{self.building}/{self.flatno}"
 
     flatno = models.PositiveIntegerField()
     size = models.PositiveIntegerField()
