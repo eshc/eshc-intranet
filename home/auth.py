@@ -1,7 +1,6 @@
 import django.contrib.admin as admin
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.models import Permission
-from home.models import Role
 from eshcIntranet.settings import DEBUG
 
 
@@ -30,7 +29,9 @@ class GroupAwareAuthenticationBackend(ModelBackend):
                 perms = getattr(self, "_get_%s_permissions" % from_name)(user_obj)
             perms = perms.values_list("content_type__app_label", "codename").order_by()
             setattr(
-                user_obj, perm_cache_name, {"{}.{}".format(ct, name) for ct, name in perms}
+                user_obj,
+                perm_cache_name,
+                {"{}.{}".format(ct, name) for ct, name in perms},
             )
         return getattr(user_obj, perm_cache_name)
 

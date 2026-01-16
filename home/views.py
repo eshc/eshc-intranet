@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 # from django.core.mail import send_mail
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
@@ -11,33 +11,16 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.shortcuts import get_object_or_404, redirect
-import logging
 
 from allauth.account.views import SignupView
 from allauth.account import app_settings
 from allauth.utils import get_form_class, get_request_param
 from allauth.account.utils import (
     complete_signup,
-    get_login_redirect_url,
     get_next_redirect_url,
-    logout_on_password_change,
     passthrough_next_redirect_url,
-    perform_login,
-    sync_user_email_addresses,
-    url_str_to_user_pk,
-)
-from allauth.account.forms import (
-    AddEmailForm,
-    ChangePasswordForm,
-    LoginForm,
-    ResetPasswordForm,
-    ResetPasswordKeyForm,
-    SetPasswordForm,
-    SignupForm,
-    UserTokenForm,
 )
 import datetime
-import os
 import csv
 
 from leases.models import Lease, Inventory
@@ -50,7 +33,7 @@ from .forms import (
     SignupWithProfileForm,
 )  # WgEditForm
 
-from users.decorators import has_share, current_member_required
+from users.decorators import current_member_required
 from home.models import GM, Point, WgUpdate, Minutes, Role, Room, Flat
 from whiteboard.models import Note
 from django.core.mail import send_mail
@@ -129,10 +112,8 @@ class MySignupView(SignupView):
 
 
 @login_required
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     check_info_share(request)
-
-    test = "Lorem"
 
     if GM.objects.exists():
         gm = GM.objects.latest("date_conv")
@@ -151,7 +132,6 @@ def index(request):
 
     context = {
         "gm": gm,
-        "test": test,
         "notes": notes,
         "voting_sessions": voting_sessions,
     }
@@ -159,28 +139,8 @@ def index(request):
     return render(request, "home/index.html", context)
 
 
-def mail_test(request):
-    if request.method != "POST":
-        pass
-    else:
-        # sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
-        # sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-        # from_email = Email("edinburghstudenthousingcoop@gmail.com")
-        # to_email = Email("filip.kaklin@gmail.com")
-        # subject = "No os environ"
-        # content = Content("text/plain", "and easy to do anywhere, even with Python")
-        # mail = Mail(from_email, subject, to_email, content)
-        # response = sg.client.mail.send.post(request_body=mail.get())
-        # print(response.status_code)
-        # print(response.body)
-        # print(response.headers)
-        return HttpResponseRedirect(reverse("home:index"))
-
-    return render(request, "home/mail_test.html")
-
-
 @login_required
-def profile(request):
+def profile(request: HttpRequest) -> HttpResponse:
     leases, valid_lease = check_leases(request)
     check_info_share(request)
     roles = Role.objects.filter(assigned_to=request.user.id)
@@ -195,7 +155,7 @@ def profile(request):
 
 
 @login_required
-def edit_profile(request):
+def edit_profile(request: HttpRequest) -> HttpResponse:
     """Edit user info"""
     user = request.user
     profile = user.profile
@@ -228,21 +188,11 @@ def edit_profile(request):
 
 
 @login_required
-def map(request):
-    # current leases
-    leases = Lease.objects.filter(start_date__lte=datetime.date.today()).filter(
-        end_date__gte=datetime.date.today()
-    )
+def map(request: HttpRequest) -> HttpResponse:
     rooms = Room.objects.all()
     flats = Flat.objects.all()
 
-    sizes_34 = [5, 3, 5, 5, 3, 4, 5, 5, 3, 4, 5, 5, 3, 4, 5, 5, 3]
-
-    # context = {'leases': leases,
-    #            'leases_28': [ {'leases': leases.filter(building=28,flat=i), 'flat': i} for i in range(1,8)],
-    #            'leases_34': [ {'leases': leases.filter(building=34,flat=i), 'flat': i,'size':sizes_34[i-1]} for i in range(1,18)]}
-
-    context = {  #'leases': leases,
+    context = {
         "flats_28": [
             {"flat": f, "rooms": rooms.filter(flat=f)}
             for f in flats.filter(building=28)
@@ -258,7 +208,7 @@ def map(request):
 
 @login_required
 @current_member_required
-def gms(request):
+def gms(request: HttpRequest) -> HttpResponse:
     gms = GM.objects.all().order_by("number").reverse()
     context = {"gms": gms}
     return render(request, "home/gms.html", context)
@@ -266,7 +216,7 @@ def gms(request):
 
 @login_required
 @current_member_required
-def archive(request):
+def archive(request: HttpRequest) -> HttpResponse:
     # Create an S3 client
     s3 = boto3.client(
         "s3",
@@ -414,7 +364,7 @@ def archive(request):
 
 @login_required
 @current_member_required
-def agenda(request, pk):
+def agenda(request: HttpRequest, pk) -> HttpResponse:
     gm = get_object_or_404(GM, pk=pk)
     places = Group.objects.get(name="Places WG")
     people = Group.objects.get(name="People WG")
@@ -465,7 +415,7 @@ def agenda(request, pk):
 
 @login_required
 @current_member_required
-def submit(request, id):
+def submit(request: HttpRequest, id) -> HttpResponse:
     gm = get_object_or_404(GM, pk=id)
 
     if request.method != "POST":
@@ -480,7 +430,7 @@ def submit(request, id):
             title = point_form.cleaned_data["title"]
             description = point_form.cleaned_data["description"]
             proposal = point_form.cleaned_data["proposal"]
-            point = Point.objects.create(
+            _point = Point.objects.create(
                 title=title,
                 description=description,
                 proposal=proposal,
@@ -497,7 +447,7 @@ def submit(request, id):
 
 @login_required
 @current_member_required
-def submit_update(request, id):
+def submit_update(request: HttpRequest, id) -> HttpResponse:
     gm = get_object_or_404(GM, pk=id)
 
     if request.method != "POST":
@@ -508,7 +458,7 @@ def submit_update(request, id):
         if update_form.is_valid():
             text = update_form.cleaned_data["text"]
             group = update_form.cleaned_data["group"]
-            update = WgUpdate.objects.create(text=text, group=group, choice=gm)
+            _ = WgUpdate.objects.create(text=text, group=group, choice=gm)
 
             messages.add_message(
                 request, messages.SUCCESS, "WG Update added successfully!"
@@ -523,7 +473,7 @@ def submit_update(request, id):
 
 @login_required
 @current_member_required
-def upload_minutes(request, id):
+def upload_minutes(request: HttpRequest, id) -> HttpResponse:
     gm = get_object_or_404(GM, pk=id)
 
     if request.method != "POST":
@@ -532,7 +482,7 @@ def upload_minutes(request, id):
         minutes_form = MinutesForm(request.POST, request.FILES)
 
         if minutes_form.is_valid():
-            instance = Minutes.objects.create(
+            _ = Minutes.objects.create(
                 minutes_file=request.FILES["minutes_file"], gm=gm
             )
             messages.add_message(
@@ -548,7 +498,7 @@ def upload_minutes(request, id):
 
 @login_required
 @current_member_required
-def delete(request, pk):
+def delete(request: HttpRequest, pk) -> HttpResponse:
     point = get_object_or_404(Point, pk=pk)
     gm = get_object_or_404(GM, pk=point.choice.pk)
     context = {"point": point, "gm": gm}
@@ -567,7 +517,7 @@ def delete(request, pk):
 
 @login_required
 @current_member_required
-def groups(request):
+def groups(request: HttpRequest) -> HttpResponse:
     # groups = Group.objects.all()
 
     wgs = Group.objects.filter(name__endswith="WG")
@@ -589,7 +539,7 @@ def groups(request):
 
 @login_required
 @current_member_required
-def cash(request):
+def cash(request: HttpRequest) -> HttpResponse:
     context = {}
 
     s3 = boto3.resource(
@@ -722,7 +672,7 @@ def cash(request):
 
 @login_required
 @current_member_required
-def wsp(request):
+def wsp(request: HttpRequest) -> HttpResponse:
     wgs = Group.objects.all()
     wgs_and_roles = [
         (wg, Role.objects.filter(group=wg.id).order_by("subgroup")) for wg in wgs
@@ -737,7 +687,7 @@ def wsp(request):
 
 @login_required
 @current_member_required
-def wsp_subgroups(request):
+def wsp_subgroups(request: HttpRequest) -> HttpResponse:
     subgroups = Role.objects.values("subgroup").annotate(scount=Count("subgroup"))
     sgs_and_roles = [
         (sg["subgroup"], Role.objects.filter(subgroup=sg["subgroup"]).order_by("group"))
@@ -753,14 +703,14 @@ def wsp_subgroups(request):
 
 @login_required
 @current_member_required
-def laundry(request):
+def laundry(request: HttpRequest) -> HttpResponse:
     return render(request, "home/laundry.html")
 
 
 """Helper functions below. Not views."""
 
 
-def check_info_share(request):
+def check_info_share(request: HttpRequest):
     # Check if info is updated and share received
     user = request.user
     if user.is_authenticated:
@@ -776,7 +726,7 @@ def check_info_share(request):
                 'Your <a href="/accounts/profile/" class="alert-link">Profile</a> is missing information. <a href="/accounts/edit_profile/" class="alert-link">Click here to fill in extra info!</a>',
                 extra_tags="safe",
             )
-        if request.user.profile.share_received == False:
+        if not request.user.profile.share_received:
             messages.add_message(
                 request,
                 messages.WARNING,
@@ -785,7 +735,7 @@ def check_info_share(request):
     return
 
 
-def check_leases(request):
+def check_leases(request: HttpRequest):
     leases = Lease.objects.filter(user_id=request.user.id)
     valid_lease = False
     inventories_made = False
@@ -803,7 +753,7 @@ def check_leases(request):
             )
             break
 
-    if valid_lease == False:
+    if not valid_lease:
         messages.add_message(
             request,
             messages.WARNING,
@@ -820,5 +770,5 @@ def check_leases(request):
     return leases, valid_lease
 
 
-def taskforces(request):
+def taskforces(_request: HttpRequest) -> HttpResponseRedirect:
     return redirect("/wiki/work-share-plan/taskforces/")

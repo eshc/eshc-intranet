@@ -1,6 +1,4 @@
-from django import forms
 from django.contrib import admin
-from users.models import Profile
 from .models import GM, Point, WgUpdate, LdapGroup, Role, Room
 
 
@@ -42,7 +40,7 @@ class RoleAdmin(admin.ModelAdmin):
             if len(names) == 0:
                 return "NOT ASSIGNED"
             return names
-        except:
+        except Exception:
             return "NOT ASSIGNED"
 
     fieldsets = [

@@ -1,5 +1,4 @@
 import csv
-from typing import List
 
 from django.contrib import admin, messages
 from django.db.models import Sum, QuerySet, Field
@@ -62,8 +61,10 @@ class ApplicationAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
             return
         session: ApplicationSession = queryset.get()
         csv_resp = HttpResponse(content_type="text/csv")
-        csv_resp["Content-Disposition"] = 'attachment; filename="Applicants {}.csv"'.format(
-            session.move_in_str(),
+        csv_resp["Content-Disposition"] = (
+            'attachment; filename="Applicants {}.csv"'.format(
+                session.move_in_str(),
+            )
         )
         wr = csv.writer(csv_resp)
         fields: list[Field] = Applicant._meta.get_fields(
@@ -97,7 +98,7 @@ class ApplicationAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
                 ans = "no answer"
                 try:
                     ans = ApplicationAnswer.objects.get(applicant=ap, question=q).answer
-                except:
+                except Exception:
                     pass
                 row.append(ans)
             wr.writerow(row)

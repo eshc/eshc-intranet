@@ -1,6 +1,7 @@
 """Defines URL patterns for home"""
 
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 
 app_name = "home"
@@ -8,7 +9,6 @@ app_name = "home"
 urlpatterns = [
     # Home page
     path("", views.index, name="index"),
-    path("mail/", views.mail_test, name="mail_test"),
     # User profile editing
     path("accounts/edit_profile/", views.edit_profile, name="edit_profile"),
     path("accounts/signup/", views.MySignupView.as_view()),
@@ -25,5 +25,9 @@ urlpatterns = [
     path("wsp/", views.wsp, name="wsp"),
     path("wsp_subgroups/", views.wsp_subgroups, name="wsp_subgroups"),
     path("laundry/", views.laundry, name="laundry"),
-    path("taskforces/", views.taskforces, name="taskforces"),
+    path(
+        "taskforces/",
+        RedirectView.as_view(url="/wiki/work-share-plan/taskforces/", permanent=True),
+        name="taskforces",
+    ),
 ]

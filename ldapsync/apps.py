@@ -5,4 +5,4 @@ class LdapSyncConfig(AppConfig):
     name = "ldapsync"
 
     def ready(self):
-        import ldapsync.signals
+        pass

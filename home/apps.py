@@ -11,4 +11,4 @@ class HomeConfig(AppConfig):
     verbose_name = "Misc co-op things"
 
     def ready(self):
-        import home.signals
+        pass

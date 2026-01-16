@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 from whiteboard.models import Note
 
@@ -33,7 +33,7 @@ def index(request):
     return render(request, "whiteboard/whiteboard.html", context)
 
 
-def add_note(request):
+def add_note(request: HttpRequest) -> HttpResponse:
     note_form = NewNoteForm()
 
     if request.method != "POST":
@@ -45,7 +45,7 @@ def add_note(request):
             text = note_form.cleaned_data["text"]
             pub_date = datetime.datetime.today().date()
             submitted_by = request.user
-            update = Note.objects.create(
+            _update = Note.objects.create(
                 text=text, pub_date=pub_date, submitted_by=submitted_by
             )
 

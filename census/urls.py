@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
-from users.decorators import current_member_required, check_role
+from users.decorators import current_member_required
 
 app_name = "census"
 

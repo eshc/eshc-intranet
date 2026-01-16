@@ -16,8 +16,6 @@ Including another URLconf
 
 from django.urls import include, path, re_path
 from django.contrib import admin
-from allauth.account import urls
-from django.urls import path
 
 import home
 

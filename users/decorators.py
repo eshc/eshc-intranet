@@ -1,6 +1,4 @@
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth.models import User
-from functools import wraps
 
 from home.models import Role
 

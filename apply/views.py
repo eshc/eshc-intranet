@@ -1,9 +1,8 @@
 import traceback
 from collections import OrderedDict
-from typing import Union
 
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.http import HttpRequest, HttpResponseServerError
@@ -59,7 +58,7 @@ class ApplyView(TemplateView):
         ]
         data = dict()
         data["answers"] = OrderedDict()
-        mistakes = []
+        mistakes: list[str] = []
         data["is_past_applicant"] = request.POST.get("is_past_applicant", "") == "on"
         data["confidential_note"] = str(request.POST.get("confidential_note", ""))
         for f in simple_fields:
@@ -86,8 +85,8 @@ class ApplyView(TemplateView):
                 "Sorry, but an application with this e-mail address already exists. Please contact us on our main e-mail to change your application details."
             )
 
-        print(data["email"])
-        print(is_university_email(data["email"]))
+        # print(data["email"])
+        # print(is_university_email(data["email"]))
         if is_university_email(data["email"]):
             mistakes.append(
                 "Please do NOT use your university email address as this will lead to problems getting your deposit back when you leave the co-op."
@@ -111,22 +110,22 @@ class ApplyView(TemplateView):
                 )
                 for qpk, qans in data["answers"].items():
                     ans = qans
-                    if type(ans) == list:
+                    if ans is list:
                         ans = ", ".join(ans)
                     models.ApplicationAnswer.objects.create(
                         applicant=ap, question_id=qpk, answer=ans
                     )
                 ap.refresh_from_db()
-            except:
+            except Exception:
                 mistakes.append(
                     "Could not put application in the database: " + sys.exc_info()[0]
                 )
             else:
-                msg = """Dear {},
+                msg = f"""Dear {ap.get_introduction_name()},
 
 Your application to the Edinburgh Student Housing Co-operative has been received and will soon be reviewed.
 Here are the answers you provided to our questions provided for your reference:
-""".format(ap.get_introduction_name())
+"""
                 for field in models.Applicant._meta.get_fields():
                     fn = field.name
                     vn = getattr(field, "verbose_name", "")
@@ -176,7 +175,7 @@ Here are the answers you provided to our questions provided for your reference:
 
 def get_application_numbers(
     app_session: models.ApplicationSession, member: User
-) -> (int, int):
+) -> tuple[int, int]:
     applicants = models.Applicant.objects.filter(session=app_session)
     myvotes = 0
     for a in applicants:
@@ -247,7 +246,7 @@ class VoteView(TemplateView):
                     ctx["answers"] = get_answers(next_applicant)
             resp = self.render_to_response(ctx)
             return resp
-        except Exception as e:
+        except Exception:
             msg = traceback.format_exc()
             mail = EmailMessage(
                 subject="Intranet application voting error traceback",

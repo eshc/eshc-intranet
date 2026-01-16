@@ -1,10 +1,7 @@
 from django import forms
 from .models import Question
-from django.contrib.admin.widgets import AdminDateWidget
-from django.utils.translation import ugettext_lazy as _
 
 import datetime
-from django.utils import timezone
 
 
 class QuestionSubmitForm(forms.ModelForm):

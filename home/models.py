@@ -1,7 +1,6 @@
 from datetime import date
 from django.db import models
 from django.contrib.auth.models import User, Group, Permission
-from django.core.validators import MaxValueValidator
 
 
 class GM(models.Model):

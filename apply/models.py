@@ -1,3 +1,4 @@
+from typing_extensions import override
 from django.db import models
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
@@ -29,7 +30,7 @@ class ApplicationSession(models.Model):
         try:
             surl = urls.reverse("apply:apply-form", kwargs={"session_id": self.id})
             return "https://{}{}".format(Site.objects.get_current().domain, surl)
-        except:
+        except Exception:
             return "Save me first"
 
     apply_url.short_description = "Application form URL (web address)"
@@ -38,7 +39,7 @@ class ApplicationSession(models.Model):
         try:
             surl = urls.reverse("apply:vote-form", kwargs={"session_id": self.id})
             return "https://{}{}".format(Site.objects.get_current().domain, surl)
-        except:
+        except Exception:
             return "Save me first"
 
     vote_url.short_description = "Voting URL (web address)"
@@ -48,14 +49,14 @@ class ApplicationSession(models.Model):
         return self.move_in_date.strftime("%B %Y")
 
     def __str__(self):
-        return ("{} {} move-in".format(self.special_title, self.move_in_str())).strip()
+        return f"{self.special_title} {self.move_in_str()} move-in".strip()
 
-    def is_applying_open(self):
+    def is_applying_open(self) -> bool:
         return self.open_time <= now() <= self.close_time
 
     is_applying_open.boolean = True
 
-    def is_voting_open(self):
+    def is_voting_open(self) -> bool:
         return self.voting_open_time <= now() <= self.voting_close_time
 
     is_voting_open.boolean = True
@@ -102,7 +103,8 @@ class ApplicationQuestion(OrderedModel):
         verbose_name="Question options (optional)", max_length=300, blank=True
     )
 
-    def __str__(self):
+    @override
+    def __str__(self) -> str:
         return self.question_text
 
     def options_array(self):
@@ -145,13 +147,14 @@ class Applicant(models.Model):
     class Meta:
         ordering = ("session__move_in_date", "last_name", "first_name")
 
-    def __str__(self):
+    @override
+    def __str__(self) -> str:
         if self.preferred_name:
-            return "{} ({} {})".format(self.preferred_name, self.first_name, self.last_name)
+            return f"{self.preferred_name} ({self.first_name} {self.last_name})"
         else:
-            return "{} {}".format(self.first_name, self.last_name)
+            return f"{self.first_name} {self.last_name}"
 
-    def get_introduction_name(self):
+    def get_introduction_name(self) -> str:
         if self.preferred_name:
             return self.preferred_name
         else:
@@ -163,7 +166,8 @@ class ApplicationAnswer(models.Model):
     question = models.ForeignKey(ApplicationQuestion, on_delete=CASCADE)
     answer = models.TextField(max_length=5000)
 
-    def __str__(self):
+    @override
+    def __str__(self) -> str:
         return "{}: {}".format(self.question.question_text[:15], self.answer[:50])
 
 

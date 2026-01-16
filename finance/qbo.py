@@ -3,7 +3,9 @@ Quickbooks API wrappers
 """
 
 from django.http import HttpRequest
-from django.http.response import HttpResponseBadRequest
+from django.utils import timezone
+
+from eshcIntranet.settings import QBO_CLIENT_ID, QBO_CLIENT_SECRET, QBO_ENVIRONMENT
 
 from .models import FinanceConfig
 from django.contrib.sites.models import Site
@@ -12,8 +14,6 @@ from intuitlib.client import AuthClient
 from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
 from quickbooks import QuickBooks
-import quickbooks.objects as qb
-from eshcIntranet.settings import *
 import datetime
 from datetime import timedelta
 

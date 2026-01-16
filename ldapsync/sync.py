@@ -1,10 +1,15 @@
 from base64 import b64encode
-from ldap3 import *
-from eshcIntranet.settings import *
+from typing import final
+from ldap3 import BASE, MODIFY_ADD, MODIFY_DELETE, MODIFY_REPLACE, Connection
+from eshcIntranet.settings import (
+    LDAP_SERVER_ADDR,
+    LDAP_SERVER_AUTH_PASSWORD,
+    LDAP_SERVER_AUTH_USER,
+    LDAP_SERVER_ROOT_DN,
+)
 from leases.models import Lease
 from users.models import User, Profile
 from home.models import Role, LdapGroup
-from typing import Dict, Union, Set
 from collections.abc import Callable
 from datetime import date
 
@@ -19,14 +24,14 @@ def find_lease_for_profile(u: Profile) -> None | Lease:
         return None
 
 
-def lease_to_room_number(l: Lease) -> str:
-    if l is None:
+def lease_to_room_number(lease: Lease | None) -> str:
+    if lease is None:
         return "0/0Z"
     else:
         return "%d/%d%s" % (
-            l.room.flat.building,
-            l.room.flat.flatno,
-            l.room.get_roomno_display(),
+            lease.room.flat.building,
+            lease.room.flat.flatno,
+            lease.room.get_roomno_display(),
         )
 
 
@@ -65,6 +70,7 @@ LDAP_ATTR_MAP: dict[str, Callable[[Profile], str]] = {
 }
 
 
+@final
 class IntranetLdapSync:
     connection = None
     members_group = f"cn=AllMembers,ou=Groups,{LDAP_SERVER_ROOT_DN}"
@@ -131,11 +137,11 @@ class IntranetLdapSync:
         """
         profile = user.profile
         assert profile
-        uid = user.pk
+        # uid = user.pk
         obj_classes = ["inetOrgPerson", "Nextcloud"]
         new_attrs = {"NextcloudQuota": "1GB"}
         for ldap_attr, mapfn in LDAP_ATTR_MAP.items():
-            real_value = type(mapfn) == str and mapfn or mapfn(profile)
+            real_value = mapfn is str and mapfn or mapfn(profile)
             if len(real_value) > 0:
                 new_attrs[ldap_attr] = real_value
                 if self.mock:
@@ -253,11 +259,11 @@ class IntranetLdapSync:
         attr_changes = {}
         num_changes = 0
         for ldap_attr, mapfn in LDAP_ATTR_MAP.items():
-            real_value = type(mapfn) == str and mapfn or mapfn(profile)
+            real_value = mapfn is str and mapfn or mapfn(profile)
             ldap_value = ldap_response["attributes"].get(ldap_attr, [])
-            if type(ldap_value) == list:
+            if ldap_value is list:
                 ldap_value = len(ldap_value) == 1 and ldap_value[0] or ""
-            if type(ldap_value) == bytes:
+            if ldap_value is bytes:
                 ldap_value = ldap_value.decode("utf-8")
             if real_value != ldap_value:
                 attr_changes[ldap_attr] = [(MODIFY_REPLACE, [real_value])]

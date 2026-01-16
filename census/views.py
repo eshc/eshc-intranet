@@ -6,7 +6,6 @@ from django.views.generic import TemplateView
 
 from . import models
 import re
-import sys
 
 data_re = re.compile("[ a-zA-Z0-9_@.+-]*")
 

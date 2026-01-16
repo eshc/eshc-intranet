@@ -1,8 +1,7 @@
 import csv
-from typing import List
 
 from django.contrib import admin, messages
-from django.db.models import Sum, QuerySet, Field
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from ordered_model.admin import OrderedTabularInline, OrderedInlineModelAdminMixin
 
@@ -54,7 +53,9 @@ class CensusAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
             )
             return
         csv_resp = HttpResponse(content_type="text/csv")
-        csv_resp["Content-Disposition"] = 'attachment; filename="{}.csv"'.format(session)
+        csv_resp["Content-Disposition"] = 'attachment; filename="{}.csv"'.format(
+            session
+        )
         wr = csv.writer(csv_resp)
         for q in session.questions():
             wr.writerow([q.question_text])

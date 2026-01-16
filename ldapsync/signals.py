@@ -29,7 +29,7 @@ def ldap_sync_on_save(sender, **kwargs):
             ils.sync_intranet_user(user)
         ils.sync_all_ldap_groups()
         del ils
-    except:
+    except Exception:
         print("Error occured on LDAP sync")
     else:
         print("LDAP sync OK")

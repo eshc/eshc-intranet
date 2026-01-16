@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.sites.models import Site
-from django.contrib.auth.models import User
 from django.db.models import CASCADE
 from ordered_model.models import OrderedModel
 from enum import Enum
@@ -25,7 +24,7 @@ class CensusSession(models.Model):
         try:
             surl = urls.reverse("census:census-form", kwargs={"session_id": self.id})
             return "https://{}{}".format(Site.objects.get_current().domain, surl)
-        except:
+        except Exception:
             return "Save me first"
 
     census_url.short_description = "Census form URL (web address)"
@@ -34,15 +33,15 @@ class CensusSession(models.Model):
         try:
             surl = urls.reverse("census:census-results", kwargs={"session_id": self.id})
             return "https://{}{}".format(Site.objects.get_current().domain, surl)
-        except:
+        except Exception:
             return "Save me first"
 
     census_url.short_description = "Census result URL (web address)"
 
     def __str__(self):
-        return ("Census %s" % (self.census_name)).strip()
+        return f"Census {self.census_name}".strip()
 
-    def is_census_open(self):
+    def is_census_open(self) -> bool:
         return self.open_time <= timezone.now() <= self.close_time
 
     is_census_open.boolean = True
@@ -118,7 +117,9 @@ class CensusResponse(models.Model):
     answer_choice = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "{}: {}".format(self.question.question_text[:15], self.get_answer_display())
+        return "{}: {}".format(
+            self.question.question_text[:15], self.get_answer_display()
+        )
 
     def get_answer_display(self):
         if (

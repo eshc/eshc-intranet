@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from leases.models import Lease
 from .models import Room
