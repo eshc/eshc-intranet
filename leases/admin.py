@@ -2,22 +2,30 @@ from django.contrib import admin
 
 from .models import Lease, Inventory
 
+
 class InventoryInline(admin.TabularInline):
-	model = Inventory
-	
+    model = Inventory
+
+
 @admin.register(Lease)
 class LeaseAdmin(admin.ModelAdmin):
-	list_display = ['start_date', 'end_date', 'lease_type']
+    list_display = ["start_date", "end_date", "lease_type"]
 
-	def member(self, obj):
-		try:
-			return obj.user.first_name + ' ' + obj.user.last_name
-		except Profile.DoesNotExist:
-			return ''
-	inlines = [InventoryInline]
+    def member(self, obj):
+        try:
+            return obj.user.first_name + " " + obj.user.last_name
+        except Profile.DoesNotExist:
+            return ""
 
-	list_display = ['member'] + list_display
+    inlines = [InventoryInline]
 
-	search_fields = ['lease_type', 'start_date', 'end_date', 'user__first_name', 'user__last_name']
-	autocomplete_fields = ['user']
+    list_display = ["member"] + list_display
 
+    search_fields = [
+        "lease_type",
+        "start_date",
+        "end_date",
+        "user__first_name",
+        "user__last_name",
+    ]
+    autocomplete_fields = ["user"]

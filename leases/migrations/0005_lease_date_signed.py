@@ -7,16 +7,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('leases', '0004_auto_20170527_1153'),
+        ("leases", "0004_auto_20170527_1153"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lease',
-            name='date_signed',
-            field=models.DateField(default=datetime.date(2017, 5, 27), verbose_name='date signed'),
+            model_name="lease",
+            name="date_signed",
+            field=models.DateField(
+                default=datetime.date(2017, 5, 27), verbose_name="date signed"
+            ),
             preserve_default=False,
         ),
     ]

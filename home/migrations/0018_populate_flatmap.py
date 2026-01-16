@@ -4,35 +4,33 @@ from django.db import migrations
 
 
 def populate_flats(apps, schema_editor):
-    Flat = apps.get_model('home', 'Flat')
-    Room = apps.get_model('home', 'Room')
+    Flat = apps.get_model("home", "Flat")
+    Room = apps.get_model("home", "Room")
 
     # 28
-    for i in range(1,8):
-      s = 4 if i == 2 else 5
-      f = Flat(flatno=i,building=28,size=s)
-      f.save()
-      for j in range(1,s+1):
-        # search leases
-        r = Room(flat=f,roomno=j,current_occupant=None)
+    for i in range(1, 8):
+        s = 4 if i == 2 else 5
+        f = Flat(flatno=i, building=28, size=s)
+        f.save()
+        for j in range(1, s + 1):
+            # search leases
+            r = Room(flat=f, roomno=j, current_occupant=None)
 
-        r.save()
+            r.save()
     # 34
-    for i in range(0,17):
-      sizes = [5,3,5,5,3,4,5,5,3,4,5,5,3,4,5,5,3]
-      f = Flat(flatno=i+1,building=34,size=sizes[i])
-      f.save()
-      for j in range(1,sizes[i]+1):
-        # search leases
-        r = Room(flat=f,roomno=j,current_occupant=None)
-        r.save()
+    for i in range(0, 17):
+        sizes = [5, 3, 5, 5, 3, 4, 5, 5, 3, 4, 5, 5, 3, 4, 5, 5, 3]
+        f = Flat(flatno=i + 1, building=34, size=sizes[i])
+        f.save()
+        for j in range(1, sizes[i] + 1):
+            # search leases
+            r = Room(flat=f, roomno=j, current_occupant=None)
+            r.save()
+
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0017_auto_20220704_2218'),
+        ("home", "0017_auto_20220704_2218"),
     ]
 
-    operations = [
-      migrations.RunPython(populate_flats)
-    ]
+    operations = [migrations.RunPython(populate_flats)]

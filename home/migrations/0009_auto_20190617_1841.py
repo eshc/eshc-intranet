@@ -6,23 +6,30 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0008_auto_20180914_1659'),
+        ("home", "0008_auto_20180914_1659"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='LdapGroup',
+            name="LdapGroup",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ldap_cn', models.CharField(max_length=128)),
-                ('description', models.TextField(max_length=500)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("ldap_cn", models.CharField(max_length=128)),
+                ("description", models.TextField(max_length=500)),
             ],
         ),
         migrations.AddField(
-            model_name='role',
-            name='ldap_groups',
-            field=models.ManyToManyField(to='home.LdapGroup'),
+            model_name="role",
+            name="ldap_groups",
+            field=models.ManyToManyField(to="home.LdapGroup"),
         ),
     ]

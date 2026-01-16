@@ -6,20 +6,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('leases', '0001_initial'),
+        ("leases", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='lease',
-            name='end_date',
-            field=models.DateField(verbose_name='end date'),
+            model_name="lease",
+            name="end_date",
+            field=models.DateField(verbose_name="end date"),
         ),
         migrations.AlterField(
-            model_name='lease',
-            name='start_date',
-            field=models.DateField(verbose_name='start date'),
+            model_name="lease",
+            name="start_date",
+            field=models.DateField(verbose_name="start date"),
         ),
     ]

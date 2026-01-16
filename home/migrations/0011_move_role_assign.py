@@ -5,8 +5,9 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import migrations, models
 
+
 def migrate_roles(apps, schema_editor):
-    Role = apps.get_model('home', 'Role')
+    Role = apps.get_model("home", "Role")
     to_remove = []
     main_roles = {}
     for r in Role.objects.all():
@@ -26,10 +27,9 @@ def migrate_roles(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('home', '0010_add_manytomany_role_assign'),
+        ("home", "0010_add_manytomany_role_assign"),
     ]
 
     operations = [

@@ -6,20 +6,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('leases', '0003_auto_20170525_1402'),
+        ("leases", "0003_auto_20170525_1402"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='lease',
-            name='building',
-            field=models.PositiveIntegerField(verbose_name='building number'),
+            model_name="lease",
+            name="building",
+            field=models.PositiveIntegerField(verbose_name="building number"),
         ),
         migrations.AlterField(
-            model_name='lease',
-            name='flat',
-            field=models.PositiveIntegerField(verbose_name='flat number'),
+            model_name="lease",
+            name="flat",
+            field=models.PositiveIntegerField(verbose_name="flat number"),
         ),
     ]

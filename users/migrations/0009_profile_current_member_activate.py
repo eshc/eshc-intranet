@@ -6,17 +6,14 @@ from django.db import migrations, models
 
 
 def activate_members(apps, schema_editor):
-    Profile = apps.get_model('users', 'Profile')
-    Profile.objects.all().update(current_member=models.F('share_received'))
+    Profile = apps.get_model("users", "Profile")
+    Profile.objects.all().update(current_member=models.F("share_received"))
     pass
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0008_profile_current_member'),
+        ("users", "0008_profile_current_member"),
     ]
 
-    operations = [
-        migrations.RunPython(activate_members)
-    ]
+    operations = [migrations.RunPython(activate_members)]

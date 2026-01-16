@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('apply', '0005_applicationquestion_visible_in_voting'),
+        ("apply", "0005_applicationquestion_visible_in_voting"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='applicant',
-            name='date_applied',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='Date applied'),
+            model_name="applicant",
+            name="date_applied",
+            field=models.DateTimeField(auto_now_add=True, verbose_name="Date applied"),
         ),
     ]

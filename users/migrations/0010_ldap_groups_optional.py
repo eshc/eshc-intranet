@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0009_profile_current_member_activate'),
+        ("users", "0009_profile_current_member_activate"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='extra_ldap_groups',
-            field=models.ManyToManyField(blank=True, to='home.LdapGroup'),
+            model_name="profile",
+            name="extra_ldap_groups",
+            field=models.ManyToManyField(blank=True, to="home.LdapGroup"),
         ),
     ]

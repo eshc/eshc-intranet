@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 
 def set_default_preferred_name(apps, schema_editor):
-    profiles = apps.get_model('users', 'profile')
+    profiles = apps.get_model("users", "profile")
     for profile in profiles.objects.all().iterator():
         if not profile.preferred_name:
             profile.preferred_name = profile.user.first_name
@@ -14,15 +14,14 @@ def set_default_preferred_name(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0005_profile_share_received'),
+        ("users", "0005_profile_share_received"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='preferred_name',
+            model_name="profile",
+            name="preferred_name",
             field=models.CharField(blank=True, max_length=40),
         ),
         migrations.RunPython(set_default_preferred_name),

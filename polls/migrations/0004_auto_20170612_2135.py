@@ -8,26 +8,27 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('polls', '0003_question_submitted_by'),
+        ("polls", "0003_question_submitted_by"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='question',
-            name='question_title',
-            field=models.CharField(default='This is a title', max_length=200),
+            model_name="question",
+            name="question_title",
+            field=models.CharField(default="This is a title", max_length=200),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='question',
-            name='question_text',
+            model_name="question",
+            name="question_text",
             field=models.TextField(),
         ),
         migrations.AlterField(
-            model_name='question',
-            name='submitted_by',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            model_name="question",
+            name="submitted_by",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('census', '0002_alter_censusquestion_question_options'),
+        ("census", "0002_alter_censusquestion_question_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='censussession',
-            name='census_description',
-            field=models.TextField(blank=True, default='', verbose_name='Census Description'),
+            model_name="censussession",
+            name="census_description",
+            field=models.TextField(
+                blank=True, default="", verbose_name="Census Description"
+            ),
         ),
     ]

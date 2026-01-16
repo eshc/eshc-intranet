@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('census', '0001_initial'),
+        ("census", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='censusquestion',
-            name='question_options',
-            field=models.TextField(blank=True, max_length=300, verbose_name='Question options for \n single and multiple choice questions \n (separated by newlines)'),
+            model_name="censusquestion",
+            name="question_options",
+            field=models.TextField(
+                blank=True,
+                max_length=300,
+                verbose_name="Question options for \n single and multiple choice questions \n (separated by newlines)",
+            ),
         ),
     ]

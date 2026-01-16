@@ -15,4 +15,4 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eshcIntranet.settings")
 
 from django.core.wsgi import get_wsgi_application
 
-application = get_wsgi_application() 	# the only original line
+application = get_wsgi_application()  # the only original line

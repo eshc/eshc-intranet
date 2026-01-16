@@ -7,19 +7,31 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('leases', '0005_lease_date_signed'),
+        ("leases", "0005_lease_date_signed"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Inventory',
+            name="Inventory",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sub_date', models.DateField(verbose_name='submission date')),
-                ('inventory_notes', models.TextField(max_length=500)),
-                ('lease', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='leases.Lease')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("sub_date", models.DateField(verbose_name="submission date")),
+                ("inventory_notes", models.TextField(max_length=500)),
+                (
+                    "lease",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, to="leases.Lease"
+                    ),
+                ),
             ],
         ),
     ]

@@ -5,22 +5,24 @@ from home.models import Role, LdapGroup
 from ldapsync.sync import IntranetLdapSync
 
 
-@receiver(post_save, dispatch_uid='ldap_sync_on_save')
-@receiver(m2m_changed, dispatch_uid='ldap_sync_m2m_save')
+@receiver(post_save, dispatch_uid="ldap_sync_on_save")
+@receiver(m2m_changed, dispatch_uid="ldap_sync_m2m_save")
 def ldap_sync_on_save(sender, **kwargs):
-    if (sender is not User
-            and sender is not Profile
-            and sender is not Role
-            and sender is not LdapGroup
-            and sender is not Profile.extra_ldap_groups.through
-            and sender is not Role.ldap_groups.through
-            and sender is not Role.assigned_to.through):
+    if (
+        sender is not User
+        and sender is not Profile
+        and sender is not Role
+        and sender is not LdapGroup
+        and sender is not Profile.extra_ldap_groups.through
+        and sender is not Role.ldap_groups.through
+        and sender is not Role.assigned_to.through
+    ):
         return
     user = None
     if sender is User:
-        user = kwargs['instance']
+        user = kwargs["instance"]
     if sender is Profile:
-        user = kwargs['instance'].user
+        user = kwargs["instance"].user
     try:
         ils = IntranetLdapSync()
         if user is not None:

@@ -4,9 +4,9 @@ from django.urls import path
 
 from . import views
 
-app_name = 'leases'
+app_name = "leases"
 
 urlpatterns = [
-	# Inventory page
-	path('inventory/<int:pk>', views.inventory, name='inventory'),
+    # Inventory page
+    path("inventory/<int:pk>", views.inventory, name="inventory"),
 ]

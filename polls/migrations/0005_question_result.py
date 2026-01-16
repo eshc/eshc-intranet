@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('polls', '0004_auto_20170612_2135'),
+        ("polls", "0004_auto_20170612_2135"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='question',
-            name='result',
+            model_name="question",
+            name="result",
             field=models.BooleanField(default=False),
         ),
     ]

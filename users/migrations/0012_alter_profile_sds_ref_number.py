@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0011_auto_20220916_2333'),
+        ("users", "0011_auto_20220916_2333"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='sds_ref_number',
-            field=models.CharField(blank=True, max_length=20, verbose_name='SDS Reference Number'),
+            model_name="profile",
+            name="sds_ref_number",
+            field=models.CharField(
+                blank=True, max_length=20, verbose_name="SDS Reference Number"
+            ),
         ),
     ]

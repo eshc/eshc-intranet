@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0007_profile_extra_ldap_groups'),
+        ("users", "0007_profile_extra_ldap_groups"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='current_member',
+            model_name="profile",
+            name="current_member",
             field=models.BooleanField(default=False),
         )
     ]
