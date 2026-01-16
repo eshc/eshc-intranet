@@ -16,6 +16,7 @@ class WgUpdateInline(admin.TabularInline):
     extra = 1
 
 
+@admin.register(GM)
 class GMAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['number', 'date_conv']}),
@@ -28,6 +29,7 @@ class GMAdmin(admin.ModelAdmin):
 # search_fields = ['question_text']
 
 
+@admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
     def members(self, obj):
         try:
@@ -52,17 +54,15 @@ class RoleAdmin(admin.ModelAdmin):
     autocomplete_fields = ['assigned_to', 'past_holders', 'ldap_groups']
 
 
+@admin.register(LdapGroup)
 class LdapAdmin(admin.ModelAdmin):
     search_fields = ['ldap_cn']
 
 
+@admin.register(Room)
 class MapAdmin(admin.ModelAdmin):
     list_display = admin.ModelAdmin.list_display + ('current_occupant',)
     fields = ['current_occupant']
     autocomplete_fields = ['current_occupant']
 
 
-admin.site.register(GM, GMAdmin)
-admin.site.register(LdapGroup, LdapAdmin)
-admin.site.register(Role, RoleAdmin)
-admin.site.register(Room, MapAdmin)

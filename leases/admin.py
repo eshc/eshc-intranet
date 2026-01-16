@@ -5,6 +5,7 @@ from .models import Lease, Inventory
 class InventoryInline(admin.TabularInline):
 	model = Inventory
 	
+@admin.register(Lease)
 class LeaseAdmin(admin.ModelAdmin):
 	list_display = ['start_date', 'end_date', 'lease_type']
 
@@ -20,4 +21,3 @@ class LeaseAdmin(admin.ModelAdmin):
 	search_fields = ['lease_type', 'start_date', 'end_date', 'user__first_name', 'user__last_name']
 	autocomplete_fields = ['user']
 
-admin.site.register(Lease, LeaseAdmin)
