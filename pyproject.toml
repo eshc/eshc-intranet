@@ -1,30 +1,52 @@
-[tool.poetry]
+[project]
 name = "eshc-intranet"
 version = "0.1.0"
 description = ""
-authors = ["eshc"]
-package-mode = false
+authors = [{ name = "eshc" }]
+requires-python = ">=3.12,<3.13"
 
-[tool.poetry.dependencies]
-python = "^3.12"
-typing-extensions = "~4.15"
-Django = "^5.2.0"
-boto3 = "^1.42.30"
-markdown = "^3.9.0"
-dj-database-url = "^3.1.0"
-django-appconf = "^1.2.0"
-django-crispy-forms = "^2.5.0"
-django-debug-toolbar = "^6.1.0"
-django-minify-html = "^1.14.0"
-django-import-export = "^4.3.14" # limits to 5.2
-django-ordered-model = "^3.7.4"
-gunicorn = "^23"
-ldap3 = "^2.10.2rc3"
-python-quickbooks = "^0.9.12"
-whitenoise = "^6.11.0" # serve static files
-wiki = "^0.12.2"
-django-allauth = "^65.13.1"
+dependencies = [
+    "typing-extensions>=4.15,<4.16",
+    "Django>=5.2.0,<6",
+    "boto3>=1.42.30,<2",
+    "markdown>=3.9.0,<4",
+    "dj-database-url>=3.1.0,<4",
+    "django-appconf>=1.2.0,<2",
+    "django-crispy-forms>=2.5.0,<3",
+    "django-debug-toolbar>=6.1.0,<7",
+    "django-minify-html>=1.14.0,<2",
+    "django-import-export>=4.3.14,<5",
+    "django-ordered-model>=3.7.4,<4",
+    "gunicorn>=23,<24",
+    "ldap3>=2.10.2rc3,<3",
+    "python-quickbooks>=0.9.12,<0.10",
+    "whitenoise>=6.11.0,<7",
+    "wiki>=0.12.2,<0.13",
+    "django-allauth>=65.13.1,<66",
+]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "mypy>=1.5,<2",
+    "mypy-extensions>=1.1.0",
+    "django-stubs[compatible-mypy]==5.2.1", # latest seemed to have regression
+    "types-requests>=2.31,<3",
+    "pylsp-mypy>=0.7.0",
+    "python-lsp-server[all]>=1.14.0",
+]
+
+
+[tool.mypy]
+python_version = 3.12
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "eshcIntranet.settings"
+strict_settings = false
 
 [build-system]
-requires = ["poetry-core>=1.8.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"

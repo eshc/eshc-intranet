@@ -8,11 +8,11 @@
 Make usable intranet.
 
 ## Setup Instructions
-1. Install a relatively modern version of Python 3 (3.9 is recommended but other versions might also work)
-2. Install poetry
+1. Install a relatively modern version of Python 3 (3.12 is recommended but other versions might also work)
+2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), a Python package and project manager
 3. `git clone <repo_url>` and `cd` into the directory  
-5. Run `poetry install` (if you do not have postgres installed on your local machine, you might have to edit the `pyproject.toml` file to replace `psycopg` with `psycopg-binary`
-6. Run `poetry shell`
+5. Run `uv sync` (if you do not have postgres installed on your local machine, you might have to edit the `pyproject.toml` file to replace `psycopg` with `psycopg-binary`
+6. Run `uv venv`
 
 Follow the instructions on setting up a [postgres database](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04) if you want to set up the database in the same way it is set up on Heroku. Set it up using the settings in `settings.py`.
 
