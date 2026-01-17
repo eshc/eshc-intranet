@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "ordered_model",
-    "storages",
     # allauth required
     # 'django.contrib.auth',  # Already included above
     "django.contrib.sites",
@@ -85,6 +84,7 @@ INSTALLED_APPS = [
     "finance.apps.FinanceConfig",
     # For exporting databse into layman formats
     "import_export",
+    "django_minify_html",
 ]
 
 SITE_ID = 1  # This is for facebook login integration
@@ -92,10 +92,12 @@ SITE_ID = 1  # This is for facebook login integration
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django_minify_html.middleware.MinifyHtmlMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -202,10 +204,6 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = "eshc-bucket"
 AWS_S3_REGION_NAME = "eu-west-2"
 
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-MEDIA_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
 AWS_S3_SIGNATURE_VERSION = "s3v4"
 
 # STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
@@ -236,9 +234,6 @@ HAYSTACK_CONNECTIONS = {
         "ENGINE": "haystack.backends.simple_backend.SimpleEngine",
     },
 }
-
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Custom settings
 LOGIN_URL = "/accounts/login/"
