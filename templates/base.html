@@ -2,7 +2,6 @@
 <html lang="en">
 <!-- Parent template -->
 {% load static %}
-{% load account %}
 
 <head>
 	<meta charset="utf-8">
@@ -63,14 +62,14 @@
 						<a href="{% url 'profile' %}" class="nav-link"><i class="bi bi-person-fill"></i> {{ user.profile }}</a>
 					</li>
 					<li class="nav-item">
-						<a href="{% url 'account_logout' %}" class="nav-link"><i class="bi bi-door-closed-fill"></i> Log Out</a>
+						<a href="{% url 'oidc_logout' %}" class="nav-link"><i class="bi bi-door-closed-fill"></i> Log Out</a>
 					</li>
 					{% else %}
 					<li class="nav-item">
 						<a href="{% url 'account_signup' %}" class="nav-link"><i class="bi bi-person-plus-fill"></i> Sign Up</a>
 					</li>
 					<li class="nav-item">
-						<a href="{% url 'account_login' %}" class="nav-link"><i class="bi bi-door-open-fill"></i> Log In</a>
+						<a href="{% url 'oidc_authentication_init' %}" class="nav-link"><i class="bi bi-door-open-fill"></i> Log In</a>
 					</li>
 					{% endif %}
 				</ul>

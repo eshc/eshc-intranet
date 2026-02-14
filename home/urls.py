@@ -11,7 +11,6 @@ urlpatterns = [
     path("", views.index, name="index"),
     # User profile editing
     path("accounts/edit_profile/", views.edit_profile, name="edit_profile"),
-    path("accounts/signup/", views.MySignupView.as_view()),
     path("map/", views.map, name="map"),
     path("gms/", views.gms, name="gms"),
     path("archive/", views.archive, name="archive"),

@@ -21,6 +21,10 @@ User.__str__ = user_to_str
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Used to identify a user from our IdP (Authentik) to a Django user
+    # https://openid.net/specs/openid-connect-core-1_0-final.html#IDToken
+    oidc_sub = models.CharField(max_length=255, blank=True)
+
     ref_number = models.CharField("Bank Reference Number", max_length=8, blank=True)
     sds_ref_number = models.CharField("SDS Reference Number", max_length=20, blank=True)
     preferred_name = models.CharField(max_length=40, blank=True)

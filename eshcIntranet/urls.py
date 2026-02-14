@@ -30,8 +30,7 @@ urlpatterns = [
     path("apply/", include("apply.urls")),
     path("census/", include("census.urls")),
     path("finance/", include("finance.urls")),
-    # allauth
-    path("accounts/", include("allauth.urls")),
+    path("oidc/", include("mozilla_django_oidc.urls")),
     re_path(r"^accounts/profile/", home.views.profile, name="profile"),
     path("notifications/", include("django_nyt.urls")),
     path("wiki/", include("wiki.urls")),

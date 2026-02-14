@@ -33,10 +33,9 @@ DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
+    # Needed to login by username in Django admin, regardless of other auth
+    "users.oidc.ESHC_OIDCAB",
     "home.auth.GroupAwareAuthenticationBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
 )
 # Application definition
 
@@ -48,14 +47,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "ordered_model",
-    # allauth required
-    # 'django.contrib.auth',  # Already included above
+    "mozilla_django_oidc",
     "django.contrib.sites",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    # specific providers
-    # 'allauth.socialaccount.providers.facebook',
     # django-wiki apps
     # 'django.contrib.sites',   # Already included above
     "django.contrib.humanize.apps.HumanizeConfig",
@@ -99,7 +92,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
+    "mozilla_django_oidc.middleware.SessionRefresh",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -133,8 +126,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "eshcIntranet.wsgi.application"
-
-ACCOUNT_FORMS = {"signup": "home.forms.SignupWithProfileForm"}
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -238,7 +229,17 @@ HAYSTACK_CONNECTIONS = {
 }
 
 # Custom settings
-LOGIN_URL = "/accounts/login/"
+LOGIN_URL = "/oidc/authenticate"
+
+# For django-oidc-mozilla
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+ALLOW_LOGOUT_GET_METHOD = True
+
+
+OIDC_USERNAME_ALGO = "users.oidc.username_algo"
+OIDC_RP_SCOPES = "openid email profile eshc"
+OIDC_UPDATE_USER = True
 
 # django-wiki settings
 WIKI_ACCOUNT_HANDLING = False
@@ -271,13 +272,6 @@ SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 EMAIL_SUBJECT_PREFIX = ""
-
-# allauth settings
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_EMAIL_SUBJECT_PREFIX = "[ESHC] "
-# ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "mediafiles")
 MEDIA_URL = "http://" + AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com/media/"

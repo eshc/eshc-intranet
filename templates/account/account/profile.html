@@ -17,17 +17,15 @@
                 <li class="list-group-item">Email: {{ user.email }}</li>
                 <li class="list-group-item">Preferred name: {{ user.profile.preferred_name }}</li>
                 <li class="list-group-item">Phone number: {{ user.profile.phone_number }}</li>
-                <li class="list-group-item">Permanent address: {{ user.profile.perm_address }}</li>
+                <li class="list-group-item">Permanent address: {{ user.profile.perm_address |linebreaksbr }}</li>
             </ul>
             <div class="card-footer">
                 {% if user.first_name %}
-                <a href="{% url 'home:edit_profile' %}">Edit Profile</a>
+                <a href="{{ change_profile_url }}">Edit Profile</a>
                 -
-                <a href="{% url 'account_email' %}">Edit E-mail</a>
-                -
-                <a href="{% url 'account_change_password' %}">Change password</a>
+                <a href="{{ change_password_url }}">Change password</a>
                 {% else %}
-                <a style="font-size: x-large; font-weight: bold; color:red" href="{% url 'home:edit_profile' %}">Fill in
+                <a style="font-size: x-large; font-weight: bold; color:red" href="{{ change_password_url }}">Fill in
                     missing profile info (click or tap)</a>
                 {% endif %}
             </div>

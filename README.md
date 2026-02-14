@@ -28,17 +28,52 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 
-DEFAULT_FILE_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-MEDIA_FILE_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-SECRET_KEY = 'none'
+DEFAULT_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+MEDIA_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+SECRET_KEY = "none"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
- ```
+
+OIDC_RP_CLIENT_ID = ""  # Add oidc client id
+OIDC_RP_CLIENT_SECRET = ""  # Add oidc client secret
+
+# Our oidc library doesnt support auto discovery :(
+OIDC_OP_AUTHORIZATION_ENDPOINT = "http://localhost:9000/application/o/authorize/"
+OIDC_OP_TOKEN_ENDPOINT = "http://localhost:9000/application/o/token/"
+OIDC_OP_USER_ENDPOINT = "http://localhost:9000/application/o/userinfo/"
+OIDC_RP_SIGN_ALGO = "RS256"
+# add PEM formatted public key for idp. E.g.
+OIDC_RP_IDP_SIGN_KEY = """-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAvuivFRqubMVA62ru/8PG
+ru3mh+7zjQ6uj1aS8u0SBWGOOIzj9uuuLsBOZD8AQrLwPBpB3V+qxIAYzaHV8ix6
+4Jzi5FCFhxg2VOryUeRxBU6jYOHSArnC8YNR+pofxq5krjK8fR9al/FMtrpyq5iv
+2k4p0jogpmPPuK4lmKfrelpzfsW5RzBXyZpMDwjd2EKzogbhUDEVZ9WmeAAgRC8R
+8A/SLj8S/t9epvnOrOVLqlDn6dDhtTkT8HjsRNmNX6xYYnvTKQZ1kg4s3GWJg+pU
+rxXaq7Oe2uoXJPIiC1bHuvdfqnbWwhJFU0MbuY8t9m1JFxFSvEFlGF39D39p3WmP
+HzcNwy4K2Edhu3bVGqntRFiCyySPWsvIDAfAGdEA7Iygq4nG7G512Jl1VBaQBRMr
+qlPYZ36AhCdqZ+bqnXXh3IhiOnAPwFs4w7UX3xuZteZ8Od7V7bk6cq5XKErFvXCx
+1aNkubHXlHHR8PwUxVJphXIdiuOJViSAIK/PiI9Zu4LnnZCoIoWPAJh+wHLBeaPr
+6N7UQtvSroEfiYUOuNLVH2dFax6Kd57NbDhKEKvQiGlyzOL3mHQoEDCUJfwHl5he
+k6qx1kZF6binxineXSXJ8chm3UeRB9W8q4N7u+LyoSW4ogfiuRtTYFPxz8T4ZeO7
+zcvWNhvuAV+AMeK2rvVLRN8CAwEAAQ==
+-----END PUBLIC KEY-----"""
+
+
+def provider_logout(request):
+    return "http://localhost:9000/application/o/eshc-intranet/end-session/"
+
+
+OIDC_OP_LOGOUT_URL_METHOD = "eshcIntranet.local_settings.provider_logout"
+
+# Link to the authentik flow for a user to change their password
+IDP_URL_CHANGE_PASSWORD = "http://localhost:9000/if/flow/default-password-change/"
+IDP_URL_CHANGE_PROFILE = "http://localhost:9000/if/user/#/settings"
+```
 2. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`, `python manage.py createcachetable`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/staticfiles/` folder for serving.
 3. Run `python manage.py runserver`.
 4. Go to 127.0.0.1:8000 to access the site or 127.0.0.1:8000/admin/ to view the admin panel.

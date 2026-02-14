@@ -12,14 +12,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.shortcuts import get_object_or_404, redirect
 
-from allauth.account.views import SignupView
-from allauth.account import app_settings
-from allauth.utils import get_form_class, get_request_param
-from allauth.account.utils import (
-    complete_signup,
-    get_next_redirect_url,
-    passthrough_next_redirect_url,
-)
 import datetime
 import csv
 
@@ -30,13 +22,11 @@ from .forms import (
     PointAddForm,
     UpdateForm,
     MinutesForm,
-    SignupWithProfileForm,
 )  # WgEditForm
 
 from users.decorators import current_member_required
 from home.models import GM, Point, WgUpdate, Minutes, Role, Room, Flat
 from whiteboard.models import Note
-from django.core.mail import send_mail
 import apply.models
 
 import boto3
@@ -46,69 +36,6 @@ import eshcIntranet.settings as settings
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters("password", "password1", "password2")
 )
-
-
-class MySignupView(SignupView):
-    template_name = "account/signup." + app_settings.TEMPLATE_EXTENSION
-    form_class = SignupWithProfileForm
-    redirect_field_name = "next"
-    success_url = None
-
-    @sensitive_post_parameters_m
-    def dispatch(self, request, *args, **kwargs):
-        return super(SignupView, self).dispatch(request, *args, **kwargs)
-
-    def get_form_class(self):
-        return get_form_class(app_settings.FORMS, "signup", self.form_class)
-
-    def get_success_url(self):
-        # Explicitly passed ?next= URL takes precedence
-        ret = (
-            get_next_redirect_url(self.request, self.redirect_field_name)
-            or self.success_url
-        )
-        return ret
-
-    def form_valid(self, form):
-        # By assigning the User to a property on the view, we allow subclasses
-        # of SignupView to access the newly created User instance
-        self.user = form.save(self.request)
-        send_mail(
-            "New user signed up!",
-            "https://intranet.eshc.coop/admin to assign a reference number",
-            "intranet@eshc.coop",
-            ["intranet-notify@lists.eshc.coop"],
-            fail_silently=True,
-        )
-        return complete_signup(
-            self.request,
-            self.user,
-            app_settings.EMAIL_VERIFICATION,
-            self.get_success_url(),
-        )
-
-    def get_context_data(self, **kwargs):
-        ret = super(SignupView, self).get_context_data(**kwargs)
-        form = ret["form"]
-        email = self.request.session.get("account_verified_email")
-        email_keys = ["email"]
-        if app_settings.SIGNUP_EMAIL_ENTER_TWICE:
-            email_keys.append("email2")
-        for email_key in email_keys:
-            form.fields[email_key].initial = email
-        login_url = passthrough_next_redirect_url(
-            self.request, reverse("account_login"), self.redirect_field_name
-        )
-        redirect_field_name = self.redirect_field_name
-        redirect_field_value = get_request_param(self.request, redirect_field_name)
-        ret.update(
-            {
-                "login_url": login_url,
-                "redirect_field_name": redirect_field_name,
-                "redirect_field_value": redirect_field_value,
-            }
-        )
-        return ret
 
 
 @login_required
@@ -150,6 +77,8 @@ def profile(request: HttpRequest) -> HttpResponse:
         "share_received": request.user.profile.share_received,
         "valid_lease": valid_lease,
         "roles": roles,
+        "change_password_url": settings.IDP_URL_CHANGE_PASSWORD,
+        "change_profile_url": settings.IDP_URL_CHANGE_PROFILE,
     }
     return render(request, "account/account/profile.html", context)
 
