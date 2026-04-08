@@ -1,12 +1,12 @@
 """Defines URL patters for leases"""
 
-from django.conf.urls import url, include
+from django.urls import path
 
 from . import views
 
-app_name = 'leases'
+app_name = "leases"
 
 urlpatterns = [
-	# Inventory page
-	url(r'^inventory/(?P<pk>[0-9]+)$', views.inventory, name='inventory'),
+    # Inventory page
+    path("inventory/<int:pk>", views.inventory, name="inventory"),
 ]

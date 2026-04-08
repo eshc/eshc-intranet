@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('apply', '0007_alter_applicationquestion_question_text'),
+        ("apply", "0007_alter_applicationquestion_question_text"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='applicationquestion',
-            name='question_text',
-            field=models.CharField(max_length=5000, verbose_name='Question text'),
+            model_name="applicationquestion",
+            name="question_text",
+            field=models.CharField(max_length=5000, verbose_name="Question text"),
         ),
     ]

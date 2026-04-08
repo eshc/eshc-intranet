@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('apply', '0004_auto_20190902_1124'),
+        ("apply", "0004_auto_20190902_1124"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='applicationquestion',
-            name='visible_in_voting',
-            field=models.BooleanField(default=True, verbose_name='Visible for voters'),
+            model_name="applicationquestion",
+            name="visible_in_voting",
+            field=models.BooleanField(default=True, verbose_name="Visible for voters"),
         ),
     ]

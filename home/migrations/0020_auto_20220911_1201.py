@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0019_auto_20220705_0014'),
+        ("home", "0019_auto_20220705_0014"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='room',
-            options={'ordering': ('flat', 'roomno')},
+            name="room",
+            options={"ordering": ("flat", "roomno")},
         ),
     ]

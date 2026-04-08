@@ -5,13 +5,23 @@ from django.utils import timezone
 class FinanceConfig(models.Model):
     """Singleton config model"""
 
-    qboRealmId = models.BigIntegerField(verbose_name='(API) QBO Realm ID', blank=True, null=True)
-    qboAccessToken = models.CharField(verbose_name='(API) QBO Access Toekn', blank=True, null=True, max_length=2048)
-    qboAccessTimeout = models.DateTimeField(verbose_name='(API) QBO Access Expiry', blank=True, null=True)
-    qboRefreshToken = models.CharField(verbose_name='(API) QBO Refresh Token', blank=True, null=True, max_length=1024)
-    qboRefreshTimeout = models.DateTimeField(verbose_name='(API) QBO Refresh Expiry', blank=True, null=True)
+    qboRealmId = models.BigIntegerField(
+        verbose_name="(API) QBO Realm ID", blank=True, null=True
+    )
+    qboAccessToken = models.CharField(
+        verbose_name="(API) QBO Access Toekn", blank=True, null=True, max_length=2048
+    )
+    qboAccessTimeout = models.DateTimeField(
+        verbose_name="(API) QBO Access Expiry", blank=True, null=True
+    )
+    qboRefreshToken = models.CharField(
+        verbose_name="(API) QBO Refresh Token", blank=True, null=True, max_length=1024
+    )
+    qboRefreshTimeout = models.DateTimeField(
+        verbose_name="(API) QBO Refresh Expiry", blank=True, null=True
+    )
 
-    memberCount = models.IntegerField(verbose_name='Number of members', default=106)
+    memberCount = models.IntegerField(verbose_name="Number of members", default=106)
 
     def get_access_token(self):
         if self.qboAccessTimeout is None or self.qboAccessTimeout <= timezone.now():
@@ -31,7 +41,7 @@ class FinanceConfig(models.Model):
         are any.
         """
         self.__class__.objects.exclude(id=self.id).delete()
-        super(FinanceConfig, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     @classmethod
     def load(cls):

@@ -1,9 +1,6 @@
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth.models import User
-from functools import wraps
 
 from home.models import Role
-
 
 
 def has_share(function):
@@ -29,6 +26,7 @@ def current_member_required(function):
     wrap.__name__ = function.__name__
     return wrap
 
+
 def check_role(function, role_name):
     def wrap(request, *args, **kwargs):
         if Role.objects.filter(assigned_to=request.user, role_name=role_name).exists():
@@ -39,6 +37,7 @@ def check_role(function, role_name):
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
+
 
 # def check_group(function, group_name):
 #     def wrap(request, *args, **kwargs):

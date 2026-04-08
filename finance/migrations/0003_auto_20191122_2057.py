@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('finance', '0002_auto_20191122_1951'),
+        ("finance", "0002_auto_20191122_1951"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='financeconfig',
-            name='monthlyRent',
+            model_name="financeconfig",
+            name="monthlyRent",
         ),
         migrations.AddField(
-            model_name='financeconfig',
-            name='memberCount',
-            field=models.IntegerField(default=106, verbose_name='Number of members'),
+            model_name="financeconfig",
+            name="memberCount",
+            field=models.IntegerField(default=106, verbose_name="Number of members"),
         ),
     ]

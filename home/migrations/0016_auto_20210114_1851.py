@@ -5,15 +5,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0015_role_past_holders'),
+        ("home", "0015_role_past_holders"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='role',
-            name='past_holders',
-            field=models.ManyToManyField(blank=True, related_name='past_roles', to=settings.AUTH_USER_MODEL, verbose_name='Past holders'),
+            model_name="role",
+            name="past_holders",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="past_roles",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Past holders",
+            ),
         ),
     ]

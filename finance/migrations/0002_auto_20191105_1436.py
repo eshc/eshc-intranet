@@ -4,35 +4,50 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('finance', '0001_initial'),
+        ("finance", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='financeconfig',
-            name='qboAccessTimeout',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='(API) QBO Access Expiry'),
+            model_name="financeconfig",
+            name="qboAccessTimeout",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="(API) QBO Access Expiry"
+            ),
         ),
         migrations.AlterField(
-            model_name='financeconfig',
-            name='qboAccessToken',
-            field=models.CharField(blank=True, max_length=256, null=True, verbose_name='(API) QBO Access Toekn'),
+            model_name="financeconfig",
+            name="qboAccessToken",
+            field=models.CharField(
+                blank=True,
+                max_length=256,
+                null=True,
+                verbose_name="(API) QBO Access Toekn",
+            ),
         ),
         migrations.AlterField(
-            model_name='financeconfig',
-            name='qboRealmId',
-            field=models.BigIntegerField(blank=True, null=True, verbose_name='(API) QBO Realm ID'),
+            model_name="financeconfig",
+            name="qboRealmId",
+            field=models.BigIntegerField(
+                blank=True, null=True, verbose_name="(API) QBO Realm ID"
+            ),
         ),
         migrations.AlterField(
-            model_name='financeconfig',
-            name='qboRefreshTimeout',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='(API) QBO Refresh Expiry'),
+            model_name="financeconfig",
+            name="qboRefreshTimeout",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="(API) QBO Refresh Expiry"
+            ),
         ),
         migrations.AlterField(
-            model_name='financeconfig',
-            name='qboRefreshToken',
-            field=models.CharField(blank=True, max_length=256, null=True, verbose_name='(API) QBO Refresh Token'),
+            model_name="financeconfig",
+            name="qboRefreshToken",
+            field=models.CharField(
+                blank=True,
+                max_length=256,
+                null=True,
+                verbose_name="(API) QBO Refresh Token",
+            ),
         ),
     ]

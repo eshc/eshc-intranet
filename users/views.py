@@ -1,6 +1,3 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 # from django.contrib.auth import login, logout, authenticate
 # from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
@@ -28,7 +25,7 @@ from django.urls import reverse
 # 		if form.is_valid():
 # 			new_user = form.save()
 # 			# Log user in, redirect to home
-# 			authenticated_user = authenticate(username=new_user.username, 
+# 			authenticated_user = authenticate(username=new_user.username,
 # 				password=request.POST['password1'])
 # 			login(request, authenticated_user)
 # 			return HttpResponseRedirect(reverse('home:index'))
@@ -46,8 +43,8 @@ from django.urls import reverse
 # 			valid_lease = True
 # 			break
 
-# 	context = {'leases': leases, 
-# 		'share_received': request.user.profile.share_received, 
+# 	context = {'leases': leases,
+# 		'share_received': request.user.profile.share_received,
 # 		'valid_lease': valid_lease}
 # 	return render(request, 'users/profile.html', context)
 
@@ -59,10 +56,10 @@ from django.urls import reverse
 
 # 	if request.method != 'POST':
 # 		# Display form filled with available info
-# 		user_form = UserEditForm(initial={'first_name': user.first_name, 
-# 			'last_name': user.last_name, 
+# 		user_form = UserEditForm(initial={'first_name': user.first_name,
+# 			'last_name': user.last_name,
 # 			'email': user.email})
-# 		profile_form = ProfileEditForm(initial={'phone_number': profile.phone_number, 
+# 		profile_form = ProfileEditForm(initial={'phone_number': profile.phone_number,
 # 			'perm_address': profile.perm_address})
 # 	else:
 # 		user_form = UserEditForm(data=request.POST, instance=user)

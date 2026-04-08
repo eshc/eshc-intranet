@@ -1,7 +1,6 @@
 import django.contrib.admin as admin
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.models import Permission
-from home.models import Role
 from eshcIntranet.settings import DEBUG
 
 
@@ -22,14 +21,18 @@ class GroupAwareAuthenticationBackend(ModelBackend):
         if not user_obj.is_active or user_obj.is_anonymous or obj is not None:
             return set()
 
-        perm_cache_name = '_%s_perm_cache' % from_name
+        perm_cache_name = "_%s_perm_cache" % from_name
         if not hasattr(user_obj, perm_cache_name):
             if user_obj.is_superuser:
                 perms = Permission.objects.all()
             else:
-                perms = getattr(self, '_get_%s_permissions' % from_name)(user_obj)
-            perms = perms.values_list('content_type__app_label', 'codename').order_by()
-            setattr(user_obj, perm_cache_name, {"%s.%s" % (ct, name) for ct, name in perms})
+                perms = getattr(self, "_get_%s_permissions" % from_name)(user_obj)
+            perms = perms.values_list("content_type__app_label", "codename").order_by()
+            setattr(
+                user_obj,
+                perm_cache_name,
+                {"{}.{}".format(ct, name) for ct, name in perms},
+            )
         return getattr(user_obj, perm_cache_name)
 
     def get_user_permissions(self, user_obj, obj=None):
@@ -37,19 +40,19 @@ class GroupAwareAuthenticationBackend(ModelBackend):
         Return a set of permission strings the user `user_obj` has from their
         `user_permissions`.
         """
-        return self._get_permissions(user_obj, obj, 'user')
+        return self._get_permissions(user_obj, obj, "user")
 
     def get_group_permissions(self, user_obj, obj=None):
         """
         Return a set of permission strings the user `user_obj` has from the
         groups they belong.
         """
-        return self._get_permissions(user_obj, obj, 'group')
+        return self._get_permissions(user_obj, obj, "group")
 
     def get_all_permissions(self, user_obj, obj=None):
         if not user_obj.is_active or user_obj.is_anonymous or obj is not None:
             return set()
-        if not hasattr(user_obj, '_perm_cache'):
+        if not hasattr(user_obj, "_perm_cache"):
             user_obj._perm_cache = {
                 *self.get_user_permissions(user_obj),
                 *self.get_group_permissions(user_obj),
@@ -64,13 +67,13 @@ class GroupAwareAuthenticationBackend(ModelBackend):
         Return True if user_obj has any permissions in the given app_label.
         """
         return user_obj.is_active and any(
-            perm[:perm.index('.')] == app_label
+            perm[: perm.index(".")] == app_label
             for perm in self.get_all_permissions(user_obj)
         )
 
 
 class MyAdminSite(admin.AdminSite):
-    site_title = 'ESHC Intranet Admin'
+    site_title = "ESHC Intranet Admin"
 
     def has_permission(self, request):
         """

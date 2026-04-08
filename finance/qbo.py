@@ -1,8 +1,11 @@
 """
 Quickbooks API wrappers
 """
+
 from django.http import HttpRequest
-from django.http.response import HttpResponseBadRequest
+from django.utils import timezone
+
+from eshcIntranet.settings import QBO_CLIENT_ID, QBO_CLIENT_SECRET, QBO_ENVIRONMENT
 
 from .models import FinanceConfig
 from django.contrib.sites.models import Site
@@ -11,18 +14,16 @@ from intuitlib.client import AuthClient
 from intuitlib.enums import Scopes
 from intuitlib.exceptions import AuthClientError
 from quickbooks import QuickBooks
-import quickbooks.objects as qb
-from eshcIntranet.settings import *
 import datetime
 from datetime import timedelta
 
 
 def qbo_redirect_uri():
     domain = Site.objects.get_current().domain
-    protocol = 'https'
-    if domain == 'localhost:8000':
-        protocol = 'http'
-    return '%s://%s/finance/qbo_callback' % (protocol, domain)
+    protocol = "https"
+    if domain == "localhost:8000":
+        protocol = "http"
+    return "{}://{}/finance/qbo_callback".format(protocol, domain)
 
 
 global auth_client_obj
@@ -34,7 +35,7 @@ def auth_client():
             client_id=QBO_CLIENT_ID,
             client_secret=QBO_CLIENT_SECRET,
             environment=QBO_ENVIRONMENT,
-            redirect_uri=qbo_redirect_uri()
+            redirect_uri=qbo_redirect_uri(),
         )
     return auth_client_obj
 
@@ -68,10 +69,10 @@ def qbo_ensure_access_token():
 
 def qbo_callback(request: HttpRequest):
     fc = FinanceConfig.load()
-    realm_id = request.GET.get('realmId', fc.qboRealmId)
-    code = request.GET.get('code', None)
+    realm_id = request.GET.get("realmId", fc.qboRealmId)
+    code = request.GET.get("code", None)
     if realm_id is None or code is None:
-        raise QboNoAccess('Invalid response')
+        raise QboNoAccess("Invalid response")
     auth_client().get_bearer_token(code, realm_id)
     access_token = auth_client().access_token
     refresh_token = auth_client().refresh_token
@@ -80,12 +81,12 @@ def qbo_callback(request: HttpRequest):
         qboAccessToken=access_token,
         qboRefreshToken=refresh_token,
         qboAccessTimeout=timezone.now() + timedelta(minutes=59),
-        qboRefreshTimeout=timezone.now() + timedelta(days=179)
+        qboRefreshTimeout=timezone.now() + timedelta(days=179),
     )
 
 
-MACRO_THIS_YEAR = 'This Fiscal Year'
-MACRO_LAST_YEAR = 'Last Fiscal Year'
+MACRO_THIS_YEAR = "This Fiscal Year"
+MACRO_LAST_YEAR = "Last Fiscal Year"
 
 
 def try_float(d):
@@ -99,92 +100,105 @@ def try_float(d):
 
 
 def qbo_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
-    pal = q.get_report('ProfitAndLoss', qs={'summarize_column_by': 'Classes', 'date_macro': macro})
+    pal = q.get_report(
+        "ProfitAndLoss", qs={"summarize_column_by": "Classes", "date_macro": macro}
+    )
     agg = {
         # 'raw': pal,
-        'classes': [c['ColTitle'] for c in pal['Columns']['Column'][1:-1]],
-        'start_date': datetime.datetime.strptime(pal['Header']['StartPeriod'], "%Y-%m-%d"),
-        'end_date': datetime.datetime.strptime(pal['Header']['EndPeriod'], "%Y-%m-%d"),
-        'total_income': 0.0,
-        'total_expenses': 0.0,
-        'rent_avg_value': 0.0,
-        'rent_eqv_divider': 1.0,
-        'unused_income': 0.0,
-        'expense_labels': list(),
-        'expense_data': list(),
-        'expense_totals': list(),
-        'class_totals': list(),
+        "classes": [c["ColTitle"] for c in pal["Columns"]["Column"][1:-1]],
+        "start_date": datetime.datetime.strptime(
+            pal["Header"]["StartPeriod"], "%Y-%m-%d"
+        ),
+        "end_date": datetime.datetime.strptime(pal["Header"]["EndPeriod"], "%Y-%m-%d"),
+        "total_income": 0.0,
+        "total_expenses": 0.0,
+        "rent_avg_value": 0.0,
+        "rent_eqv_divider": 1.0,
+        "unused_income": 0.0,
+        "expense_labels": list(),
+        "expense_data": list(),
+        "expense_totals": list(),
+        "class_totals": list(),
     }
     # Total income
-    for row in pal['Rows']['Row']:
-        if row.get('group', '') == 'Income':
-            agg['total_income'] = try_float(row['Summary']['ColData'][-1]['value'])
+    for row in pal["Rows"]["Row"]:
+        if row.get("group", "") == "Income":
+            agg["total_income"] = try_float(row["Summary"]["ColData"][-1]["value"])
             break
     # Process expense rows
     erow = False
-    for toprow in pal['Rows']['Row']:
-        if toprow.get('group', '') == 'Expenses':
+    for toprow in pal["Rows"]["Row"]:
+        if toprow.get("group", "") == "Expenses":
             erow = toprow
             break
-    agg['total_expenses'] = try_float(toprow['Summary']['ColData'][-1]['value'])
+    agg["total_expenses"] = try_float(toprow["Summary"]["ColData"][-1]["value"])
 
     def process_row(row):
-        for subrow in row['Rows']['Row']:
-            if subrow.get('type', '') == 'Section':
+        for subrow in row["Rows"]["Row"]:
+            if subrow.get("type", "") == "Section":
                 process_row(subrow)
-            elif subrow.get('type', '') == 'Data':
-                cdata = subrow['ColData']
-                agg['expense_labels'].append(str(cdata[0]['value']))
-                agg['expense_totals'].append(try_float(cdata[-1]['value']))
+            elif subrow.get("type", "") == "Data":
+                cdata = subrow["ColData"]
+                agg["expense_labels"].append(str(cdata[0]["value"]))
+                agg["expense_totals"].append(try_float(cdata[-1]["value"]))
                 ldata = list()
                 for datum in cdata[1:-1]:
-                    ldata.append(try_float(datum['value']))
-                agg['expense_data'].append(ldata)
+                    ldata.append(try_float(datum["value"]))
+                agg["expense_data"].append(ldata)
 
     process_row(erow)
 
-    for i in range(len(agg['classes'])):
-        agg['class_totals'].append(sum([dtr[i] for dtr in agg['expense_data']]))
+    for i in range(len(agg["classes"])):
+        agg["class_totals"].append(sum([dtr[i] for dtr in agg["expense_data"]]))
 
-    agg_days = (agg['end_date'] - agg['start_date']).days
-    agg['rent_avg_value'] = agg['total_income'] * 30.5 / (fc.memberCount * agg_days)
-    agg['rent_eqv_divider'] = agg['rent_avg_value'] / agg['total_income']
-    agg['unused_income'] = agg['total_income'] - agg['total_expenses']
+    agg_days = (agg["end_date"] - agg["start_date"]).days
+    agg["rent_avg_value"] = agg["total_income"] * 30.5 / (fc.memberCount * agg_days)
+    agg["rent_eqv_divider"] = agg["rent_avg_value"] / agg["total_income"]
+    agg["unused_income"] = agg["total_income"] - agg["total_expenses"]
 
     return agg
 
 
 def qbo_cached_profit_loss_report(q: QuickBooks, fc: FinanceConfig, macro: str):
-    key = 'qbo_profit_loss_%s' % (macro.replace(' ', '_'),)
+    key = "qbo_profit_loss_{}".format(macro.replace(" ", "_"))
     found = cache.get(key)
     if found is not None:
         return found
     queried = qbo_profit_loss_report(q, fc, macro)
-    cache.set(key, queried, 60*60*4)
+    cache.set(key, queried, 60 * 60 * 4)
     return queried
 
 
 def qbo_clean_cache():
-    cache.delete_many(['qbo_profit_loss_%s' % (macro.replace(' ', '_'),) for macro in [MACRO_THIS_YEAR, MACRO_LAST_YEAR]])
+    cache.delete_many(
+        [
+            "qbo_profit_loss_{}".format(macro.replace(" ", "_"))
+            for macro in [MACRO_THIS_YEAR, MACRO_LAST_YEAR]
+        ]
+    )
 
 
 def wg_summary(report):
     agg = dict()
-    for cls, data in zip(report['classes'], report['class_totals']):
-        agg[cls] = {'bare': data, 'rent': data * report['rent_eqv_divider']}
-    if report['unused_income'] > 0:
-        agg['Unallocated income'] = {'bare': report['unused_income'],
-                                     'rent': report['unused_income'] * report['rent_eqv_divider']}
+    for cls, data in zip(report["classes"], report["class_totals"]):
+        agg[cls] = {"bare": data, "rent": data * report["rent_eqv_divider"]}
+    if report["unused_income"] > 0:
+        agg["Unallocated income"] = {
+            "bare": report["unused_income"],
+            "rent": report["unused_income"] * report["rent_eqv_divider"],
+        }
     return agg
 
 
 def type_summary(report):
     agg = dict()
-    for cls, data in zip(report['expense_labels'], report['expense_totals']):
-        agg[cls] = {'bare': data, 'rent': data * report['rent_eqv_divider']}
-    if report['unused_income'] > 0:
-        agg['Unallocated income'] = {'bare': report['unused_income'],
-                                     'rent': report['unused_income'] * report['rent_eqv_divider']}
+    for cls, data in zip(report["expense_labels"], report["expense_totals"]):
+        agg[cls] = {"bare": data, "rent": data * report["rent_eqv_divider"]}
+    if report["unused_income"] > 0:
+        agg["Unallocated income"] = {
+            "bare": report["unused_income"],
+            "rent": report["unused_income"] * report["rent_eqv_divider"],
+        }
     return agg
 
 
@@ -201,9 +215,9 @@ def get_qbo_context():
     # last_report = qbo_cached_profit_loss_report(q, fc, MACRO_LAST_YEAR)
 
     return {
-        'this_report': this_report,
+        "this_report": this_report,
         # 'last_report': last_report,
-        'this_wg': wg_summary(this_report),
-        'this_type': type_summary(this_report),
+        "this_wg": wg_summary(this_report),
+        "this_type": type_summary(this_report),
         # 'last_wg': wg_summary(last_report)
     }
