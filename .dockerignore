@@ -1,3 +1,4 @@
+.git
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -81,7 +82,6 @@ celerybeat-schedule
 
 # dotenv
 .env
-.env.prod
 
 # virtualenv
 .venv
@@ -109,3 +109,14 @@ eshcIntranet/staticfiles/*
 staticfiles/*
 eshcIntranet/local_settings.py
 sendgrid.env
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml

@@ -13,9 +13,14 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 from django.utils import timezone
-import django_stubs_ext
 
-django_stubs_ext.monkeypatch()
+try:
+    import django_stubs_ext
+
+    django_stubs_ext.monkeypatch()
+except ImportError:
+    pass
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -90,6 +95,7 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1  # This is for facebook login integration
+SITE_NAME = 0  # Carryover from previous local_settings
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -294,9 +300,17 @@ QBO_CLIENT_ID = ""
 QBO_CLIENT_SECRET = ""
 QBO_ENVIRONMENT = "sandbox"
 
+DEFAULT_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+MEDIA_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 timezone.activate("Europe/London")
 
+try:
+    from eshcIntranet.configurable_settings import *  # noqa: F403
+except ImportError:
+    pass
+
+# local_settings should override configurable
 try:
     from eshcIntranet.local_settings import *  # noqa: F403
 except ImportError:
