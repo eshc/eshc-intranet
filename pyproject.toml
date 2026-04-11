@@ -24,6 +24,7 @@ dependencies = [
     "wiki>=0.12.2,<0.13",
     "django-allauth>=65.13.1,<66",
     "python-dotenv>=1.2.2",
+    "psycopg2-binary>=2.9.11",
 ]
 
 [tool.uv]
