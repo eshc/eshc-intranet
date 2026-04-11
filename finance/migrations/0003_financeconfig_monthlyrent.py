@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('finance', '0002_auto_20191105_1436'),
+        ("finance", "0002_auto_20191105_1436"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='financeconfig',
-            name='monthlyRent',
-            field=models.DecimalField(decimal_places=2, default=300.0, max_digits=8, verbose_name='Monthly rent'),
+            model_name="financeconfig",
+            name="monthlyRent",
+            field=models.DecimalField(
+                decimal_places=2,
+                default=300.0,
+                max_digits=8,
+                verbose_name="Monthly rent",
+            ),
         ),
     ]

@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import dj_database_url
+from django.utils import timezone
+
+try:
+    import django_stubs_ext
+
+    django_stubs_ext.monkeypatch()
+except ImportError:
+    pass
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,119 +30,117 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
-    'home.auth.GroupAwareAuthenticationBackend',
-
+    "home.auth.GroupAwareAuthenticationBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 # Application definition
 
 INSTALLED_APPS = [
-    'home.apps.MyAdminConfig',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'ordered_model',
-
-    'storages',
-
+    "home.apps.MyAdminConfig",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "ordered_model",
     # allauth required
     # 'django.contrib.auth',  # Already included above
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # specific providers
     # 'allauth.socialaccount.providers.facebook',
-
     # django-wiki apps
     # 'django.contrib.sites',   # Already included above
-    'django.contrib.humanize.apps.HumanizeConfig',
-    'django_nyt.apps.DjangoNytConfig',
-    'mptt',
-    'sekizai',
-    'sorl.thumbnail',
-    'wiki.apps.WikiConfig',
-    'wiki.plugins.attachments.apps.AttachmentsConfig',
-    'wiki.plugins.editsection.apps.EditSectionConfig',
-    'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
-    'wiki.plugins.notifications.apps.NotificationsConfig',
-    'wiki.plugins.links.apps.LinksConfig',
-    'wiki.plugins.help.apps.HelpConfig',
-    'wiki.plugins.images.apps.ImagesConfig',
-    'wiki.plugins.macros.apps.MacrosConfig',
-    'wiki.plugins.pymdown.apps.PyMdownConfig',
-
+    "django.contrib.humanize.apps.HumanizeConfig",
+    "django_nyt.apps.DjangoNytConfig",
+    "mptt",
+    "sekizai",
+    "sorl.thumbnail",
+    "wiki.apps.WikiConfig",
+    "wiki.plugins.attachments.apps.AttachmentsConfig",
+    "wiki.plugins.editsection.apps.EditSectionConfig",
+    "wiki.plugins.globalhistory.apps.GlobalHistoryConfig",
+    "wiki.plugins.notifications.apps.NotificationsConfig",
+    "wiki.plugins.links.apps.LinksConfig",
+    "wiki.plugins.help.apps.HelpConfig",
+    "wiki.plugins.images.apps.ImagesConfig",
+    "wiki.plugins.macros.apps.MacrosConfig",
+    "wiki.plugins.pymdown.apps.PyMdownConfig",
     # Custom apps
-    'home.apps.HomeConfig',
-    'users.apps.UsersConfig',
-    'leases.apps.LeasesConfig',
-    'polls.apps.PollsConfig',
-    'hours.apps.HoursConfig',
-    'whiteboard.apps.WhiteboardConfig',
-    'ldapsync.apps.LdapSyncConfig',
-    'apply.apps.ApplyConfig',
-    'census.apps.CensusConfig',
-    'finance.apps.FinanceConfig',
-
+    "home.apps.HomeConfig",
+    "users.apps.UsersConfig",
+    "leases.apps.LeasesConfig",
+    "polls.apps.PollsConfig",
+    "hours.apps.HoursConfig",
+    "whiteboard.apps.WhiteboardConfig",
+    "ldapsync.apps.LdapSyncConfig",
+    "apply.apps.ApplyConfig",
+    "census.apps.CensusConfig",
+    "finance.apps.FinanceConfig",
     # For exporting databse into layman formats
-    'import_export'
+    "import_export",
+    "django_minify_html",
 ]
 
-SITE_ID = 1 # This is for facebook login integration
+SITE_ID = 1  # This is for facebook login integration
+SITE_NAME = 0  # Carryover from previous local_settings
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django_minify_html.middleware.MinifyHtmlMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 
-ROOT_URLCONF = 'eshcIntranet.urls'
+ROOT_URLCONF = "eshcIntranet.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), 
-                os.path.join(BASE_DIR, 'templates/account'),
-                os.path.join(BASE_DIR, 'templates/account/email')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+            os.path.join(BASE_DIR, "templates/account"),
+            os.path.join(BASE_DIR, "templates/account/email"),
+        ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
                 # django-wiki
                 "sekizai.context_processors.sekizai",
             ],
             # 'loaders': [
-                # 'django.template.loaders.filesystem.Loader',
-                # 'django.template.loaders.app_directories.Loader']
+            # 'django.template.loaders.filesystem.Loader',
+            # 'django.template.loaders.app_directories.Loader']
         },
     },
 ]
 
-WSGI_APPLICATION = 'eshcIntranet.wsgi.application'
+WSGI_APPLICATION = "eshcIntranet.wsgi.application"
 
-ACCOUNT_FORMS = {'signup': 'home.forms.SignupWithProfileForm'}
+ACCOUNT_FORMS = {"signup": "home.forms.SignupWithProfileForm"}
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -150,7 +156,7 @@ ACCOUNT_FORMS = {'signup': 'home.forms.SignupWithProfileForm'}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'eshcdb',                      
+#         'NAME': 'eshcdb',
 #         'USER': 'django',
 #         'PASSWORD': 'djangopass',
 #         'HOST': 'localhost',
@@ -162,10 +168,10 @@ ACCOUNT_FORMS = {'signup': 'home.forms.SignupWithProfileForm'}
 # DATABASES['default'].update(db_from_env)
 
 DATABASES = {}
-DATABASES['default'] =  dj_database_url.config()
+DATABASES["default"] = dj_database_url.config()
 
 PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
 ]
 
 # Password validation
@@ -173,16 +179,16 @@ PASSWORD_HASHERS = [
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -190,8 +196,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-gb'
-TIME_ZONE = 'Europe/London'
+LANGUAGE_CODE = "en-gb"
+TIME_ZONE = "Europe/London"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -200,54 +206,45 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # Settings for serving statics from AWS
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
-AWS_STORAGE_BUCKET_NAME = 'eshc-bucket'
-AWS_S3_REGION_NAME = 'eu-west-2'
+AWS_STORAGE_BUCKET_NAME = "eshc-bucket"
+AWS_S3_REGION_NAME = "eu-west-2"
 
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-AWS_S3_SIGNATURE_VERSION='s3v4'
+AWS_S3_SIGNATURE_VERSION = "s3v4"
 
 # STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 ######################
 
 # Settings for serving statics from Heroku
 # STATIC_URL = '/static/'
-STATIC_URL = '/staticfiles/'
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+STATIC_URL = "/staticfiles/"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 ######################
 
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+ADMIN_MEDIA_PREFIX = STATIC_URL + "admin/"
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
+STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "static"),)
 
 CACHES = {
-  'default': {
-    'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-    'LOCATION': 'intranet_cache_table'
-  },
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "intranet_cache_table",
+    },
 }
 
 HAYSTACK_CONNECTIONS = {
-  'default': {
-    'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
-  },
+    "default": {
+        "ENGINE": "haystack.backends.simple_backend.SimpleEngine",
+    },
 }
 
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # Custom settings
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = "/accounts/login/"
 
 # django-wiki settings
 WIKI_ACCOUNT_HANDLING = False
@@ -273,42 +270,48 @@ WIKI_CAN_WRITE = wiki_restrict_access
 # EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'eshc.finance@gmail.com'
 # EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
-DEFAULT_FROM_EMAIL = 'edinburghstudenthousingcoop@gmail.com'
-DEFAULT_TO_EMAIL = 'eshc.finance@gmail.com'
-SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+DEFAULT_FROM_EMAIL = "edinburghstudenthousingcoop@gmail.com"
+DEFAULT_TO_EMAIL = "eshc.finance@gmail.com"
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 
 
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
-EMAIL_SUBJECT_PREFIX = ''
+EMAIL_SUBJECT_PREFIX = ""
 
 # allauth settings
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[ESHC] "
 # ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'mediafiles')
-MEDIA_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, "mediafiles")
+MEDIA_URL = "http://" + AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com/media/"
 
 # Achievements conf
-ACHIEVEMENT_CLASSES = ['accounts.handlers', 'backend.handlers']
+ACHIEVEMENT_CLASSES = ["accounts.handlers", "backend.handlers"]
 
-LDAP_SERVER_ADDR = '127.0.0.1'
-LDAP_SERVER_ROOT_DN = 'dc=directory,dc=eshc,dc=coop'
-LDAP_SERVER_AUTH_USER = 'cn=Manager,dc=directory,dc=eshc,dc=coop'
-LDAP_SERVER_AUTH_PASSWORD = ''
+LDAP_SERVER_ADDR = "127.0.0.1"
+LDAP_SERVER_ROOT_DN = "dc=directory,dc=eshc,dc=coop"
+LDAP_SERVER_AUTH_USER = "cn=Manager,dc=directory,dc=eshc,dc=coop"
+LDAP_SERVER_AUTH_PASSWORD = ""
 
-QBO_CLIENT_ID = ''
-QBO_CLIENT_SECRET = ''
-QBO_ENVIRONMENT = 'sandbox'
+QBO_CLIENT_ID = ""
+QBO_CLIENT_SECRET = ""
+QBO_ENVIRONMENT = "sandbox"
 
-from django.utils import timezone
+DEFAULT_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+MEDIA_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
-timezone.activate('Europe/London')
+timezone.activate("Europe/London")
 
 try:
-    from eshcIntranet.local_settings import *
+    from eshcIntranet.configurable_settings import *  # noqa: F403
 except ImportError:
     pass
-        
+
+# local_settings should override configurable
+try:
+    from eshcIntranet.local_settings import *  # noqa: F403
+except ImportError:
+    pass

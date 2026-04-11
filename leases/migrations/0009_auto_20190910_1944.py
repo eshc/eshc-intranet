@@ -4,25 +4,39 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('leases', '0008_auto_20190908_1809'),
+        ("leases", "0008_auto_20190908_1809"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='lease',
-            name='emergency_contact_address',
-            field=models.TextField(blank=True, default='', max_length=256, verbose_name='emergency contact address'),
+            model_name="lease",
+            name="emergency_contact_address",
+            field=models.TextField(
+                blank=True,
+                default="",
+                max_length=256,
+                verbose_name="emergency contact address",
+            ),
         ),
         migrations.AlterField(
-            model_name='lease',
-            name='emergency_contact_name',
-            field=models.CharField(blank=True, default='', max_length=100, verbose_name='emergency contact name'),
+            model_name="lease",
+            name="emergency_contact_name",
+            field=models.CharField(
+                blank=True,
+                default="",
+                max_length=100,
+                verbose_name="emergency contact name",
+            ),
         ),
         migrations.AlterField(
-            model_name='lease',
-            name='emergency_contact_phone',
-            field=models.CharField(blank=True, default='', max_length=32, verbose_name='emergency contact phone'),
+            model_name="lease",
+            name="emergency_contact_phone",
+            field=models.CharField(
+                blank=True,
+                default="",
+                max_length=32,
+                verbose_name="emergency contact phone",
+            ),
         ),
     ]

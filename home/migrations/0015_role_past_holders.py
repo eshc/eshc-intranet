@@ -5,16 +5,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('home', '0014_role_permissions'),
+        ("home", "0014_role_permissions"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='role',
-            name='past_holders',
-            field=models.ManyToManyField(blank=True, related_name='past_roles', to=settings.AUTH_USER_MODEL),
+            model_name="role",
+            name="past_holders",
+            field=models.ManyToManyField(
+                blank=True, related_name="past_roles", to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

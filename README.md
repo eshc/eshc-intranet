@@ -7,42 +7,32 @@
 ## Goal
 Make usable intranet.
 
-## Setup Instructions
-1. Install a relatively modern version of Python 3 (3.9 is recommended but other versions might also work)
-2. Install poetry
+## Local Development Instructions
+1. Install a relatively modern version of Python 3 (3.12 is recommended but other versions might also work)
+2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), a Python package and project manager
 3. `git clone <repo_url>` and `cd` into the directory  
-5. Run `poetry install` (if you do not have postgres installed on your local machine, you might have to edit the `pyproject.toml` file to replace `psycopg` with `psycopg-binary`
-6. Run `poetry shell`
+5. Run `uv sync` (if you do not have postgres installed on your local machine, you might have to edit the `pyproject.toml` file to replace `psycopg` with `psycopg-binary`
+6. Run `uv venv`
+7. Copy env file `cp .env.dev .env`
+    - This will use a local sqlite database and setup logging.
+8. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`, `python manage.py createcachetable`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/staticfiles/` folder for serving.
+9. Run `python manage.py runserver`.
+10. Go to `localhost:8000` to access the site or `localhost:8000/admin/` to view the admin panel.
+11. To use the admin panel run `python manage.py createsuperuser` and follow the instructions to create an admin user.
 
-Follow the instructions on setting up a [postgres database](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04) if you want to set up the database in the same way it is set up on Heroku. Set it up using the settings in `settings.py`.
+## Deployment Setup
+- Production environment variables are stored in vaultwarden.
+- These are loaded from `.env` file on the host.
+- Currently deployed using docker compose
 
-If not, you can probably just use SQLite locally, but you'll have to use the commented out database setup in `settings.py`.
+## Updating
+1. Upon push to `main`, a github action builds and pushes to `ghcr.io/eshc/eshc-intranet:main`. Its also tagged with its commit hash.
+2. Connect to the host running the container (via proxmox) and redeploy. Currently, just using docker compose.
+  > docker compose pull
+  > docker compose up -d
+3. Check that its working.
+    - If it's not working, you may wish to revert to an older commit by modifying the `docker-compose.yml` on the host.
 
-## Testing Instructions
-1. Create a local_settings.py file in the eshcIntranet directory with the following contents:
- ```python
-import os
-
-DEBUG = True
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-DEFAULT_FILE_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-MEDIA_FILE_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-SECRET_KEY = 'none'
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
- ```
-2. Run `python manage.py makemigrations`, `python manage.py migrate`, `python manage.py collectstatic`, `python manage.py createcachetable`. In order, these set up the required changes to the database, appy the changes, and collect static files into the `/staticfiles/` folder for serving.
-3. Run `python manage.py runserver`.
-4. Go to 127.0.0.1:8000 to access the site or 127.0.0.1:8000/admin/ to view the admin panel.
-5. To use the admin panel run `python manage.py createsuperuser` and follow the instructions to create an admin user.
 
 ## Features implemented
 * Allauth based user management 

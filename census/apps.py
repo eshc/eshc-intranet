@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class CensusConfig(AppConfig):
-    name = 'census'
-    verbose_name = 'Census'
+    name = "census"
+    verbose_name = "Census"

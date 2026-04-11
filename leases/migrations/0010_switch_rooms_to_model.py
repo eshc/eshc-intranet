@@ -4,47 +4,49 @@ from django.db import migrations, models
 import django.db.models.deletion
 from datetime import date
 
-def add_rooms_to_leases(apps,schema_editor):
-    Lease = apps.get_model('leases','Lease')
-    leases = Lease.objects.all()
-    Room = apps.get_model('home','Room')
-    Flat = apps.get_model('home','Flat')
 
-    for l in leases:
-        roomid = ord(l.room_old.upper())-64  # converts room string to int number (A to 1, B to 2 etc)
-        f = Flat.objects.get(flatno=l.flat,building=l.building)
-        l.room = Room.objects.get(flat=f,roomno=roomid)
-        l.save()
-        if l.end_date > date.today():
-            r = Room.objects.get(id=l.room.id)
-            if not r.current_occupant:
-                r.current_occupant = l.user
-                r.save()
+def add_rooms_to_leases(apps, schema_editor):
+    Lease = apps.get_model("leases", "Lease")
+    leases = Lease.objects.all()
+    Room = apps.get_model("home", "Room")
+    Flat = apps.get_model("home", "Flat")
+
+    for lease in leases:
+        roomid = (
+            ord(lease.room_old.upper()) - 64
+        )  # converts room string to int number (A to 1, B to 2 etc)
+        flat = Flat.objects.get(flatno=lease.flat, building=lease.building)
+        lease.room = Room.objects.get(flat=flat, roomno=roomid)
+        lease.save()
+        if lease.end_date > date.today():
+            room = Room.objects.get(id=lease.room.id)
+            if not room.current_occupant:
+                room.current_occupant = lease.user
+                room.save()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0018_populate_flatmap'),
-        ('leases', '0009_auto_20190910_1944'),
+        ("home", "0018_populate_flatmap"),
+        ("leases", "0009_auto_20190910_1944"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='lease',
-            old_name='room',
-            new_name='room_old'
+            model_name="lease", old_name="room", new_name="room_old"
         ),
         migrations.AddField(
-            model_name='lease',
-            name='room',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='home.room',null=True),
-            preserve_default=False
+            model_name="lease",
+            name="room",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="home.room", null=True
+            ),
+            preserve_default=False,
         ),
         migrations.RunPython(add_rooms_to_leases),
-        migrations.RemoveField(model_name='lease',name='building'),
-        migrations.RemoveField(model_name='lease',name='flat'),
-        migrations.RemoveField(model_name='lease',name='room_old')
+        migrations.RemoveField(model_name="lease", name="building"),
+        migrations.RemoveField(model_name="lease", name="flat"),
+        migrations.RemoveField(model_name="lease", name="room_old"),
         # migrations.AlterField(
         #     model_name='lease',
         #     name='room',

@@ -1,63 +1,53 @@
-[tool.poetry]
+[project]
 name = "eshc-intranet"
 version = "0.1.0"
 description = ""
-authors = ["eshc"]
-package-mode = false
+authors = [{ name = "eshc" }]
+requires-python = ">=3.12,<3.13"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-Django = "^3.1.14"
-boto3 = "^1.23.4"
-Markdown = "^3.3.7"
-autopep8 = "^1.6.0"
-"backports.csv" = "^1.0.7"
-dj-database-url = "^0.5.0"
-dj-static = "^0.0.6"
-django-appconf = "^1.0.5"
-django-crispy-forms = "^1.14.0"
-django-debug-toolbar = "^3.4.0"
-django-htmlmin = "^0.11.0"
-django-import-export = "^2.8.0"
-django-ordered-model = "^3.5"
-django-sendfile = "^0.3.11"
-djangorestframework = "^3.13.1"
-fake-factory = "^9999.9.9"
-gunicorn = "^22"
-hovercraft = "^2.7"
-idna_ssl = "^1.1.0"
-jdcal = "^1.4.1"
-ldap3 = "^2.9.1"
-Markups = "^3.1.3"
-micawber = "^0.5.4"
-oauthlib = "^3.2.0"
-olefile = "^0.46"
-pathtools = "^0.1.2"
-pdfrw = "^0.4"
-pipdeptree = "^2.2.1"
-psycopg2 = "^2.8.3"
-pyquery = "^1.4.3"
-python-http-client = "^3.3.7"
-python-quickbooks = "^0.9.1"
-reportlab = "^3.6.9"
-sh = "^1.14.2"
-toml = "^0.10.2"
-unicodecsv = "^0.14.1"
-Unidecode = "^1.3.4"
-whitenoise = "^6.1.0"
-Whoosh = "^2.7.4"
-wiki = "^0.11.1"
-Genshi = "^0.7.7"
-appdirs = "^1.4.4"
-authclient = "^1.0"
-chardet = "^4.0.0"
-django-allauth = "^0.50.0"
-"path.py" = "^12.5.0"
-django-storages = "^1.12.3"
+dependencies = [
+    "typing-extensions>=4.15,<4.16",
+    "Django>=5.2.0,<6",
+    "boto3>=1.42.30,<2",
+    "markdown>=3.9.0,<4",
+    "dj-database-url>=3.1.0,<4",
+    "django-appconf>=1.2.0,<2",
+    "django-crispy-forms>=2.5.0,<3",
+    "django-debug-toolbar>=6.1.0,<7",
+    "django-minify-html>=1.14.0,<2",
+    "django-import-export>=4.3.14,<5",
+    "django-ordered-model>=3.7.4,<4",
+    "gunicorn>=23,<24",
+    "ldap3>=2.10.2rc3,<3",
+    "python-quickbooks>=0.9.12,<0.10",
+    "whitenoise>=6.11.0,<7",
+    "wiki>=0.12.2,<0.13",
+    "django-allauth>=65.13.1,<66",
+    "python-dotenv>=1.2.2",
+]
 
-[tool.poetry.dev-dependencies]
-autopep8 = "^1.6.0"
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "mypy>=1.5,<2",
+    "mypy-extensions>=1.1.0",
+    "django-stubs[compatible-mypy]==5.2.1", # latest seemed to have regression
+    "types-requests>=2.31,<3",
+    "pylsp-mypy>=0.7.0",
+    "python-lsp-server[all]>=1.14.0",
+]
+
+
+[tool.mypy]
+python_version = 3.12
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "eshcIntranet.settings"
+strict_settings = false
 
 [build-system]
-requires = ["poetry-core>=1.8.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"

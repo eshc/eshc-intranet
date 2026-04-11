@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('leases', '0010_switch_rooms_to_model'),
+        ("leases", "0010_switch_rooms_to_model"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lease',
-            name='expected_graduation',
-            field=models.DateField(blank=True, null=True, verbose_name='expected graduation date'),
+            model_name="lease",
+            name="expected_graduation",
+            field=models.DateField(
+                blank=True, null=True, verbose_name="expected graduation date"
+            ),
         ),
     ]

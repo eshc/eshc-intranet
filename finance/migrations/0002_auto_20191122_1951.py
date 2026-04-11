@@ -4,20 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('finance', '0001_squashed_0003_financeconfig_monthlyrent'),
+        ("finance", "0001_squashed_0003_financeconfig_monthlyrent"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='financeconfig',
-            name='qboAccessToken',
-            field=models.CharField(blank=True, max_length=2048, null=True, verbose_name='(API) QBO Access Toekn'),
+            model_name="financeconfig",
+            name="qboAccessToken",
+            field=models.CharField(
+                blank=True,
+                max_length=2048,
+                null=True,
+                verbose_name="(API) QBO Access Toekn",
+            ),
         ),
         migrations.AlterField(
-            model_name='financeconfig',
-            name='qboRefreshToken',
-            field=models.CharField(blank=True, max_length=1024, null=True, verbose_name='(API) QBO Refresh Token'),
+            model_name="financeconfig",
+            name="qboRefreshToken",
+            field=models.CharField(
+                blank=True,
+                max_length=1024,
+                null=True,
+                verbose_name="(API) QBO Refresh Token",
+            ),
         ),
     ]

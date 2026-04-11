@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0018_populate_flatmap'),
+        ("home", "0018_populate_flatmap"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='room',
-            name='roomno',
-            field=models.IntegerField(choices=[(1, 'A'), (2, 'B'), (3, 'C'), (4, 'D'), (5, 'E')]),
+            model_name="room",
+            name="roomno",
+            field=models.IntegerField(
+                choices=[(1, "A"), (2, "B"), (3, "C"), (4, "D"), (5, "E")]
+            ),
         ),
     ]

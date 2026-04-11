@@ -1,6 +1,4 @@
-from django import forms
 from django.contrib import admin
-from users.models import Profile
 from .models import GM, Point, WgUpdate, LdapGroup, Role, Room
 
 
@@ -16,53 +14,64 @@ class WgUpdateInline(admin.TabularInline):
     extra = 1
 
 
+@admin.register(GM)
 class GMAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['number', 'date_conv']}),
+        (None, {"fields": ["number", "date_conv"]}),
     ]
     inlines = [PointInline, WgUpdateInline]
-    list_display = ('number', 'date_conv', 'discussions', 'proposals')
+    list_display = ("number", "date_conv", "discussions", "proposals")
+
 
 # list_display = ('title', 'proposal')
 # list_filter = ['pub_date']
 # search_fields = ['question_text']
 
 
+@admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
     def members(self, obj):
         try:
-            names = ''
+            names = ""
             for u in obj.assigned_to.all():
                 if len(names) > 0:
-                    names += ', '
-                names += u.first_name + ' ' + u.last_name
+                    names += ", "
+                names += u.first_name + " " + u.last_name
             if len(names) == 0:
-                return 'NOT ASSIGNED'
+                return "NOT ASSIGNED"
             return names
-        except:
-            return 'NOT ASSIGNED'
+        except Exception:
+            return "NOT ASSIGNED"
 
     fieldsets = [
-        (None,
-         {'fields': ['role_name', 'assigned_to', 'past_holders', 'group', 'subgroup',
-                     'description', 'permissions', 'ldap_groups']})
+        (
+            None,
+            {
+                "fields": [
+                    "role_name",
+                    "assigned_to",
+                    "past_holders",
+                    "group",
+                    "subgroup",
+                    "description",
+                    "permissions",
+                    "ldap_groups",
+                ]
+            },
+        )
     ]
-    list_display = ('role_name', 'members', 'group')
-    search_fields = ['role_name']
-    autocomplete_fields = ['assigned_to', 'past_holders', 'ldap_groups']
+    list_display = ("role_name", "members", "group")
+    search_fields = ["role_name"]
+    autocomplete_fields = ["assigned_to", "past_holders", "ldap_groups"]
 
 
+@admin.register(LdapGroup)
 class LdapAdmin(admin.ModelAdmin):
-    search_fields = ['ldap_cn']
+    search_fields = ["ldap_cn"]
 
 
+@admin.register(Room)
 class MapAdmin(admin.ModelAdmin):
-    list_display = admin.ModelAdmin.list_display + ('current_occupant',)
-    fields = ['current_occupant']
-    autocomplete_fields = ['current_occupant']
-
-
-admin.site.register(GM, GMAdmin)
-admin.site.register(LdapGroup, LdapAdmin)
-admin.site.register(Role, RoleAdmin)
-admin.site.register(Room, MapAdmin)
+    list_display = admin.ModelAdmin.list_display + ("current_occupant",)
+    fields = ["current_occupant"]
+    autocomplete_fields = ["current_occupant"]

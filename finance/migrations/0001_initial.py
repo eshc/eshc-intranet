@@ -4,22 +4,57 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='FinanceConfig',
+            name="FinanceConfig",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('qboRealmId', models.BigIntegerField(blank=True, verbose_name='(API) QBO Realm ID')),
-                ('qboAccessToken', models.CharField(blank=True, max_length=256, verbose_name='(API) QBO Access Toekn')),
-                ('qboAccessTimeout', models.DateTimeField(blank=True, verbose_name='(API) QBO Access Expiry')),
-                ('qboRefreshToken', models.CharField(blank=True, max_length=256, verbose_name='(API) QBO Refresh Token')),
-                ('qboRefreshTimeout', models.DateTimeField(blank=True, verbose_name='(API) QBO Refresh Expiry')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "qboRealmId",
+                    models.BigIntegerField(
+                        blank=True, verbose_name="(API) QBO Realm ID"
+                    ),
+                ),
+                (
+                    "qboAccessToken",
+                    models.CharField(
+                        blank=True,
+                        max_length=256,
+                        verbose_name="(API) QBO Access Toekn",
+                    ),
+                ),
+                (
+                    "qboAccessTimeout",
+                    models.DateTimeField(
+                        blank=True, verbose_name="(API) QBO Access Expiry"
+                    ),
+                ),
+                (
+                    "qboRefreshToken",
+                    models.CharField(
+                        blank=True,
+                        max_length=256,
+                        verbose_name="(API) QBO Refresh Token",
+                    ),
+                ),
+                (
+                    "qboRefreshTimeout",
+                    models.DateTimeField(
+                        blank=True, verbose_name="(API) QBO Refresh Expiry"
+                    ),
+                ),
             ],
         ),
     ]
