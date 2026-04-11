@@ -4,7 +4,8 @@ services:
     # build: .   # enable for dev
     ports:
       - "${APP_PORT:-8000}:8000"
-
+    volumes:
+      - mediafiles:/app/mediafiles
     environment:
       DEBUG: "${DEBUG:-false}"
       SECRET_KEY: "${SECRET_KEY}"
@@ -46,3 +47,5 @@ services:
       QBO_ENVIRONMENT: "${QBO_ENVIRONMENT:-production}"
 
     restart: unless-stopped
+volumes:
+  mediafiles:
