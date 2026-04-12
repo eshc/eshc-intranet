@@ -22,6 +22,8 @@ def getboolenv(key: str, default: bool = False) -> bool:
 
 DEBUG = getboolenv("DEBUG", False)
 SECRET_KEY = require_env("SECRET_KEY")
+# Must include scheme + host e.g. https://intranet.eshc.coop
+CSRF_TRUSTED_ORIGINS = [os.getenv("ORIGIN", "https://intranet.eshc.coop")]
 
 ## Database
 DATABASES = {

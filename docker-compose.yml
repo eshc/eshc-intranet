@@ -9,6 +9,7 @@ services:
     environment:
       DEBUG: "${DEBUG:-false}"
       SECRET_KEY: "${SECRET_KEY}"
+      ORIGIN: "${ORIGIN:-https://intranet.eshc.coop}"
 
       ## Database
       DB_ENGINE: "${DB_ENGINE}"
