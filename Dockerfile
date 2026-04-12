@@ -40,6 +40,9 @@ COPY --from=builder --chown=nonroot:nonroot /app /app
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
+RUN mkdir -p /app/staticfiles /app/mediafiles \
+ && chown -R nonroot:nonroot /app/staticfiles /app/mediafiles
+
 # Use the non-root user to run our application
 USER nonroot
 
