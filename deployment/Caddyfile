@@ -1,0 +1,16 @@
+:80 {
+
+  handle_path /staticfiles/* {
+    root * /srv/staticfiles
+    file_server
+  }
+
+  handle_path /mediafiles/* {
+    root * /srv/mediafiles
+    file_server
+  }
+
+  handle {
+    reverse_proxy intranet:8000
+  }
+}
