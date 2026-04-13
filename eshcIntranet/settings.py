@@ -219,13 +219,12 @@ DEFAULT_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 MEDIA_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 
-ADMIN_MEDIA_PREFIX = STATIC_URL + "admin/"
-
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "mediafiles")
 
 STATIC_URL = "/staticfiles/"
-MEDIA_URL = "/mediafiles"
+MEDIA_URL = "/mediafiles/"
+ADMIN_MEDIA_PREFIX = MEDIA_URL + "admin/"
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "static"),)
