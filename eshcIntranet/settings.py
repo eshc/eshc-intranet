@@ -214,18 +214,18 @@ AWS_S3_REGION_NAME = "eu-west-2"
 
 AWS_S3_SIGNATURE_VERSION = "s3v4"
 
-# STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
-######################
 
-# Settings for serving statics from Heroku
-# STATIC_URL = '/static/'
-STATIC_URL = "/staticfiles/"
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-######################
+DEFAULT_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+MEDIA_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + "admin/"
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, "mediafiles")
+
+STATIC_URL = "/staticfiles/"
+MEDIA_URL = "/mediafiles"
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "static"),)
@@ -285,9 +285,6 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[ESHC] "
 # ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, "mediafiles")
-MEDIA_URL = "http://" + AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com/media/"
-
 # Achievements conf
 ACHIEVEMENT_CLASSES = ["accounts.handlers", "backend.handlers"]
 
@@ -299,9 +296,6 @@ LDAP_SERVER_AUTH_PASSWORD = ""
 QBO_CLIENT_ID = ""
 QBO_CLIENT_SECRET = ""
 QBO_ENVIRONMENT = "sandbox"
-
-DEFAULT_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-MEDIA_FILE_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 timezone.activate("Europe/London")
 

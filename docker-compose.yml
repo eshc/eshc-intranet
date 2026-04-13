@@ -1,9 +1,18 @@
 services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./deployment/Caddyfile:/etc/caddy/Caddyfile:ro
+      - staticfiles:/srv/staticfiles:ro
+      - mediafiles:/srv/mediafiles:ro
   intranet:
     image: ghcr.io/eshc/eshc-intranet:main
     # build: .   # enable for dev
     ports:
-      - "${APP_PORT:-8000}:8000"
+      - "8000"
     volumes:
       - mediafiles:/app/mediafiles
       - staticfiles:/app/staticfiles
