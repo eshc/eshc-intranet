@@ -1,6 +1,14 @@
 from base64 import b64encode
 from typing import final
-from ldap3 import BASE, MODIFY_ADD, MODIFY_DELETE, MODIFY_REPLACE, Connection
+from ldap3 import (
+    BASE,
+    MODIFY_ADD,
+    MODIFY_DELETE,
+    MODIFY_REPLACE,
+    Connection,
+    Server,
+    IP_V4_ONLY,
+)
 from eshcIntranet.settings import (
     LDAP_SERVER_ADDR,
     LDAP_SERVER_AUTH_PASSWORD,
@@ -72,6 +80,7 @@ LDAP_ATTR_MAP: dict[str, Callable[[Profile], str]] = {
 
 @final
 class IntranetLdapSync:
+    server: Server
     connection = None
     members_group = f"cn=AllMembers,ou=Groups,{LDAP_SERVER_ROOT_DN}"
     members_dn = f"ou=Members,{LDAP_SERVER_ROOT_DN}"
@@ -82,6 +91,13 @@ class IntranetLdapSync:
     filter_member = "(objectclass=inetOrgPerson)"
 
     def __init__(self):
+        self.server = Server(
+            LDAP_SERVER_ADDR,
+            port=389,
+            use_ssl=False,
+            mode=IP_V4_ONLY,
+        )
+
         self.connection = Connection(
             LDAP_SERVER_ADDR,
             user=LDAP_SERVER_AUTH_USER,
