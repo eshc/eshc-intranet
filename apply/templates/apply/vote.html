@@ -96,7 +96,7 @@
 
 <form method="post">
     {% csrf_token %}
-    <h3>Pick your vote</h3>
+    <h3>Do you believe this individual would be suitable for the co-op?</h3>
     <input id="applicant" name="applicant" type="hidden" readonly value="{{ applicant.pk }}">
     {% for value, label in vote_options %}
     <div class="radio">
