@@ -5,7 +5,7 @@ register = template.Library()
 
 @register.filter
 def index(lst, i):
-    if lst is str:
+    if isinstance(lst, str):
         return None
     idx = int(i)
     if idx in lst:

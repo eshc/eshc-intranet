@@ -228,7 +228,9 @@ class VoteView(TemplateView):
             models.ApplicationSession, pk=kwargs["session_id"]
         )
 
-        ctx = {"session": app_session}
+        vote_options: list[tuple[int, str]] = models.ApplicationVoteChoice.choices
+
+        ctx = {"session": app_session, "vote_options": vote_options}
         return ctx
 
     @method_decorator(active_member_required)
@@ -281,32 +283,25 @@ class VoteView(TemplateView):
                 applicant.pk,
             )
             return self.render_to_response(ctx)
-        vote_str = str(request.POST.get("voteValue")).upper()
-        vote = -999
-        if vote_str == "NOTSUITABLE":
-            vote = -2
-        elif vote_str == "SUITABLE":
-            vote = 1
-        elif vote_str == "EXCEPTIONAL":
-            vote = 2
-        elif vote_str == "ABSTAIN":
-            vote = 0
-        if vote == -999:
-            ctx["error_message"] = "Invalid voting option {}!".format(vote_str)
+        
+        # Validate vote value
+        try:
+            vote_str = request.POST.get("voteValue")
+            vote = models.ApplicationVoteChoice(int(vote_str))
+        except ValueError:
+            ctx["error_message"] = f"Invalid voting value '{vote_str}'!"
             return self.render_to_response(ctx)
+
         # register vote
         models.ApplicationVote.objects.create(
-            voting_member=member, applicant=applicant, points=vote
+            voting_member=member, applicant=applicant, vote=vote
         )
         applicant.vote_count += 1
         applicant.save()
         my_votes_count, total_votes_count = get_application_numbers(
             ctx["session"], member
         )
-        ctx["succ_message"] = (
-            "You have voted for applicant #%d! You have already voted on %d out of %d applications for this session"
-            % (applicant.pk, my_votes_count, total_votes_count)
-        )
+        ctx["succ_message"] = f"You have voted for applicant #{applicant.pk}! You have already voted on {my_votes_count} out of {total_votes_count} applications for this session"
         next_applicant: models.Applicant = find_applicant(ctx["session"], member)
         ctx["applicant"] = next_applicant
         if next_applicant:

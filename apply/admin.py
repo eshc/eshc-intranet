@@ -11,6 +11,7 @@ from .models import (
     Applicant,
     ApplicationAnswer,
     ApplicationVote,
+    ApplicationVoteChoice,
 )
 
 
@@ -77,10 +78,10 @@ class ApplicationAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
                 continue
             header.append(f.verbose_name)
             fnames.append(f.name)
-        header.append("Abstain votes")
-        header.append("Not suitable votes")  # -2
-        header.append("Suitable votes")  # 1
-        header.append("Very suitable votes")  # 2
+
+        # Insert vote option labels e.g. "Not suitable votes"
+        header.extend([f"{x} votes" for x in ApplicationVoteChoice.labels])
+
         qs = session.questions()
         for q in qs:
             header.append(q.question_text)
@@ -89,15 +90,18 @@ class ApplicationAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
             row = []
             for f in fnames:
                 row.append(getattr(ap, f))
-            for vv in [0, -2, 1, 2]:
-                vc = ApplicationVote.objects.filter(
-                    applicant=ap, points__exact=vv
+
+            for vote_choice in ApplicationVoteChoice:
+                count = ApplicationVote.objects.filter(
+                    applicant=ap, vote__exact=vote_choice
                 ).count()
-                row.append(vc)
+                row.append(count)
+
             for q in qs:
                 ans = "no answer"
                 try:
-                    ans = ApplicationAnswer.objects.get(applicant=ap, question=q).answer
+                    ans = ApplicationAnswer.objects.get(
+                        applicant=ap, question=q).answer
                 except Exception:
                     pass
                 row.append(ans)
@@ -118,32 +122,29 @@ class ApplicantQuestionsInline(admin.StackedInline):
 class ApplicantViewAdmin(admin.ModelAdmin):
     def vote_stats(self, applicant: Applicant) -> str:
         count = ApplicationVote.objects.filter(applicant=applicant).count()
+
+        # The sum of positive / negative votes, considering their weights
         pos = (
             ApplicationVote.objects.filter(
-                applicant=applicant, points__gte=0
-            ).aggregate(Sum("points"))["points__sum"]
+                applicant=applicant, vote__gte=ApplicationVoteChoice.ABSTAIN
+            ).aggregate(Sum("vote"))["vote__sum"]
             or 0
         )
         neg = (
-            ApplicationVote.objects.filter(applicant=applicant, points__lt=0).aggregate(
-                Sum("points")
-            )["points__sum"]
-            or 0
-        )
-        abstain = (
             ApplicationVote.objects.filter(
-                applicant=applicant, points__exact=0
-            ).aggregate(Sum("points"))["points__sum"]
+                applicant=applicant, vote__lt=ApplicationVoteChoice.ABSTAIN
+            ).aggregate(Sum("vote"))["vote__sum"]
             or 0
         )
 
-        return "%d votes, score: %d (+%d,-%d,abs%d)" % (
-            count,
-            pos + neg,
-            pos,
-            -neg,
-            abstain,
+        abstain = (
+            ApplicationVote.objects.filter(
+                applicant=applicant, vote__exact=ApplicationVoteChoice.ABSTAIN
+            ).count()
+            or 0
         )
+
+        return f"{count} votes, score: {pos+neg} (+{pos}, -{-neg}, abs{abstain})"
 
     vote_stats.short_description = "Vote stats"
 
