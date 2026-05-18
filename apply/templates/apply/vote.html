@@ -4,109 +4,111 @@
 {% load index %}
 
 {% block body %}
-    <br>
-    <h2>Voting for {{ session }}</h2>
+<br>
+<h2>Voting for {{ session }}</h2>
 
-    {% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
-    {% if succ_message %}<div class="alert alert-success" role="alert">{{ succ_message }}</div>{% endif %}
+{% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
+{% if succ_message %}<div class="alert alert-success" role="alert">{{ succ_message }}</div>{% endif %}
 
-    {% if not session.is_voting_open %}
-        <div class="alert alert-danger" role="alert">Sorry, but the voting period for this application session has ended.</div>
-    {% else %}
-        <div class="alert alert-info" role="alert">Voting open until {{ session.voting_close_time|date:"jS F Y H:i" }}</div>
-        {% if not applicant %}
-            <div class="alert alert-info" role="alert">Congratulations, you have voted on all the applications submitted so far!</div>
+{% if not session.is_voting_open %}
+<div class="alert alert-danger" role="alert">Sorry, but the voting period for this application session has ended.</div>
+{% else %}
+<div class="alert alert-info" role="alert">Voting open until {{ session.voting_close_time|date:"jS F Y H:i" }}</div>
+{% if not applicant %}
+<div class="alert alert-info" role="alert">Congratulations, you have voted on all the applications submitted so far!
+</div>
+{% else %}
+<div class="row">
+    <div class="col-md-12">
+        <p>Dear Member,</p>
+        <p>
+            Below, you will find the individual anonymised responses to application form questions.
+            If the applicant indicated for any additional considerations (such as dyslexia, being a non-native English
+            speaker) to be taken into account, this will be included along with their answers.
+        </p>
+
+        <h5>What to do:</h5>
+        <p>
+            Please read each applicant’s responses carefully and decide whether or not you think they would make a
+            suitable member of our Co-op.
+            If you are not sure the applicants answers, please vote “<strong>Abstain</strong>”. Your votes will be made
+            anonymous.
+        </p>
+        <p>
+            Members are encouraged to make their judgement based on their impression of the applicant's potential to
+            contribute to the Co-op.
+            The aim of this process is to differentiate between “satisfactory/good” and “definitely not”.
+            We only want to reject outright those who have not given thought to what it means to live in a coop and
+            their ability to contribute.
+
+            In some cases you may feel strongly about an applicants answers,
+            these are represented by the “Exceptional” and “Definitely not suitable” options but should be used rarely.
+        <p>
+        <p>
+            Each application must receive at least 25 reviews to be considered fully reviewed, with an average of 0.5
+            points required to pass this stage.
+            An “Abstain” vote counts towards the 25 vote minimum.
+        </p>
+    </div>
+</div>
+<hr>
+<h3>Applicant #{{ applicant.pk }} answers</h3>
+{% for question in session.voting_questions %}
+{% with question.pk as qpk %}
+<div class="row">
+    <div class="col-md-12">
+        <label class="control-label" for="question_{{ qpk }}">{{ question.question_text }}</label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 form-group">
+        {% with answers|index:qpk as answer %}
+        {% if question.question_type == 'ShortText' %}
+        <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer"
+            maxlength="5000" value="{{ answer }}" required readonly>
+        {% elif question.question_type == 'LongText' %}
+        <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10"
+            maxlength="5000" required readonly>{{ answer }}</textarea>
+        {% elif question.question_type == 'SingleChoice' %}
+        {% for choice in question.options_array %}
+        <div class="radio"><label>
+                <input type="radio" name="question_{{ qpk }}" disabled {% if choice in answer %} checked {% endif %}>
+                {{ choice }}</label>
+        </div>
+        {% endfor %}
+        {% elif question.question_type == 'MultipleChoice' %}
+        {% for choice in question.options_array %}
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" disabled {% if choice in answer %} checked {% endif %}>
+                {{ choice }}</label>
+        </div>
+        {% endfor %}
+        <small id="q{{ qpk }}help" class="form-text text-muted">(This is a multiple choice question)</small>
         {% else %}
-            <div class="row">
-                <div class="col-md-12">
-                    Dear Member,
-
-Below, you will find the individual anonymised responses to application form questions.
-If the applicant indicated for any additional considerations (such as dyslexia, being a non-native English speaker) to be taken into account, this will be included along with their answers.
-
-What to do:
-
-Please read each applicant’s responses carefully and decide whether or not you think they would make a suitable member of our Co-op. If you think you know the applicant, please vote “abstain”. Your votes will be made anonymous.
-Members are encouraged to make their judgement based on their impression of the applicant's potential to contribute to the Co-op. The aim of this  process is to differentiate between “satisfactory/good” and “definitely not”. We only want to reject outright those who have not given thought to what it means to live in a coop and their ability to contribute. In rare cases you can also identify an "exceptional" application, which you think should have a higher weighting in the lottery.
-
-Each application must receive at least 15 reviews to be considered fully reviewed.  An “abstain” vote counts towards the 15 vote minimum.
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    Applicant ID: <b>#{{ applicant.pk }}</b><br><br>
-                </div>
-            </div>
-            <h3>Applicant answers</h3>
-            {% for question in session.voting_questions %}
-            {% with question.pk as qpk %}
-            <div class="row">
-                <div class="col-md-12">
-                    <label class="control-label" for="question_{{ qpk }}">{{ question.question_text }}</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 form-group">
-                {% with answers|index:qpk as answer %}
-                {% if question.question_type == 'ShortText' %}
-                    <input type="text" class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" maxlength="5000" value="{{ answer }}" required readonly>
-                {% elif question.question_type == 'LongText' %}
-                    <textarea class="form-control" id="question_{{ qpk }}" name="question_{{ qpk }}" placeholder="Answer" rows="10" maxlength="5000" required readonly>{{ answer }}</textarea>
-                {% elif question.question_type == 'SingleChoice' %}
-                    {% for choice in question.options_array %}
-                        <div class="radio"><label>
-                        <input type="radio" name="question_{{ qpk }}" disabled {% if choice in answer %} checked {% endif %}>
-                            {{ choice }}</label>
-                        </div>
-                    {% endfor %}
-                {% elif question.question_type == 'MultipleChoice' %}
-                    {% for choice in question.options_array %}
-                        <div class="checkbox">
-                        <label>
-                        <input type="checkbox" disabled {% if choice in answer %} checked {% endif %}>
-                        {{ choice }}</label></div>
-                    {% endfor %}
-                    <small id="q{{ qpk }}help" class="form-text text-muted">(This is a multiple choice question)</small>
-                {% else %}
-                    Sorry, system error occurred, this question's answer is unavailable.
-                {% endif  %}
-                {% endwith %}
-                </div>
-            </div>
-            {% endwith %}
-            {% endfor %}
-
-            <form method="post">
-                {% csrf_token %}
-                <h3>Pick your vote</h3>
-                <input id="applicant" name="applicant" type="hidden" readonly value="{{ applicant.pk }}">
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="voteValue" id="voteAbstain" value="abstain">
-                        Abstain
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="voteValue" id="voteNotSuitable" value="notSuitable">
-                        Not suitable
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="voteValue" id="voteSuitable" value="suitable" checked>
-                        Suitable
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="voteValue" id="voteExceptional" value="exceptional">
-                        Exceptional
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit vote</button>
-            </form>
+        Sorry, system error occurred, this question's answer is unavailable.
         {% endif %}
-    {% endif %}
+        {% endwith %}
+    </div>
+</div>
+{% endwith %}
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+    <h3>Do you believe this individual would be suitable for the co-op?</h3>
+    <input id="applicant" name="applicant" type="hidden" readonly value="{{ applicant.pk }}">
+    {% for value, label in vote_options %}
+    <div class="radio">
+        <label>
+            <input type="radio" name="voteValue" value="{{value}}">
+            {{label}} ({{value}})
+        </label>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit vote</button>
+</form>
+{% endif %}
+{% endif %}
 
 {% endblock body %}

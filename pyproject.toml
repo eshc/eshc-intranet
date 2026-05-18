@@ -38,6 +38,7 @@ dev = [
     "types-requests>=2.31,<3",
     "pylsp-mypy>=0.7.0",
     "python-lsp-server[all]>=1.14.0",
+    "ruff>=0.15.11",
 ]
 
 

@@ -18,17 +18,22 @@ class ApplicationSession(models.Model):
         verbose_name="Special name, e.g. Summerletter", max_length=30, blank=True
     )
     move_in_date = models.DateField(verbose_name="Move-in date")
-    open_time = models.DateTimeField(verbose_name="Applications form opening time")
-    close_time = models.DateTimeField(verbose_name="Applications form closing time")
-    voting_open_time = models.DateTimeField(verbose_name="Members voting opening time")
-    voting_close_time = models.DateTimeField(verbose_name="Members voting closing time")
+    open_time = models.DateTimeField(
+        verbose_name="Applications form opening time")
+    close_time = models.DateTimeField(
+        verbose_name="Applications form closing time")
+    voting_open_time = models.DateTimeField(
+        verbose_name="Members voting opening time")
+    voting_close_time = models.DateTimeField(
+        verbose_name="Members voting closing time")
 
     class Meta:
         ordering = ("-move_in_date",)
 
     def apply_url(self):
         try:
-            surl = urls.reverse("apply:apply-form", kwargs={"session_id": self.id})
+            surl = urls.reverse("apply:apply-form",
+                                kwargs={"session_id": self.id})
             return "https://{}{}".format(Site.objects.get_current().domain, surl)
         except Exception:
             return "Save me first"
@@ -37,7 +42,8 @@ class ApplicationSession(models.Model):
 
     def vote_url(self):
         try:
-            surl = urls.reverse("apply:vote-form", kwargs={"session_id": self.id})
+            surl = urls.reverse("apply:vote-form",
+                                kwargs={"session_id": self.id})
             return "https://{}{}".format(Site.objects.get_current().domain, surl)
         except Exception:
             return "Save me first"
@@ -92,7 +98,8 @@ class ApplicationQuestion(OrderedModel):
     visible_in_voting = models.BooleanField(
         verbose_name="Visible for voters", default=True
     )
-    question_text = models.TextField(verbose_name="Question text", max_length=5000)
+    question_text = models.TextField(
+        verbose_name="Question text", max_length=5000)
     question_type = models.CharField(
         verbose_name="Type",
         max_length=20,
@@ -138,7 +145,8 @@ class Applicant(models.Model):
         max_length=1000,
         blank=True,
     )
-    date_applied = models.DateTimeField(verbose_name="Date applied", auto_now_add=True)
+    date_applied = models.DateTimeField(
+        verbose_name="Date applied", auto_now_add=True)
     answers = models.ManyToManyField(
         ApplicationQuestion, through="ApplicationAnswer", blank=True
     )
@@ -171,7 +179,15 @@ class ApplicationAnswer(models.Model):
         return "{}: {}".format(self.question.question_text[:15], self.answer[:50])
 
 
+class ApplicationVoteChoice(models.IntegerChoices):
+    EXCEPTIONAL = 2, "Exceptional"
+    SUITABLE = 1, "Suitable"
+    ABSTAIN = 0, "Abstain"
+    NOT_SUITABLE = -1, "Not suitable"
+    DEFINITELY_NOT_SUITABLE = -2, "Definitely not suitable"
+
+
 class ApplicationVote(models.Model):
     applicant = models.ForeignKey(Applicant, on_delete=CASCADE)
     voting_member = models.ForeignKey(User, on_delete=CASCADE)
-    points = models.IntegerField()
+    vote = models.IntegerField(choices=ApplicationVoteChoice.choices)
