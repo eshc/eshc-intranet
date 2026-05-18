@@ -20,7 +20,7 @@ def forwards(apps, schema_editor):
 
     ApplicationVote.objects.using(db).filter(points=-2).update(vote=-1)
     ApplicationVote.objects.using(db).exclude(
-        vote=-2).update(vote=models.F("points"))
+        points=-2).update(vote=models.F("points"))
 
 
 class Migration(migrations.Migration):
